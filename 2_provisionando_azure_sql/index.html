@@ -1,0 +1,722 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../1_arquitetura/">
+      
+      
+        <link rel="next" href="../3_configuracao_ambiente_azure_sql/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
+    
+    
+      
+        <title>2. Provisionando Azure SQL - Projeto BI Zero TO DW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.35e1ed30.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#projeto-bi-zero-to-dw" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Projeto BI Zero TO DW" class="md-header__button md-logo" aria-label="Projeto BI Zero TO DW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Projeto BI Zero TO DW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              2. Provisionando Azure SQL
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Modo Claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo Claro" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Modo Escuro"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Modo Escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Projeto BI Zero TO DW" class="md-nav__button md-logo" aria-label="Projeto BI Zero TO DW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Projeto BI Zero TO DW
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    0 - Home do Projeto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_arquitetura/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Arquitetura
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    2. Provisionando Azure SQL
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    2. Provisionando Azure SQL
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#2-provisionamento-do-azure-sql-databese" class="md-nav__link">
+    2 - Provisionamento do Azure SQL Databese
+  </a>
+  
+    <nav class="md-nav" aria-label="2 - Provisionamento do Azure SQL Databese">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-provisionar-o-azure-sql-database" class="md-nav__link">
+    2.1 - Provisionar o Azure SQL Database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-definindo-nome-do-servidor-e-banco" class="md-nav__link">
+    2.2 - Definindo Nome do Servidor e Banco
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-definindo-informacoes-do-servidor" class="md-nav__link">
+    2.3 - Definindo Informações do Servidor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-configuracoes-de-rede" class="md-nav__link">
+    2.4 - Configurações de Rede
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-finalizando-provisionamento" class="md-nav__link">
+    2.5 - Finalizando Provisionamento
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_configuracao_ambiente_azure_sql/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. Configuração do Ambiente Azure SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_configuracao_ambiente_databricks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. Notebook - Configuração Ambiente
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_ingestao_dados_azure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Notebook - Ingestão de Dados do Azure SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_ingestao_dados_camada_bronze/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Notebook - Ingestão de Dados na Camada Bronze
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../7_ingestao_dados_camada_silver/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    7. Notebook - Ingestão de Dados na Camada Silver
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8_ingestao_dados_camada_gold/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Notebook - Ingestão de Dados na Camada Gold
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9_analise_dados/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. Notebook - Análise dos Dados
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_notebook_externo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Notebook - Notebook Externo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#2-provisionamento-do-azure-sql-databese" class="md-nav__link">
+    2 - Provisionamento do Azure SQL Databese
+  </a>
+  
+    <nav class="md-nav" aria-label="2 - Provisionamento do Azure SQL Databese">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-provisionar-o-azure-sql-database" class="md-nav__link">
+    2.1 - Provisionar o Azure SQL Database
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-definindo-nome-do-servidor-e-banco" class="md-nav__link">
+    2.2 - Definindo Nome do Servidor e Banco
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-definindo-informacoes-do-servidor" class="md-nav__link">
+    2.3 - Definindo Informações do Servidor
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-configuracoes-de-rede" class="md-nav__link">
+    2.4 - Configurações de Rede
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#25-finalizando-provisionamento" class="md-nav__link">
+    2.5 - Finalizando Provisionamento
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="projeto-bi-zero-to-dw">Projeto BI Zero TO DW</h1>
+<h2 id="2-provisionamento-do-azure-sql-databese">2 - Provisionamento do Azure SQL Databese</h2>
+<h3 id="21-provisionar-o-azure-sql-database">2.1 - Provisionar o Azure SQL Database</h3>
+<p>Primeiro passo para realizar o provisionamento é você possuir uma conta na Azure e em seguida ter provisionado um Resource Group dentro da sua conta.</p>
+<p>O provisionamento do Resource Group não será abordado nesse treinamento, porém deixo um link para você aprender como que é feito.</p>
+<p><a href="https://www.youtube.com/watch?v=HEJ2r-csrhQ">Provisionando o Resouce Group</a></p>
+<p>Após provisionar o Resource Group, vamos partir para o Azure SQL Server.</p>
+<p>Depois de logar em sua conta da Azure, vamos seguir os passos:</p>
+<p>Existem diversas formas de provisionar um recurso.</p>
+<p>2.1.1 - Clicar em CREATE A RESOURCE</p>
+<p><img alt="Image" src="../imagens/06_00_01_provisionando_azure_sql_database.png" /></p>
+<p>2.1.2 - Vamos procurar o Azure SQL Database. Para isso, na barra SOURCE, vamos digitar AZURE SQL DATABASE.</p>
+<p><img alt="Image" src="../imagens/06_00_02_provisionando_azure_sql_database.png" /></p>
+<p>2.1.3 - Próximo passo é clicar em AZURE SQL.</p>
+<p><img alt="Image" src="../imagens/06_00_03_provisionando_azure_sql_database.png" /></p>
+<p>2.1.4 - Nessa etapa basta clicar em CREATE.</p>
+<p><img alt="Image" src="../imagens/06_00_04_provisionando_azure_sql_database.png" /></p>
+<p>2.1.5 - Por último, selecionar SINGLE DATABASE e depois clicar em CREATE.</p>
+<p><img alt="Image" src="../imagens/06_00_05_provisionando_azure_sql_database.png" /></p>
+<h3 id="22-definindo-nome-do-servidor-e-banco">2.2 - Definindo Nome do Servidor e Banco</h3>
+<p>Nessa tela, vamos precisar definir as seguintes informações:</p>
+<ul>
+<li>Subscription;</li>
+<li>Resource Group;</li>
+<li>Nome do Servidor (definido na próxima tela);</li>
+<li>Modo de Autenticação (definido na próxima tela);</li>
+<li>Nome do Banco de Dados.</li>
+</ul>
+<p>As demais informações na aba Basics vou manter o default.</p>
+<p><img alt="Image" src="../imagens/06_03_provisionando_azure_sql_database.png" /></p>
+<h3 id="23-definindo-informacoes-do-servidor">2.3 - Definindo Informações do Servidor</h3>
+<p>Nessa tela vamos precisar definir as seguintes informações:</p>
+<ul>
+<li>Nome do Servidor;</li>
+<li>Região do Azure;</li>
+<li>Modo de Autenticação;</li>
+<li>Nome do Banco de Dados.</li>
+</ul>
+<p>As demais informações na aba Basics vou manter o default.</p>
+<p><img alt="Image" src="../imagens/06_04_provisionando_azure_sql_database.png" /></p>
+<h3 id="24-configuracoes-de-rede">2.4 - Configurações de Rede</h3>
+<p>Na aba Netwoking segue as configurações:</p>
+<ul>
+<li>
+<p>2.4.1 - Em connectivity method: </p>
+<ul>
+<li>Public Endpoint</li>
+</ul>
+</li>
+<li>
+<p>2.4.2 - Em firewall rules: </p>
+<ul>
+<li>Allow Azure services and resources to access this server - NO</li>
+<li>Add current client IP address - YES</li>
+</ul>
+</li>
+<li>
+<p>2.4.3 - Em connection policy</p>
+<ul>
+<li>Proxy</li>
+</ul>
+</li>
+</ul>
+<p>As demais informações na aba Basics vou manter o default.</p>
+<p><img alt="Image" src="../imagens/06_05_provisionando_azure_sql_database.png" /></p>
+<h3 id="25-finalizando-provisionamento">2.5 - Finalizando Provisionamento</h3>
+<p>Ao clicar em CREATE, o recurso será provisionado.</p>
+<p><img alt="Image" src="../imagens/06_06_provisionando_azure_sql_database.png" /></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+    
+  </body>
+</html>

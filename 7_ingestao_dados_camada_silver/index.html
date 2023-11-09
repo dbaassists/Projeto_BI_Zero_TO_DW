@@ -1,0 +1,1093 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../6_ingestao_dados_camada_bronze/">
+      
+      
+        <link rel="next" href="../8_ingestao_dados_camada_gold/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
+    
+    
+      
+        <title>7. Notebook - Ingestão de Dados na Camada Silver - Projeto BI Zero TO DW</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.35e1ed30.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.356b1318.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#projeto-bi-zero-to-dw" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Projeto BI Zero TO DW" class="md-header__button md-logo" aria-label="Projeto BI Zero TO DW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Projeto BI Zero TO DW
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              7. Notebook - Ingestão de Dados na Camada Silver
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Modo Claro"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Modo Claro" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5c-.84 0-1.65.15-2.39.42L12 2M3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29L3.34 7m.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14L3.36 17M20.65 7l-1.77 3.79a7.023 7.023 0 0 0-2.38-4.15l4.15.36m-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29L20.64 17M12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44L12 22Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Modo Escuro"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Modo Escuro" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3 3.19.09m3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95 2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Projeto BI Zero TO DW" class="md-nav__button md-logo" aria-label="Projeto BI Zero TO DW" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Projeto BI Zero TO DW
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    0 - Home do Projeto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../1_arquitetura/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    1. Arquitetura
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../2_provisionando_azure_sql/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    2. Provisionando Azure SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../3_configuracao_ambiente_azure_sql/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    3. Configuração do Ambiente Azure SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../4_configuracao_ambiente_databricks/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    4. Notebook - Configuração Ambiente
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../5_ingestao_dados_azure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    5. Notebook - Ingestão de Dados do Azure SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../6_ingestao_dados_camada_bronze/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    6. Notebook - Ingestão de Dados na Camada Bronze
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    7. Notebook - Ingestão de Dados na Camada Silver
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    7. Notebook - Ingestão de Dados na Camada Silver
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#7-ingestao-dos-dados-na-camada-silver" class="md-nav__link">
+    7 - Ingestão dos Dados na Camada Silver
+  </a>
+  
+    <nav class="md-nav" aria-label="7 - Ingestão dos Dados na Camada Silver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seq-71-notebook-externo" class="md-nav__link">
+    SEQ-7.1 - Notebook Externo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atividades-de-ingestao" class="md-nav__link">
+    Atividades de Ingestão
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-72-ingestao-de-dados-na-camada-silver-de-tb_categoria_produto" class="md-nav__link">
+    SEQ-7.2 - Ingestão de Dados na camada "silver" de tb_categoria_produto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-73-ingestao-de-dados-na-camada-silver-de-tb_cliente" class="md-nav__link">
+    SEQ-7.3 - Ingestão de Dados na camada "silver" de tb_cliente 
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-74-ingestao-de-dados-na-camada-silver-de-tb_forma_pagamento" class="md-nav__link">
+    SEQ-7.4 - Ingestão de Dados na camada "silver" de tb_forma_pagamento
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-75-ingestao-de-dados-na-camada-silver-de-tb_item_venda" class="md-nav__link">
+    SEQ-7.5 - Ingestão de Dados na camada "silver" de tb_item_venda
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-76-ingestao-de-dados-na-camada-silver-de-tb_loja" class="md-nav__link">
+    SEQ-7.6 - Ingestão de Dados na camada "silver" de tb_loja
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-77-ingestao-de-dados-na-camada-silver-de-tb_produto" class="md-nav__link">
+    SEQ-7.7 - Ingestão de Dados na camada "silver" de tb_produto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-78-ingestao-de-dados-na-camada-silver-de-tb_venda" class="md-nav__link">
+    SEQ-7.8 - Ingestão de Dados na camada "silver" de tb_venda
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-79-ingestao-de-dados-na-camada-silver-de-tb_vendedor" class="md-nav__link">
+    SEQ-7.9 - Ingestão de Dados na camada "silver" de tb_vendedor
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../8_ingestao_dados_camada_gold/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Notebook - Ingestão de Dados na Camada Gold
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../9_analise_dados/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    9. Notebook - Análise dos Dados
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_notebook_externo/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    8. Notebook - Notebook Externo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#7-ingestao-dos-dados-na-camada-silver" class="md-nav__link">
+    7 - Ingestão dos Dados na Camada Silver
+  </a>
+  
+    <nav class="md-nav" aria-label="7 - Ingestão dos Dados na Camada Silver">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seq-71-notebook-externo" class="md-nav__link">
+    SEQ-7.1 - Notebook Externo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#atividades-de-ingestao" class="md-nav__link">
+    Atividades de Ingestão
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-72-ingestao-de-dados-na-camada-silver-de-tb_categoria_produto" class="md-nav__link">
+    SEQ-7.2 - Ingestão de Dados na camada "silver" de tb_categoria_produto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-73-ingestao-de-dados-na-camada-silver-de-tb_cliente" class="md-nav__link">
+    SEQ-7.3 - Ingestão de Dados na camada "silver" de tb_cliente 
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-74-ingestao-de-dados-na-camada-silver-de-tb_forma_pagamento" class="md-nav__link">
+    SEQ-7.4 - Ingestão de Dados na camada "silver" de tb_forma_pagamento
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-75-ingestao-de-dados-na-camada-silver-de-tb_item_venda" class="md-nav__link">
+    SEQ-7.5 - Ingestão de Dados na camada "silver" de tb_item_venda
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-76-ingestao-de-dados-na-camada-silver-de-tb_loja" class="md-nav__link">
+    SEQ-7.6 - Ingestão de Dados na camada "silver" de tb_loja
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-77-ingestao-de-dados-na-camada-silver-de-tb_produto" class="md-nav__link">
+    SEQ-7.7 - Ingestão de Dados na camada "silver" de tb_produto
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-78-ingestao-de-dados-na-camada-silver-de-tb_venda" class="md-nav__link">
+    SEQ-7.8 - Ingestão de Dados na camada "silver" de tb_venda
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-79-ingestao-de-dados-na-camada-silver-de-tb_vendedor" class="md-nav__link">
+    SEQ-7.9 - Ingestão de Dados na camada "silver" de tb_vendedor
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="projeto-bi-zero-to-dw">Projeto BI Zero TO DW</h1>
+<h2 id="7-ingestao-dos-dados-na-camada-silver">7 - Ingestão dos Dados na Camada Silver</h2>
+<table>
+<thead>
+<tr>
+<th>Sequência</th>
+<th>Ação</th>
+<th>Detalhamento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SEQ-7.1</td>
+<td>Função acentuacao</td>
+<td>Usada para remover a acentuação de campos do tipo STRING.</td>
+</tr>
+<tr>
+<td>SEQ-7.2 / SEQ-7.3 / SEQ-7.4 / SEQ-7.5 / SEQ-7.6 / SEQ-7.7 / SEQ-7.8 / SEQ-7.9</td>
+<td>Ingestão dos Dados da Camada Bronze para Silver</td>
+<td>Carga realizada baseada nos dados existentes nas tabelas da camada Bronze.</td>
+</tr>
+<tr>
+<td>SEQ-7.2 / SEQ-7.3 / SEQ-7.4 / SEQ-7.5 / SEQ-7.6 / SEQ-7.7 / SEQ-7.8 / SEQ-7.9</td>
+<td>Tratamento de dados antes de inserir/atualizar</td>
+<td>Remover acentuação e caracteres especiais, valores nulos onde o datatype foi STRING, informar 'N/A', datatype NUMÉRICO, informar 0 (zero) e datatype DATE/TIMESTAMP, informar '1900-01-01'. Todo os dados do tipo STRING devem estar dados em caixa alta.</td>
+</tr>
+<tr>
+<td>SEQ-7.2 / SEQ-7.3 / SEQ-7.4 / SEQ-7.5 / SEQ-7.6 / SEQ-7.7 / SEQ-7.8 / SEQ-7.9</td>
+<td>Identificar a data de alteração ou cadastro</td>
+<td>Regra: Caso o registro não exista (caindo na condição INSERT do MERGE), a data de cadastro e data de alteração devem ser a mesma, caso o registro exista, a data de alteração deverá ser alterada.</td>
+</tr>
+</tbody>
+</table>
+<p>O arquivo do Notebook é encontrado aqui. <a href="https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/02_NOTEBOOK/03_ingestao_camada_silver.ipynb">Notebook Ingestão Dados Para Camada Silver</a></p>
+<h3 id="seq-71-notebook-externo">SEQ-7.1 - Notebook Externo<br></h3>
+<p>Nessa etapa é realizada a importação de um notebook externo que contém a função que será usada para realizar o tratamento (remoção da acentuação) dos dados.</p>
+<pre><code>%run /estudos/libs/bibliotecas
+</code></pre>
+<h3 id="atividades-de-ingestao">Atividades de Ingestão</h3>
+<h3 id="seq-72-ingestao-de-dados-na-camada-silver-de-tb_categoria_produto">SEQ-7.2 - Ingestão de Dados na camada "silver" de tb_categoria_produto<br></h3>
+<pre><code>MERGE INTO silver.tb_categoria_produto a
+USING (
+SELECT 
+CODIGO_CATEGORIA
+,acentuacao(DECRICAO_CATEGORIA) DECRICAO_CATEGORIA
+FROM bronze.tb_categoria_produto
+) b
+
+ON a.CODIGO_CATEGORIA= b.CODIGO_CATEGORIA
+
+WHEN MATCHED THEN
+UPDATE SET 
+a.CODIGO_CATEGORIA = b.CODIGO_CATEGORIA
+,a.DECRICAO_CATEGORIA = b.DECRICAO_CATEGORIA
+,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
+
+WHEN NOT MATCHED
+THEN 
+INSERT 
+(
+CODIGO_CATEGORIA
+,DECRICAO_CATEGORIA
+,DATA_CADASTRO
+,DATA_ALTERACAO
+) 
+VALUES 
+(
+b.CODIGO_CATEGORIA
+,b.DECRICAO_CATEGORIA
+,from_utc_timestamp(now(),'GMT-3')
+,from_utc_timestamp(now(),'GMT-3')
+)
+</code></pre>
+<h3 id="seq-73-ingestao-de-dados-na-camada-silver-de-tb_cliente">SEQ-7.3 - Ingestão de Dados na camada "silver" de tb_cliente <br></h3>
+<pre><code>%sql
+MERGE INTO silver.tb_cliente a
+USING (
+SELECT 
+CODIGO_CLIENTE
+,acentuacao(NOME_CLIENTE) NOME_CLIENTE
+FROM bronze.tb_cliente
+) b
+
+ON a.CODIGO_CLIENTE= b.CODIGO_CLIENTE
+
+WHEN MATCHED THEN
+UPDATE SET 
+a.CODIGO_CLIENTE = b.CODIGO_CLIENTE
+,a.NOME_CLIENTE = b.NOME_CLIENTE
+,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
+
+WHEN NOT MATCHED
+THEN 
+INSERT 
+(
+CODIGO_CLIENTE
+,NOME_CLIENTE
+,DATA_CADASTRO
+,DATA_ALTERACAO
+)
+VALUES 
+(
+b.CODIGO_CLIENTE
+,b.NOME_CLIENTE
+,from_utc_timestamp(now(),'GMT-3')
+,from_utc_timestamp(now(),'GMT-3')
+)
+
+</code></pre>
+<h3 id="seq-74-ingestao-de-dados-na-camada-silver-de-tb_forma_pagamento">SEQ-7.4 - Ingestão de Dados na camada "silver" de tb_forma_pagamento<br></h3>
+<pre><code>%sql
+MERGE INTO silver.tb_forma_pagamento a
+USING (
+SELECT 
+CODIGO_FORMA_PAGAMENTO
+,acentuacao(DESCRICAO_FORMA_PAGAMENTO) DESCRICAO_FORMA_PAGAMENTO
+FROM bronze.tb_forma_pagamento
+) b
+
+ON a.CODIGO_FORMA_PAGAMENTO= b.CODIGO_FORMA_PAGAMENTO
+
+WHEN MATCHED THEN
+UPDATE SET 
+a.CODIGO_FORMA_PAGAMENTO = b.CODIGO_FORMA_PAGAMENTO
+,a.DESCRICAO_FORMA_PAGAMENTO = b.DESCRICAO_FORMA_PAGAMENTO
+,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
+
+WHEN NOT MATCHED
+THEN 
+INSERT 
+(CODIGO_FORMA_PAGAMENTO
+,DESCRICAO_FORMA_PAGAMENTO
+,DATA_CADASTRO
+,DATA_ALTERACAO) 
+VALUES 
+(b.CODIGO_FORMA_PAGAMENTO
+,b.DESCRICAO_FORMA_PAGAMENTO
+,from_utc_timestamp(now(),'GMT-3')
+,from_utc_timestamp(now(),'GMT-3')
+)
+
+</code></pre>
+<h3 id="seq-75-ingestao-de-dados-na-camada-silver-de-tb_item_venda">SEQ-7.5 - Ingestão de Dados na camada "silver" de tb_item_venda<br></h3>
+<pre><code>%sql
+MERGE INTO silver.tb_item_venda a
+USING (
+SELECT 
+CODIGO_VENDA
+,CODIGO_PRODUTO
+,VALOR_UNITARIO
+,QUANTIDADE
+,VALOR_FINAL
+FROM bronze.tb_item_venda
+) b
+
+ON a.CODIGO_VENDA= b.CODIGO_VENDA
+AND a.CODIGO_PRODUTO= b.CODIGO_PRODUTO
+
+WHEN MATCHED THEN
+UPDATE SET 
+a.CODIGO_VENDA = b.CODIGO_VENDA
+,a.CODIGO_PRODUTO = b.CODIGO_PRODUTO
+,a.VALOR_UNITARIO = b.VALOR_UNITARIO
+,a.QUANTIDADE = b.QUANTIDADE
+,a.VALOR_FINAL = b.VALOR_FINAL
+,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
+
+WHEN NOT MATCHED
+THEN 
+INSERT 
+(
+CODIGO_VENDA
+,CODIGO_PRODUTO
+,VALOR_UNITARIO
+,QUANTIDADE
+,VALOR_FINAL
+,DATA_CADASTRO
+,DATA_ALTERACAO
+)
+VALUES 
+(
+b.CODIGO_VENDA
+,b.CODIGO_PRODUTO
+,b.VALOR_UNITARIO
+,b.QUANTIDADE
+,b.VALOR_FINAL
+,from_utc_timestamp(now(),'GMT-3')
+,from_utc_timestamp(now(),'GMT-3')
+)
+
+</code></pre>
+<h3 id="seq-76-ingestao-de-dados-na-camada-silver-de-tb_loja">SEQ-7.6 - Ingestão de Dados na camada "silver" de tb_loja<br></h3>
+<pre><code>%sql
+MERGE INTO silver.tb_loja a
+USING (
+SELECT 
+CODIGO_LOJA
+,acentuacao(NOME_LOJA) NOME_LOJA
+,acentuacao(LOCALIDADE_LOJA) LOCALIDADE_LOJA
+,TIPO_LOJA
+FROM bronze.tb_loja
+) b
+
+ON a.CODIGO_LOJA= b.CODIGO_LOJA
+
+WHEN MATCHED THEN
+UPDATE SET 
+a.CODIGO_LOJA = b.CODIGO_LOJA
+,a.NOME_LOJA = b.NOME_LOJA
+,a.LOCALIDADE_LOJA = b.LOCALIDADE_LOJA
+,a.TIPO_LOJA = b.TIPO_LOJA
+,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
+
+WHEN NOT MATCHED
+THEN 
+INSERT (
+CODIGO_LOJA
+,NOME_LOJA
+,LOCALIDADE_LOJA
+,TIPO_LOJA
+,DATA_CADASTRO
+,DATA_ALTERACAO
+) 
+VALUES 
+(b.CODIGO_LOJA
+,b.NOME_LOJA
+,b.LOCALIDADE_LOJA
+,b.TIPO_LOJA
+,from_utc_timestamp(now(),'GMT-3')
+,from_utc_timestamp(now(),'GMT-3')
+)
+
+</code></pre>
+<h3 id="seq-77-ingestao-de-dados-na-camada-silver-de-tb_produto">SEQ-7.7 - Ingestão de Dados na camada "silver" de tb_produto<br></h3>
+<pre><code>%sql
+
+MERGE INTO silver.tb_produto a
+USING (SELECT 
+PROD.CODIGO_PRODUTO
+,acentuacao(PROD.DESCRICAO_PRODUTO) DESCRICAO_PRODUTO
+,PROD.CODIGO_CATEGORIA
+FROM bronze.tb_produto PROD) b
+
+ON a.CODIGO_PRODUTO= b.CODIGO_PRODUTO
+
+WHEN MATCHED 
+THEN
+UPDATE SET 
+a.CODIGO_PRODUTO = b.CODIGO_PRODUTO
+,a.DESCRICAO_PRODUTO = b.DESCRICAO_PRODUTO
+,a.CODIGO_CATEGORIA = b.CODIGO_CATEGORIA
+,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
+
+WHEN NOT MATCHED
+THEN 
+INSERT 
+(
+CODIGO_PRODUTO
+,DESCRICAO_PRODUTO
+,CODIGO_CATEGORIA
+,DATA_CADASTRO
+,DATA_ALTERACAO
+) 
+VALUES 
+(
+b.CODIGO_PRODUTO
+,b.DESCRICAO_PRODUTO
+,b.CODIGO_CATEGORIA
+,from_utc_timestamp(now(),'GMT-3')
+,from_utc_timestamp(now(),'GMT-3')
+)
+
+</code></pre>
+<h3 id="seq-78-ingestao-de-dados-na-camada-silver-de-tb_venda">SEQ-7.8 - Ingestão de Dados na camada "silver" de tb_venda<br></h3>
+<pre><code>%sql
+
+MERGE INTO silver.tb_venda a
+USING (
+SELECT 
+CODIGO_VENDA
+,DATA_VENDA
+,CODIGO_CLIENTE
+,CODIGO_VENDEDOR
+,CODIGO_LOJA
+,VALOR_FINAL
+,FORMA_PAGAMENTO
+,TIPO_PAGAMENTO
+FROM bronze.tb_venda
+) b
+
+ON a.CODIGO_VENDA= b.CODIGO_VENDA
+
+WHEN MATCHED THEN
+UPDATE SET 
+a.CODIGO_VENDA = b.CODIGO_VENDA
+,a.DATA_VENDA = b.DATA_VENDA
+,a.CODIGO_CLIENTE = b.CODIGO_CLIENTE
+,a.CODIGO_VENDEDOR = b.CODIGO_VENDEDOR
+,a.CODIGO_LOJA = b.CODIGO_LOJA
+,a.VALOR_FINAL = b.VALOR_FINAL
+,a.FORMA_PAGAMENTO = b.FORMA_PAGAMENTO
+,a.TIPO_PAGAMENTO = b.TIPO_PAGAMENTO
+,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
+
+WHEN NOT MATCHED
+THEN 
+INSERT 
+(
+CODIGO_VENDA
+,DATA_VENDA
+,CODIGO_CLIENTE
+,CODIGO_VENDEDOR
+,CODIGO_LOJA
+,VALOR_FINAL
+,FORMA_PAGAMENTO
+,TIPO_PAGAMENTO
+,DATA_CADASTRO
+,DATA_ALTERACAO
+)
+VALUES (
+b.CODIGO_VENDA
+,b.DATA_VENDA
+,b.CODIGO_CLIENTE
+,b.CODIGO_VENDEDOR
+,b.CODIGO_LOJA
+,b.VALOR_FINAL
+,b.FORMA_PAGAMENTO
+,b.TIPO_PAGAMENTO
+,from_utc_timestamp(now(),'GMT-3')
+,from_utc_timestamp(now(),'GMT-3')
+)
+
+</code></pre>
+<h3 id="seq-79-ingestao-de-dados-na-camada-silver-de-tb_vendedor">SEQ-7.9 - Ingestão de Dados na camada "silver" de tb_vendedor<br></h3>
+<pre><code>%sql
+
+MERGE INTO silver.tb_vendedor a
+USING (
+SELECT 
+CODIGO_VENDEDOR
+,acentuacao(NOME_VENDEDOR) NOME_VENDEDOR
+FROM bronze.tb_vendedor
+) b
+
+ON a.CODIGO_VENDEDOR= b.CODIGO_VENDEDOR
+
+WHEN MATCHED THEN
+UPDATE SET 
+a.CODIGO_VENDEDOR = b.CODIGO_VENDEDOR
+,a.NOME_VENDEDOR = b.NOME_VENDEDOR
+,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
+
+WHEN NOT MATCHED
+THEN 
+INSERT 
+(
+CODIGO_VENDEDOR
+,NOME_VENDEDOR
+,DATA_CADASTRO
+,DATA_ALTERACAO
+) 
+VALUES 
+(
+b.CODIGO_VENDEDOR
+,b.NOME_VENDEDOR
+,from_utc_timestamp(now(),'GMT-3')
+,from_utc_timestamp(now(),'GMT-3')
+)
+</code></pre>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.aecac24b.min.js"></script>
+      
+    
+  </body>
+</html>
