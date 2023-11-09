@@ -1,9 +1,9 @@
 {
 	"Config":
 	{
-	"server": "srv-db-treinamentosql.database.windows.net",
+	"server": "srv-db-treinamentosql.database.windows.net:1433",
 	"database": "srv-db-treinamentosql",
 	"username": "usr-srv-treinamentosql",
-	"password": "42250000Gl!."
+	"password": "Tr&in@M&nT0SQL2023!"
 	}
 }
