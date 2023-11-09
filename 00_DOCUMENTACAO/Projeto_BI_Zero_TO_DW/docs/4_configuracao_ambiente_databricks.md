@@ -8,6 +8,8 @@ São elas:
 
 |Sequência|Ação|Detalhamento
 |---|---|---|
+|SEQ-4.0|Importação de Bibliotecas|Definição de quais bibliotecas estarão sendo usada|
+|SEQ-4.0.1|Importação de Notebook Externo|Será usado para criar a tabela Dimensão Tempo|
 |SEQ-4.1|Configuração do ambiente no Databricks|Criação do storage "dbfs:/FileStore/tables/landing_zone"|
 |SEQ-4.2 / SEQ-4.3 / SEQ-4.4|Criação de Schemas (Bancos de Dados)|Criação das Camadas Bronze, Silver e Gold |
 |SEQ-4.5 / SEQ-4.6 / SEQ-4.7|Criação das Tabelas|Criação das Tabelas das Camadas Bronze, Silver e Gold|
@@ -17,6 +19,19 @@ São elas:
 |SEQ-4.11|Visualizando a Estrutura de uma schema|Informações do Schema|
 
 O arquivo do Notebook é encontrado aqui. [Notebook Configuração Ambiente Databricks](https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/02_NOTEBOOK/00_configuracao_ambiente.ipynb)
+
+### SEQ-4.0 - Importação de Bibliotecas
+
+```
+from pyspark.sql.functions import *
+from datetime import date, timedelta
+```
+
+### SEQ-4.0.1 - Importando Notebook Externo
+
+```
+%run /estudos/libs/bibliotecas
+```
 
 ### SEQ-4.1 - Criação Camada Landing Zone
 
@@ -68,6 +83,10 @@ A sintaxe do script de criação de um Schema.
 ```
 %sql
 DROP SCHEMA IF EXISTS bronze CASCADE;
+```
+
+```
+%sql
 CREATE SCHEMA IF NOT EXISTS bronze COMMENT 'SCHEMA (Banco de Dados) referente a Camada BRONZE.';
 ```
 
@@ -80,6 +99,9 @@ Nessa camada os dados sofreram transformações (aplicações de regras de negó
 ```
 %sql
 DROP SCHEMA IF EXISTS silver CASCADE;
+```
+```
+%sql
 CREATE SCHEMA IF NOT EXISTS silver COMMENT 'SCHEMA (Banco de Dados) referente a Camada SILVER.';
 ```
 
@@ -92,6 +114,9 @@ Nessa camada os objetos serão modelados como dimensões e fatos.
 ```
 %sql
 DROP SCHEMA IF EXISTS gold CASCADE;
+```
+```
+%sql
 CREATE SCHEMA IF NOT EXISTS gold COMMENT 'SCHEMA (Banco de Dados) referente a Camada GOLD.';
 ```
 
@@ -393,38 +418,11 @@ ID_TEMPO VARCHAR(100) COMMENT 'Chave da Dimensão Tempo.'
 Script para inserção dos dados na Dimensão Tempo.
 
 ```
-%sql
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230701','2023-07-01', 2023, 7, 1);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230702','2023-07-02', 2023, 7, 2);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230703','2023-07-03', 2023, 7, 3);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230704','2023-07-04', 2023, 7, 4);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230705','2023-07-05', 2023, 7, 5);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230706','2023-07-06', 2023, 7, 6);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230707','2023-07-07', 2023, 7, 7);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230708','2023-07-08', 2023, 7, 8);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230709','2023-07-09', 2023, 7, 9);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230710','2023-07-10', 2023, 7, 10);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230711','2023-07-11', 2023, 7, 11);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230712','2023-07-12', 2023, 7, 12);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230713','2023-07-13', 2023, 7, 13);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230714','2023-07-14', 2023, 7, 14);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230715','2023-07-15', 2023, 7, 15);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230716','2023-07-16', 2023, 7, 16);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230717','2023-07-17', 2023, 7, 17);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230718','2023-07-18', 2023, 7, 18);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230719','2023-07-19', 2023, 7, 19);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230720','2023-07-20', 2023, 7, 20);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230721','2023-07-21', 2023, 7, 21);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230722','2023-07-22', 2023, 7, 22);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230723','2023-07-23', 2023, 7, 23);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230724','2023-07-24', 2023, 7, 24);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230725','2023-07-25', 2023, 7, 25);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230726','2023-07-26', 2023, 7, 26);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230727','2023-07-27', 2023, 7, 27);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230728','2023-07-28', 2023, 7, 28);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230729','2023-07-29', 2023, 7, 29);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230730','2023-07-30', 2023, 7, 30);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230731','2023-07-31', 2023, 7, 31);
+data_inicial = date(2023, 6, 1)
+data_fim = date(2023, 8, 1)
+dias_acrescimo = timedelta(days=1)
+
+cria_dimensao_tempo(data_inicial, data_fim, dias_acrescimo)
 ```
 
 ### SEQ-4.9 - Visualizar Estrutura de Tabela
