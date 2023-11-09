@@ -1,0 +1,35 @@
+site_name: Projeto BI Zero TO DW
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: black
+      toggle:
+        icon: material/weather-sunny
+        name: Modo Claro
+    - scheme: slate
+      primary: black
+      toggle:
+        icon: material/weather-night
+        name: Modo Escuro
+nav:
+  - 0 - Home do Projeto: index.md
+  - 1. Arquitetura: 1_arquitetura.md
+  - 2. Provisionando Azure SQL: 2_provisionando_azure_sql.md
+  - 3. Configuração do Ambiente Azure SQL: 3_configuracao_ambiente_azure_sql.md
+  - 4. Notebook - Configuração Ambiente: 4_configuracao_ambiente_databricks.md
+  - 5. Notebook - Ingestão de Dados do Azure SQL: 5_ingestao_dados_azure.md
+  - 6. Notebook - Ingestão de Dados na Camada Bronze: 6_ingestao_dados_camada_bronze.md  
+  - 7. Notebook - Ingestão de Dados na Camada Silver: 7_ingestao_dados_camada_silver.md  
+  - 8. Notebook - Ingestão de Dados na Camada Gold: 8_ingestao_dados_camada_gold.md  
+  - 9. Notebook - Análise dos Dados: 9_analise_dados.md  
+  - 8. Notebook - Notebook Externo: 10_notebook_externo.md  
+
+markdown-extensions:
+  - pymdownx.tasklist
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
