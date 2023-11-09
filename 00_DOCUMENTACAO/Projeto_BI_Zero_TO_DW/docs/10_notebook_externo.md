@@ -29,3 +29,45 @@ def acentuacao(var):
 
 spark.udf.register("acentuacao", acentuacao)
 ```
+
+Para conhecer melhor seu funcionamento, segue o link de um vídeo do meu canal que explico com maiores detalhes [Vídeo Removendo Acentuação](https://www.youtube.com/watch?v=Vr3Hq0frAA8&t=68s).
+
+### SEQ-10.2 - Função Cria Dados Dimensão Tempo
+
+```
+def cria_dimensao_tempo(data_inicial, data_fim, dias_acrescimo):
+
+        inicio = data_inicial
+
+        while data_inicial <= data_fim:
+                v_id_tempo = str(data_inicial.strftime("%Y%m%d"))
+                v_ano = data_inicial.year
+                v_mes = data_inicial.month
+                v_dia = data_inicial.day
+
+                if inicio == data_inicial:
+
+                        spark.sql(fr"""TRUNCATE TABLE gold.DIM_TEMPO""")
+
+                data_inicial += dias_acrescimo
+
+                spark.sql(fr"""
+                        INSERT INTO gold.DIM_TEMPO 
+                        (ID_TEMPO
+                        ,DATA
+                        ,ANO
+                        ,MES
+                        ,DIA
+                        ,DATA_CADASTRO
+                        ,DATA_ALTERACAO) 
+                        VALUES (sha2(cast({v_id_tempo} AS VARCHAR(10)),256)
+                                ,CAST({v_id_tempo} AS VARCHAR(10))
+                                ,{v_ano}
+                                ,{v_mes}
+                                ,{v_dia}
+                                ,from_utc_timestamp(now(),'GMT-3')
+                                ,from_utc_timestamp(now(),'GMT-3')
+                                );
+                        """)
+
+```

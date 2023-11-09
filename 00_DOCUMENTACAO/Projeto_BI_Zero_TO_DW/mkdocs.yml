@@ -13,7 +13,7 @@ theme:
         icon: material/weather-night
         name: Modo Escuro
 nav:
-  - 0 - Home do Projeto: index.md
+  - Home do Projeto: index.md
   - 1. Arquitetura: 1_arquitetura.md
   - 2. Provisionando Azure SQL: 2_provisionando_azure_sql.md
   - 3. Configuração do Ambiente Azure SQL: 3_configuracao_ambiente_azure_sql.md
@@ -23,7 +23,8 @@ nav:
   - 7. Notebook - Ingestão de Dados na Camada Silver: 7_ingestao_dados_camada_silver.md  
   - 8. Notebook - Ingestão de Dados na Camada Gold: 8_ingestao_dados_camada_gold.md  
   - 9. Notebook - Análise dos Dados: 9_analise_dados.md  
-  - 8. Notebook - Notebook Externo: 10_notebook_externo.md  
+  - 10. Notebook - Notebook Externo: 10_notebook_externo.md  
+  - 11. Onde encontro os arquivos?: 11_arquivos.md    
 
 markdown-extensions:
   - pymdownx.tasklist
