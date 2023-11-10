@@ -230,7 +230,26 @@
         
   
   <span class="md-ellipsis">
-    0 - Home do Projeto
+    Home do Projeto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0_quem_sou_eu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quem sou eu?
   </span>
   
 
@@ -409,6 +428,20 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#seq-56-firewall-azure-sql-database-liberando-acesso-ao-banco" class="md-nav__link">
+    SEQ-5.6 - Firewall Azure SQL Database - Liberando acesso ao Banco
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-57-firewall-azure-sql-database-revogando-acesso-ao-banco" class="md-nav__link">
+    SEQ-5.7 - Firewall Azure SQL Database - Revogando acesso ao Banco
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -508,7 +541,26 @@
         
   
   <span class="md-ellipsis">
-    8. Notebook - Notebook Externo
+    10. Notebook - Notebook Externo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_arquivos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Onde encontro os arquivos?
   </span>
   
 
@@ -582,6 +634,20 @@
           <li class="md-nav__item">
   <a href="#seq-55-extracao-de-dados" class="md-nav__link">
     SEQ-5.5 - Extração de Dados
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-56-firewall-azure-sql-database-liberando-acesso-ao-banco" class="md-nav__link">
+    SEQ-5.6 - Firewall Azure SQL Database - Liberando acesso ao Banco
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-57-firewall-azure-sql-database-revogando-acesso-ao-banco" class="md-nav__link">
+    SEQ-5.7 - Firewall Azure SQL Database - Revogando acesso ao Banco
   </a>
   
 </li>
@@ -707,6 +773,9 @@ password = dfjson['Config']['password']
 .option(&quot;password&quot;, f&quot;{password}&quot;) \
 .load()
 </code></pre>
+<p>Visualizando o conteúdo retornado da execução da consulta.</p>
+<pre><code>display(df)
+</code></pre>
 <h3 id="seq-55-extracao-de-dados">SEQ-5.5 - Extração de Dados</h3>
 <p>Após a extração dos dados do Azure SQL Database, os dados serão persistidos na camada landing zone em formato parquet.</p>
 <p>Comentando um pouco o script abaixo:</p>
@@ -717,9 +786,11 @@ password = dfjson['Config']['password']
 
 for tabela in lista_tabelas:
 
-    print(tabela['Nome_Tabela'])
+    tabela_paquet = tabela['Nome_Tabela'].replace('dbo.','').lower()
 
-    diretorio_parquet = &quot;dbfs:/FileStore/tables/landing_zone/{0}&quot;.format(tabela['Nome_Tabela'])
+    print(tabela_paquet)
+
+    diretorio_parquet = &quot;dbfs:/FileStore/tables/landing_zone/{0}&quot;.format(tabela_paquet)
 
     df = (spark.read
     .format(&quot;jdbc&quot;)
@@ -735,8 +806,21 @@ for tabela in lista_tabelas:
     .mode(&quot;overwrite&quot;)
     .save(diretorio_parquet)
     )
-
 </code></pre>
+<h3 id="seq-56-firewall-azure-sql-database-liberando-acesso-ao-banco">SEQ-5.6 - Firewall Azure SQL Database - Liberando acesso ao Banco</h3>
+<pre><code>exec sp_set_firewall_rule N'nome_regra', '0.0.0.0', '0.0.0.0'
+</code></pre>
+<p>Ou podemos fazer a liberação acessando o portal do Azure.</p>
+<p><img alt="Image" src="../imagens/08_azure_sql_concedendo_acesso_firewall.png" /></p>
+<p>Depois realizamos o cadastro da regra.</p>
+<p><img alt="Image" src="../imagens/08_01_azure_sql_concedendo_acesso_firewall.png" /></p>
+<h3 id="seq-57-firewall-azure-sql-database-revogando-acesso-ao-banco">SEQ-5.7 - Firewall Azure SQL Database - Revogando acesso ao Banco</h3>
+<pre><code>exec sp_delete_firewall_rule N'nome_regra'
+</code></pre>
+<p>Ou podemos fazer a revogação acessando o portal do Azure.</p>
+<p><img alt="Image" src="../imagens/08_azure_sql_concedendo_acesso_firewall.png" /></p>
+<p>Depois realizamos a entrada referente a regra.</p>
+<p><img alt="Image" src="../imagens/08_02_azure_sql_concedendo_acesso_firewall.png" /></p>
 
 
 

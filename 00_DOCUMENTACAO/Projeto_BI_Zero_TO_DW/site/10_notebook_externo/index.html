@@ -12,13 +12,15 @@
         <link rel="prev" href="../9_analise_dados/">
       
       
+        <link rel="next" href="../11_arquivos/">
+      
       
       <link rel="icon" href="../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.4.6">
     
     
       
-        <title>8. Notebook - Notebook Externo - Projeto BI Zero TO DW</title>
+        <title>10. Notebook - Notebook Externo - Projeto BI Zero TO DW</title>
       
     
     
@@ -109,7 +111,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              8. Notebook - Notebook Externo
+              10. Notebook - Notebook Externo
             
           </span>
         </div>
@@ -228,7 +230,26 @@
         
   
   <span class="md-ellipsis">
-    0 - Home do Projeto
+    Home do Projeto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0_quem_sou_eu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quem sou eu?
   </span>
   
 
@@ -427,7 +448,7 @@
           
   
   <span class="md-ellipsis">
-    8. Notebook - Notebook Externo
+    10. Notebook - Notebook Externo
   </span>
   
 
@@ -438,7 +459,7 @@
         
   
   <span class="md-ellipsis">
-    8. Notebook - Notebook Externo
+    10. Notebook - Notebook Externo
   </span>
   
 
@@ -473,10 +494,36 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#seq-102-funcao-cria-dados-dimensao-tempo" class="md-nav__link">
+    SEQ-10.2 - Função Cria Dados Dimensão Tempo
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
       
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_arquivos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Onde encontro os arquivos?
+  </span>
+  
+
+      </a>
     </li>
   
 
@@ -521,6 +568,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#seq-102-funcao-cria-dados-dimensao-tempo" class="md-nav__link">
+    SEQ-10.2 - Função Cria Dados Dimensão Tempo
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -561,6 +615,44 @@
   return Return
 
 spark.udf.register(&quot;acentuacao&quot;, acentuacao)
+</code></pre>
+<p>Para conhecer melhor seu funcionamento, deixo o link de um vídeo do meu canal que explico com maiores detalhes <a href="https://www.youtube.com/watch?v=Vr3Hq0frAA8&amp;t=68s">Vídeo Removendo Acentuação</a>.</p>
+<h3 id="seq-102-funcao-cria-dados-dimensao-tempo">SEQ-10.2 - Função Cria Dados Dimensão Tempo</h3>
+<pre><code>def cria_dimensao_tempo(data_inicial, data_fim, dias_acrescimo):
+
+        inicio = data_inicial
+
+        while data_inicial &lt;= data_fim:
+                v_id_tempo = str(data_inicial.strftime(&quot;%Y%m%d&quot;))
+                v_ano = data_inicial.year
+                v_mes = data_inicial.month
+                v_dia = data_inicial.day
+
+                if inicio == data_inicial:
+
+                        spark.sql(fr&quot;&quot;&quot;TRUNCATE TABLE gold.DIM_TEMPO&quot;&quot;&quot;)
+
+                data_inicial += dias_acrescimo
+
+                spark.sql(fr&quot;&quot;&quot;
+                        INSERT INTO gold.DIM_TEMPO 
+                        (ID_TEMPO
+                        ,DATA
+                        ,ANO
+                        ,MES
+                        ,DIA
+                        ,DATA_CADASTRO
+                        ,DATA_ALTERACAO) 
+                        VALUES (sha2(cast({v_id_tempo} AS VARCHAR(10)),256)
+                                ,CAST({v_id_tempo} AS VARCHAR(10))
+                                ,{v_ano}
+                                ,{v_mes}
+                                ,{v_dia}
+                                ,from_utc_timestamp(now(),'GMT-3')
+                                ,from_utc_timestamp(now(),'GMT-3')
+                                );
+                        &quot;&quot;&quot;)
+
 </code></pre>
 
 

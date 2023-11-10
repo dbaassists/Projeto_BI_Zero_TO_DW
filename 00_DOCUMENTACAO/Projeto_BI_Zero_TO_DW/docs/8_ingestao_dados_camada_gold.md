@@ -14,9 +14,9 @@ O arquivo do Notebook é encontrado aqui. [Notebook Ingestão Dados Para Camada 
 
 ### SEQ-8.1 - Carga Tabela Camada Gold - dim_categoria_produto
 
-```
+``` {.sql title="Carga Gold dim_categoria_produto" linenums=1}
 %sql
-MERGE INTO gold.DIM_CATEGORIA_PRODUTO a
+MERGE INTO gold.dim_categoria_produto a
 USING (
 SELECT 
 hash(CODIGO_CATEGORIA, 256) ID_CATEGORIA_PRODUTO
@@ -55,9 +55,9 @@ b.ID_CATEGORIA_PRODUTO
 
 ### SEQ-8.2 - Carga Tabela Camada Gold - dim_cliente
 
-```
+``` {.sql title="Carga Gold dim_cliente" linenums=1}
 %sql
-MERGE INTO gold.DIM_CLIENTE a
+MERGE INTO gold.dim_cliente a
 USING (
 SELECT 
 hash(CODIGO_CLIENTE, 256) ID_CLIENTE
@@ -97,9 +97,9 @@ b.ID_CLIENTE
 
 ### SEQ-8.3 - Carga Tabela Camada Gold - dim_forma_pagamento
 
-```
+```  {.sql title="Carga Gold dim_forma_pagamento" linenums=1}
 %sql
-MERGE INTO gold.DIM_FORMA_PAGAMENTO a
+MERGE INTO gold.dim_forma_pagamento a
 USING (
 SELECT 
 hash(CODIGO_FORMA_PAGAMENTO, 256) ID_FORMA_PAGAMENTO
@@ -138,9 +138,9 @@ b.ID_FORMA_PAGAMENTO
 
 ### SEQ-8.4 - Carga Tabela Camada Gold - dim_loja
 
-```
+```  {.sql title="Carga Gold dim_loja" linenums=1}
 %sql
-MERGE INTO gold.DIM_LOJA a
+MERGE INTO gold.dim_loja a
 USING (
 SELECT 
 hash(CODIGO_LOJA, 256) ID_LOJA
@@ -187,10 +187,10 @@ b.ID_LOJA
 
 ### SEQ-8.5 - Carga Tabela Camada Gold - dim_produto
 
-```
+```  {.sql title="Carga Gold dim_produto" linenums=1}
 %sql
 
-MERGE INTO gold.DIM_PRODUTO a
+MERGE INTO gold.dim_produto a
 USING (SELECT 
 hash(CODIGO_PRODUTO, 256) ID_PRODUTO
 ,PROD.CODIGO_PRODUTO
@@ -233,10 +233,10 @@ b.ID_PRODUTO
 
 ### SEQ-8.6 - Carga Tabela Camada Gold - dim_vendedor
 
-```
+```  {.sql title="Carga Gold dim_vendedor" linenums=1}
 %sql
 
-MERGE INTO gold.DIM_VENDEDOR a
+MERGE INTO gold.dim_vendedor a
 USING (
 SELECT 
 hash(CODIGO_VENDEDOR, 256) ID_VENDEDOR

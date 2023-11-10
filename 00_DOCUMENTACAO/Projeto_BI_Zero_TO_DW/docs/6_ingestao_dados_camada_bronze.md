@@ -13,7 +13,7 @@ O arquivo do Notebook é encontrado aqui. [Notebook Ingestão Dados Para Camada 
 
 Nessa etapa definimos onde os nossos dados foram armazenados na etapa de extração de dados do Azure SQL Database.
 
-```
+```{.py3 title="Carregando Variável" linenums=1}
 diretorio_landing_zone = "dbfs:/FileStore/tables/landing_zone/"
 arquivos_diretorio = dbutils.fs.ls(diretorio_landing_zone)
 ```
@@ -22,7 +22,7 @@ arquivos_diretorio = dbutils.fs.ls(diretorio_landing_zone)
 
 Rotina de leitura dos arquivos e carga na camada bronze.
 
-```
+```{.py3 title="Extração Dos Dados do Azure SQL Database" linenums=1}
 for arquivo in arquivos_diretorio:
 
     diretorio = arquivo.path

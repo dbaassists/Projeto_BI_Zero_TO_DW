@@ -26,7 +26,7 @@ O arquivo do Notebook é encontrado aqui. [Notebook Ingestão Dados Azure SQL Da
 
 A biblioteca "sqlalchemy" será usada para realizar a conexão com o Azure SQL Database.
 
-```
+``` {.py3 title="Instalação da Biblioteca" linenums=1}
 pip install sqlalchemy
 ```
 
@@ -36,7 +36,7 @@ Seleção e Importação das bibliotecas que serão usadas
 
 Validar se existe a necessidade de importar todas as bibliotecas.
 
-```
+``` {.py3 title="Bibliotecas usadas" linenums=1}
 from sqlalchemy import __version__ as sa_version, create_engine, text
 import json
 import pandas as pd
@@ -56,7 +56,7 @@ Esse modo de trabalhar é melhor pois você não expõem as suas senhas e manté
 
 No Azure você pode armazenar suas credenciais no Azure Key Vault.
 
-```
+``` {.py3 title="Buscando informações de conexão" linenums=1}
 dfjson =  pd.read_json("https://raw.githubusercontent.com/dbaassists/Projeto_BI_Zero_TO_DW/main/04_ARQUIVO_CONFIG/config_azure_sql.json")
 
 server = dfjson['Config']['server']
@@ -71,7 +71,7 @@ Identificação das Tabelas do Azure SQL Database que serão extraídas.
 
 Obs: Para esse nosso projeto, estaremos importando todas as tabelas do banco.
 
-```
+``` {.py3 title="Idenfificação das Tabelas do Banco" linenums=1}
 df = spark.read \
 .format("jdbc") \
 .option("url", f"jdbc:sqlserver://{server};database={database}") \
@@ -86,7 +86,7 @@ df = spark.read \
 
 Visualizando o conteúdo retornado da execução da consulta.
 
-```
+``` {.py3 title="Listando dados carregados no Dataframe" linenums=1}
 display(df)
 ```
 
@@ -98,7 +98,7 @@ Comentando um pouco o script abaixo:
 
 - No fluxo abaixo, nosso processamento irá trabalhar em loop uma vez que já identificou os objetos que precisam ser extraidos no passo "SEQ-5.4" e agora irá realizar a consulta de todos eles e por último estará salvando os dados no diretório "dbfs:/FileStore/tables/landing_zone/" em formato parquet.
 
-```
+``` {.py3 title="Extração dos Dados do Azure SQL Database e Salvando na Landing Zone" linenums=1}
 lista_tabelas = df.collect()
 
 for tabela in lista_tabelas:
@@ -127,7 +127,7 @@ for tabela in lista_tabelas:
 
 ### SEQ-5.6 - Firewall Azure SQL Database - Liberando acesso ao Banco
 
-```
+``` {.sql title="Concedendo acesso ao Azure SQL Database" linenums=1}
 exec sp_set_firewall_rule N'nome_regra', '0.0.0.0', '0.0.0.0'
 ```
 
@@ -141,7 +141,7 @@ Depois realizamos o cadastro da regra.
 
 ### SEQ-5.7 - Firewall Azure SQL Database - Revogando acesso ao Banco
 
-```
+``` {.sql title="Removendo acesso ao Azure SQL Database" linenums=1}
 exec sp_delete_firewall_rule N'nome_regra'
 ```
 
