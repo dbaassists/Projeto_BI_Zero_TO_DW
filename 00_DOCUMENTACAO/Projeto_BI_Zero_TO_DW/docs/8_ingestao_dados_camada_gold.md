@@ -2,6 +2,16 @@
 
 ## 8 - Ingestão dos Dados na Camada Gold
 
+|Sequência|Ação|Detalhamento
+|---|---|---|
+|SEQ-8.1 / SEQ-8.2 / SEQ-8.3 / SEQ-8.4 / SEQ-8.5 / SEQ-8.6 |Ingestão dos Dados da Camada Silver para Gold|Carga realizada baseada nos dados existentes nas tabelas da camada Silver.|
+|SEQ-8.1 / SEQ-8.2 / SEQ-8.3 / SEQ-8.4 / SEQ-8.5 / SEQ-8.6 |Identificar a data de alteração ou cadastro|Regra: Caso o registro não exista (caindo na condição INSERT do MERGE), a data de cadastro e data de alteração devem ser a mesma, caso o registro exista, a data de alteração deverá ser alterada.|
+|SEQ-8.1 / SEQ-8.2 / SEQ-8.3 / SEQ-8.4 / SEQ-8.5 / SEQ-8.6 |Criação da PK usando o Algoritmo HASH(256)|Regra: Usar a PK da tabela na camada Silver e encriptar usando HASH(256).|
+|SEQ-8.1 / SEQ-8.2 / SEQ-8.3 / SEQ-8.4 / SEQ-8.5 / SEQ-8.6 |SCD Tipos|Não estaremos aplicando nenhuma forma de versionamento dos dados na camada dimensional.|
+
+O arquivo do Notebook é encontrado aqui. [Notebook Ingestão Dados Para Camada Gold](https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/02_NOTEBOOK/04_ingestao_camada_gold.ipynb)
+
+
 ### SEQ-8.1 - Carga Tabela Camada Gold - dim_categoria_produto
 
 ```
