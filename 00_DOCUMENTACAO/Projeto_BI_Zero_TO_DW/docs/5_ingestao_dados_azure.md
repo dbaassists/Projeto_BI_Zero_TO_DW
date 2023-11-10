@@ -84,6 +84,12 @@ df = spark.read \
 .load()
 ```
 
+Visualizando o conteúdo retornado da execução da consulta.
+
+```
+display(df)
+```
+
 ### SEQ-5.5 - Extração de Dados
 
 Após a extração dos dados do Azure SQL Database, os dados serão persistidos na camada landing zone em formato parquet.
@@ -97,9 +103,11 @@ lista_tabelas = df.collect()
 
 for tabela in lista_tabelas:
 
-    print(tabela['Nome_Tabela'])
+    tabela_paquet = tabela['Nome_Tabela'].replace('dbo.','').lower()
 
-    diretorio_parquet = "dbfs:/FileStore/tables/landing_zone/{0}".format(tabela['Nome_Tabela'])
+    print(tabela_paquet)
+
+    diretorio_parquet = "dbfs:/FileStore/tables/landing_zone/{0}".format(tabela_paquet)
 
     df = (spark.read
     .format("jdbc")
@@ -115,5 +123,32 @@ for tabela in lista_tabelas:
     .mode("overwrite")
     .save(diretorio_parquet)
     )
+```
+
+### SEQ-5.6 - Firewall Azure SQL Database - Liberando acesso ao Banco
 
 ```
+exec sp_set_firewall_rule N'nome_regra', '0.0.0.0', '0.0.0.0'
+```
+
+Ou podemos fazer a liberação acessando o portal do Azure.
+
+![Image](./imagens/08_azure_sql_concedendo_acesso_firewall.png)
+
+Depois realizamos o cadastro da regra.
+
+![Image](./imagens/08_01_azure_sql_concedendo_acesso_firewall.png)
+
+### SEQ-5.7 - Firewall Azure SQL Database - Revogando acesso ao Banco
+
+```
+exec sp_delete_firewall_rule N'nome_regra'
+```
+
+Ou podemos fazer a revogação acessando o portal do Azure.
+
+![Image](./imagens/08_azure_sql_concedendo_acesso_firewall.png)
+
+Depois realizamos a entrada referente a regra.
+
+![Image](./imagens/08_02_azure_sql_concedendo_acesso_firewall.png)

@@ -23,7 +23,6 @@ arquivos_diretorio = dbutils.fs.ls(diretorio_landing_zone)
 Rotina de leitura dos arquivos e carga na camada bronze.
 
 ```
-
 for arquivo in arquivos_diretorio:
 
     diretorio = arquivo.path
@@ -55,18 +54,25 @@ for arquivo in arquivos_diretorio:
     if tabela == 'tb_item_venda':
         listaCondicao = listaCondicao + ' AND a.CODIGO_PRODUTO = b.CODIGO_PRODUTO'
 
+
+    tabela_dl = tabela.replace('dbo.','')
+
     parDF1.createOrReplaceTempView(tabela)
 
-    comando = f"""
-                MERGE INTO bronze.{tabela} a
-                USING {tabela} b
-                ON {listaCondicao}
-                WHEN NOT MATCHED
-                THEN INSERT ({lista1}) VALUES ({listaInsert})
+    comando_truncate = f"""TRUNCATE TABLE bronze.{tabela}"""
+
+    print(comando_truncate)
+
+    spark.sql(comando_truncate)
+
+    comando_insert = f"""MERGE INTO bronze.{tabela} a
+            USING {tabela} b
+            ON {listaCondicao}
+            WHEN NOT MATCHED
+            THEN INSERT ({lista1}) VALUES ({listaInsert})
             """
 
-    print(comando)
+    print(comando_insert)
 
-    spark.sql(comando)
-
+    spark.sql(comando_insert)
 ```

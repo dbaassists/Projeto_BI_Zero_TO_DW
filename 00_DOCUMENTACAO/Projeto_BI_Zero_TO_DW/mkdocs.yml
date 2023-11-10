@@ -14,6 +14,7 @@ theme:
         name: Modo Escuro
 nav:
   - Home do Projeto: index.md
+  - Quem sou eu?: 0_quem_sou_eu.md
   - 1. Arquitetura: 1_arquitetura.md
   - 2. Provisionando Azure SQL: 2_provisionando_azure_sql.md
   - 3. Configuração do Ambiente Azure SQL: 3_configuracao_ambiente_azure_sql.md

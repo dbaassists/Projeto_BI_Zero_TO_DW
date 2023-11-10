@@ -11,7 +11,6 @@ Pré-Requisito para criação da estrutura do Azure SQL Database.
 |Sequência|Ação|Detalhamento
 |---|---|---|
 |SEQ-2.1|Provisionamento do Azure SQL|Provisionamento de um banco de dados no Azure|
-|SEQ-2.2|Configuração do Ambiente Azure|Criação de toda a estrutura de tabelas e dados|
 
 | Banco de Dados | Schema | Tabela | Descrição |
 | ------ |  ------ |  ------ |  ------ |
