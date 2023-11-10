@@ -22,14 +22,14 @@ O arquivo do Notebook é encontrado aqui. [Notebook Configuração Ambiente Data
 
 ### SEQ-4.0 - Importação de Bibliotecas
 
-```
+``` {.py3 title="Bibliotecas Usadas" linenums=1}
 from pyspark.sql.functions import *
 from datetime import date, timedelta
 ```
 
 ### SEQ-4.0.1 - Importando Notebook Externo
 
-```
+``` {.py3 title="Notebook Externo" linenums=1}
 %run /estudos/libs/bibliotecas
 ```
 
@@ -39,7 +39,7 @@ Nessa etapa que é realizada a criação de uma área no HDFS do Databricks para
 
 Nome do Diretório: dbfs:/FileStore/tables/landing_zone
 
-```
+``` {.py3 title="Criação do Diretório no HDFS do Databricks" linenums=1}
 diretorio_landing_zone = "dbfs:/FileStore/tables/landing_zone"
 
 try:
@@ -53,7 +53,7 @@ except:
 ```
 
 
-```
+``` {.py3 title="Criação do Diretório no HDFS do Databricks" linenums=1}
 try:
 
     dbutils.fs.ls(diretorio_landing_zone)
@@ -80,12 +80,12 @@ A sintaxe do script de criação de um Schema.
 ![Image](./imagens/04_create_schema.png)
 
 
-```
+``` {.sql title="Exclusão do Schema caso exista" linenums=1}
 %sql
 DROP SCHEMA IF EXISTS bronze CASCADE;
 ```
 
-```
+``` {.sql title="Criação do Schema" linenums=1}
 %sql
 CREATE SCHEMA IF NOT EXISTS bronze COMMENT 'SCHEMA (Banco de Dados) referente a Camada BRONZE.';
 ```
@@ -96,11 +96,11 @@ Criação do Schema de Dados "silver" para armazenamento dos dados ingeridos da 
 
 Nessa camada os dados sofreram transformações (aplicações de regras de negócio) e estarão disponíveis para que seja criada a camada dimensional.
 
-```
+``` {.sql title="Exclusão do Schema caso exista" linenums=1}
 %sql
 DROP SCHEMA IF EXISTS silver CASCADE;
 ```
-```
+``` {.sql title="Criação do Schema" linenums=1}
 %sql
 CREATE SCHEMA IF NOT EXISTS silver COMMENT 'SCHEMA (Banco de Dados) referente a Camada SILVER.';
 ```
@@ -111,11 +111,11 @@ Criação do Schema de Dados "gold" para armazenamento dos dados após a ingest�
 
 Nessa camada os objetos serão modelados como dimensões e fatos.
 
-```
+``` {.sql title="Exclusão do Schema caso exista" linenums=1}
 %sql
 DROP SCHEMA IF EXISTS gold CASCADE;
 ```
-```
+``` {.sql title="Criação do Schema" linenums=1}
 %sql
 CREATE SCHEMA IF NOT EXISTS gold COMMENT 'SCHEMA (Banco de Dados) referente a Camada GOLD.';
 ```
@@ -132,7 +132,7 @@ A sintaxe do script é muito parecida com que possuímos em bancos de dados.
 
 ![Image](./imagens/03_create_table.png)
 
-```
+``` {.sql title="Criação das Tabelas no Schema Bronze" linenums=1}
 %sql
 
 DROP  TABLE IF EXISTS bronze.tb_forma_pagamento;
@@ -216,7 +216,7 @@ COMMENT 'Armazena informações sobre os itens que foram vendidos.';
 
 Criação das tabelas no Schema de Dados "silver".
 
-```
+``` {.sql title="Criação das Tabelas no Schema Silver" linenums=1}
 %sql
 
 DROP  TABLE IF EXISTS silver.tb_forma_pagamento;
@@ -316,7 +316,7 @@ COMMENT 'Armazena informações sobre os itens que foram vendidos.';
 
 Criação das tabelas no Schema de Dados "gold".
 
-```
+``` {.sql title="Criação das Tabelas no Schema Gold" linenums=1}
 %sql
 
 DROP  TABLE IF EXISTS gold.dim_forma_pagamento;
@@ -417,7 +417,7 @@ ID_TEMPO VARCHAR(100) COMMENT 'Chave da Dimensão Tempo.'
 
 Script para inserção dos dados na Dimensão Tempo.
 
-```
+``` {.py3 title="Populando a Dimensão Tempo" linenums=1}
 data_inicial = date(2023, 6, 1)
 data_fim = date(2023, 8, 1)
 dias_acrescimo = timedelta(days=1)
@@ -429,7 +429,7 @@ cria_dimensao_tempo(data_inicial, data_fim, dias_acrescimo)
 
 Script para visualizar todas as tabelas de um schema qualquer.
 
-```
+``` {.sql title="Listando as Tabelas do Schema" linenums=1}
 %sql
 SHOW TABLES FROM silver
 ```
@@ -438,7 +438,7 @@ SHOW TABLES FROM silver
 
 Script para visualizar a estrutura de uma tabela qualquer.
 
-```
+``` {.sql title="Listando a Estrutura de uma tabela" linenums=1}
 %sql
 DESC gold.DIM_LOJA
 ```
@@ -447,7 +447,7 @@ DESC gold.DIM_LOJA
 
 Script para visualizar informações de armazenamento de uma tabela qualquer.
 
-```
+``` {.sql title="Listando Informações da Tabela" linenums=1}
 %sql
 DESC DETAIL gold.DIM_LOJA
 ```
@@ -456,7 +456,7 @@ DESC DETAIL gold.DIM_LOJA
 
 Script para visualizar a estrutura de um schema.
 
-```
+``` {.sql title="Listando a Estrutura do Schema" linenums=1}
 %sql
 DESC SCHEMA bronze
 ```

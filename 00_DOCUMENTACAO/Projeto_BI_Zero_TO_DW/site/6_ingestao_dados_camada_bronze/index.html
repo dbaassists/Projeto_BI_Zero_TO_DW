@@ -230,7 +230,26 @@
         
   
   <span class="md-ellipsis">
-    0 - Home do Projeto
+    Home do Projeto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0_quem_sou_eu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quem sou eu?
   </span>
   
 
@@ -487,7 +506,26 @@
         
   
   <span class="md-ellipsis">
-    8. Notebook - Notebook Externo
+    10. Notebook - Notebook Externo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_arquivos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Onde encontro os arquivos?
   </span>
   
 
@@ -590,8 +628,7 @@ arquivos_diretorio = dbutils.fs.ls(diretorio_landing_zone)
 </code></pre>
 <h3 id="seq-62-carga-dados-camada-bronze">SEQ-6.2 - Carga Dados Camada Bronze</h3>
 <p>Rotina de leitura dos arquivos e carga na camada bronze.</p>
-<pre><code>
-for arquivo in arquivos_diretorio:
+<pre><code>for arquivo in arquivos_diretorio:
 
     diretorio = arquivo.path
     tabela = arquivo.name.replace('/','').lower()
@@ -622,20 +659,27 @@ for arquivo in arquivos_diretorio:
     if tabela == 'tb_item_venda':
         listaCondicao = listaCondicao + ' AND a.CODIGO_PRODUTO = b.CODIGO_PRODUTO'
 
+
+    tabela_dl = tabela.replace('dbo.','')
+
     parDF1.createOrReplaceTempView(tabela)
 
-    comando = f&quot;&quot;&quot;
-                MERGE INTO bronze.{tabela} a
-                USING {tabela} b
-                ON {listaCondicao}
-                WHEN NOT MATCHED
-                THEN INSERT ({lista1}) VALUES ({listaInsert})
+    comando_truncate = f&quot;&quot;&quot;TRUNCATE TABLE bronze.{tabela}&quot;&quot;&quot;
+
+    print(comando_truncate)
+
+    spark.sql(comando_truncate)
+
+    comando_insert = f&quot;&quot;&quot;MERGE INTO bronze.{tabela} a
+            USING {tabela} b
+            ON {listaCondicao}
+            WHEN NOT MATCHED
+            THEN INSERT ({lista1}) VALUES ({listaInsert})
             &quot;&quot;&quot;
 
-    print(comando)
+    print(comando_insert)
 
-    spark.sql(comando)
-
+    spark.sql(comando_insert)
 </code></pre>
 
 

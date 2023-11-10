@@ -230,7 +230,26 @@
         
   
   <span class="md-ellipsis">
-    0 - Home do Projeto
+    Home do Projeto
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../0_quem_sou_eu/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quem sou eu?
   </span>
   
 
@@ -356,6 +375,20 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#seq-40-importacao-de-bibliotecas" class="md-nav__link">
+    SEQ-4.0 - Importação de Bibliotecas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-401-importando-notebook-externo" class="md-nav__link">
+    SEQ-4.0.1 - Importando Notebook Externo
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#seq-41-criacao-camada-landing-zone" class="md-nav__link">
     SEQ-4.1 - Criação Camada Landing Zone
   </a>
@@ -412,15 +445,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#seq-49-visualizar-estrutura-de-tabela" class="md-nav__link">
-    SEQ-4.9 - Visualizar Estrutura de Tabela
+  <a href="#seq-49-listando-as-tabelas-do-schema" class="md-nav__link">
+    SEQ-4.9 - Listando as Tabelas do Schema
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#seq-410-visualizar-armazenamento-de-uma-tabela" class="md-nav__link">
-    SEQ-4.10 - Visualizar Armazenamento de uma Tabela
+  <a href="#seq-410-visualizar-estrutura-de-tabela" class="md-nav__link">
+    SEQ-4.10 - Visualizar Estrutura de Tabela
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-411-visualizar-armazenamento-de-uma-tabela" class="md-nav__link">
+    SEQ-4.11 - Visualizar Armazenamento de uma Tabela
   </a>
   
 </li>
@@ -550,7 +590,26 @@
         
   
   <span class="md-ellipsis">
-    8. Notebook - Notebook Externo
+    10. Notebook - Notebook Externo
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_arquivos/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    11. Onde encontro os arquivos?
   </span>
   
 
@@ -592,6 +651,20 @@
   
     <nav class="md-nav" aria-label="4 - Configurando o Ambiente Databricks">
       <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#seq-40-importacao-de-bibliotecas" class="md-nav__link">
+    SEQ-4.0 - Importação de Bibliotecas
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-401-importando-notebook-externo" class="md-nav__link">
+    SEQ-4.0.1 - Importando Notebook Externo
+  </a>
+  
+</li>
         
           <li class="md-nav__item">
   <a href="#seq-41-criacao-camada-landing-zone" class="md-nav__link">
@@ -650,15 +723,22 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#seq-49-visualizar-estrutura-de-tabela" class="md-nav__link">
-    SEQ-4.9 - Visualizar Estrutura de Tabela
+  <a href="#seq-49-listando-as-tabelas-do-schema" class="md-nav__link">
+    SEQ-4.9 - Listando as Tabelas do Schema
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#seq-410-visualizar-armazenamento-de-uma-tabela" class="md-nav__link">
-    SEQ-4.10 - Visualizar Armazenamento de uma Tabela
+  <a href="#seq-410-visualizar-estrutura-de-tabela" class="md-nav__link">
+    SEQ-4.10 - Visualizar Estrutura de Tabela
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#seq-411-visualizar-armazenamento-de-uma-tabela" class="md-nav__link">
+    SEQ-4.11 - Visualizar Armazenamento de uma Tabela
   </a>
   
 </li>
@@ -704,6 +784,16 @@
 </thead>
 <tbody>
 <tr>
+<td>SEQ-4.0</td>
+<td>Importação de Bibliotecas</td>
+<td>Definição de quais bibliotecas estarão sendo usada</td>
+</tr>
+<tr>
+<td>SEQ-4.0.1</td>
+<td>Importação de Notebook Externo</td>
+<td>Será usado para criar a tabela Dimensão Tempo</td>
+</tr>
+<tr>
 <td>SEQ-4.1</td>
 <td>Configuração do ambiente no Databricks</td>
 <td>Criação do storage "dbfs:/FileStore/tables/landing_zone"</td>
@@ -741,6 +831,13 @@
 </tbody>
 </table>
 <p>O arquivo do Notebook é encontrado aqui. <a href="https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/02_NOTEBOOK/00_configuracao_ambiente.ipynb">Notebook Configuração Ambiente Databricks</a></p>
+<h3 id="seq-40-importacao-de-bibliotecas">SEQ-4.0 - Importação de Bibliotecas</h3>
+<pre><code>from pyspark.sql.functions import *
+from datetime import date, timedelta
+</code></pre>
+<h3 id="seq-401-importando-notebook-externo">SEQ-4.0.1 - Importando Notebook Externo</h3>
+<pre><code>%run /estudos/libs/bibliotecas
+</code></pre>
 <h3 id="seq-41-criacao-camada-landing-zone">SEQ-4.1 - Criação Camada Landing Zone</h3>
 <p>Nessa etapa que é realizada a criação de uma área no HDFS do Databricks para salvar em formato parquet os dados exportados do Azure SQL Database.</p>
 <p>Nome do Diretório: dbfs:/FileStore/tables/landing_zone</p>
@@ -774,6 +871,8 @@ except:
 <p><img alt="Image" src="../imagens/04_create_schema.png" /></p>
 <pre><code>%sql
 DROP SCHEMA IF EXISTS bronze CASCADE;
+</code></pre>
+<pre><code>%sql
 CREATE SCHEMA IF NOT EXISTS bronze COMMENT 'SCHEMA (Banco de Dados) referente a Camada BRONZE.';
 </code></pre>
 <h3 id="seq-43-criacao-schema-de-dados-silver">SEQ-4.3 - Criação Schema de Dados "silver"</h3>
@@ -781,6 +880,8 @@ CREATE SCHEMA IF NOT EXISTS bronze COMMENT 'SCHEMA (Banco de Dados) referente a 
 <p>Nessa camada os dados sofreram transformações (aplicações de regras de negócio) e estarão disponíveis para que seja criada a camada dimensional.</p>
 <pre><code>%sql
 DROP SCHEMA IF EXISTS silver CASCADE;
+</code></pre>
+<pre><code>%sql
 CREATE SCHEMA IF NOT EXISTS silver COMMENT 'SCHEMA (Banco de Dados) referente a Camada SILVER.';
 </code></pre>
 <h3 id="seq-44-criacao-schema-de-dados-gold">SEQ-4.4 - Criação Schema de Dados "gold"</h3>
@@ -788,6 +889,8 @@ CREATE SCHEMA IF NOT EXISTS silver COMMENT 'SCHEMA (Banco de Dados) referente a 
 <p>Nessa camada os objetos serão modelados como dimensões e fatos.</p>
 <pre><code>%sql
 DROP SCHEMA IF EXISTS gold CASCADE;
+</code></pre>
+<pre><code>%sql
 CREATE SCHEMA IF NOT EXISTS gold COMMENT 'SCHEMA (Banco de Dados) referente a Camada GOLD.';
 </code></pre>
 <p><a href="https://learn.microsoft.com/en-us/azure/databricks/sql/language-manual/sql-ref-syntax-ddl-create-schema">Documentação Create Schema Databricks</a></p>
@@ -798,24 +901,24 @@ CREATE SCHEMA IF NOT EXISTS gold COMMENT 'SCHEMA (Banco de Dados) referente a Ca
 <p><img alt="Image" src="../imagens/03_create_table.png" /></p>
 <pre><code>%sql
 
-DROP  TABLE IF EXISTS bronze.TB_FORMA_PAGAMENTO;
-CREATE TABLE bronze.TB_FORMA_PAGAMENTO
+DROP  TABLE IF EXISTS bronze.tb_forma_pagamento;
+CREATE TABLE bronze.tb_forma_pagamento
 (
 CODIGO_FORMA_PAGAMENTO   INT COMMENT 'Código da Forma de Pagamento na Tabela TB_FORMA_PAGAMENTO.'
 ,DESCRICAO_FORMA_PAGAMENTO VARCHAR(100) COMMENT 'Descrição da Forma de Pagamento na Tabela TB_FORMA_PAGAMENTO.'
 )
 COMMENT 'Armazena informações de forma de pagamento.';
 
-DROP  TABLE IF EXISTS bronze.TB_CATEGORIA_PRODUTO;
-CREATE TABLE bronze.TB_CATEGORIA_PRODUTO
+DROP  TABLE IF EXISTS bronze.tb_categoria_produto;
+CREATE TABLE bronze.tb_categoria_produto
 (
 CODIGO_CATEGORIA INT COMMENT 'Código da Categoria do Produto.'
 ,DECRICAO_CATEGORIA VARCHAR(100) COMMENT 'Descrição da Categoria do Produto.'
 )
 COMMENT 'Armazena informações das categorias dos produtos';
 
-DROP  TABLE IF EXISTS bronze.TB_PRODUTO;
-CREATE TABLE bronze.TB_PRODUTO
+DROP  TABLE IF EXISTS bronze.tb_produto;
+CREATE TABLE bronze.tb_produto
 (
 CODIGO_PRODUTO   INT  COMMENT 'Código do Produto.'
 ,DESCRICAO_PRODUTO   VARCHAR(100) COMMENT 'Descrição do Produto.'
@@ -823,24 +926,24 @@ CODIGO_PRODUTO   INT  COMMENT 'Código do Produto.'
 )
 COMMENT '   Armazena informações de produtos.';
 
-DROP  TABLE IF EXISTS bronze.TB_CLIENTE;
-CREATE TABLE bronze.TB_CLIENTE
+DROP  TABLE IF EXISTS bronze.tb_cliente;
+CREATE TABLE bronze.tb_cliente
 (
 CODIGO_CLIENTE INT COMMENT 'Código do Cliente.'
 ,NOME_CLIENTE VARCHAR(100) COMMENT 'Nome do Cliente.'
 )
 COMMENT 'Armazena informações de clientes.';
 
-DROP  TABLE IF EXISTS bronze.TB_VENDEDOR;
-CREATE TABLE bronze.TB_VENDEDOR
+DROP  TABLE IF EXISTS bronze.tb_vendedor;
+CREATE TABLE bronze.tb_vendedor
 (
 CODIGO_VENDEDOR INT COMMENT 'Código do Vendedor.'
 ,NOME_VENDEDOR VARCHAR(100) COMMENT 'Nome do Vendedor.'
 )
 COMMENT 'Armazena informações de vendedores.';
 
-DROP  TABLE IF EXISTS bronze.TB_LOJA;
-CREATE TABLE bronze.TB_LOJA
+DROP  TABLE IF EXISTS bronze.tb_loja;
+CREATE TABLE bronze.tb_loja
 (
 CODIGO_LOJA  INT COMMENT 'Código da Loja.'
 ,NOME_LOJA   VARCHAR(100) COMMENT 'Nome da Loja.'
@@ -849,8 +952,8 @@ CODIGO_LOJA  INT COMMENT 'Código da Loja.'
 )
 COMMENT 'Armazena informações de lojas.';
 
-DROP  TABLE IF EXISTS bronze.TB_VENDA;
-CREATE TABLE bronze.TB_VENDA
+DROP  TABLE IF EXISTS bronze.tb_venda;
+CREATE TABLE bronze.tb_venda
 (
 CODIGO_VENDA INT COMMENT 'Código da Venda.'
 ,DATA_VENDA TIMESTAMP COMMENT 'Data da Venda'
@@ -863,8 +966,8 @@ CODIGO_VENDA INT COMMENT 'Código da Venda.'
 )
 COMMENT 'Armazenada informações de vendas.';
 
-DROP  TABLE IF EXISTS bronze.TB_ITEM_VENDA;
-CREATE TABLE bronze.TB_ITEM_VENDA
+DROP  TABLE IF EXISTS bronze.tb_item_venda;
+CREATE TABLE bronze.tb_item_venda
 (
 CODIGO_VENDA INT COMMENT 'Código da Venda.'
 ,CODIGO_PRODUTO INT COMMENT 'Código do Produto.'
@@ -878,8 +981,8 @@ COMMENT 'Armazena informações sobre os itens que foram vendidos.';
 <p>Criação das tabelas no Schema de Dados "silver".</p>
 <pre><code>%sql
 
-DROP  TABLE IF EXISTS silver.TB_FORMA_PAGAMENTO;
-CREATE TABLE silver.TB_FORMA_PAGAMENTO
+DROP  TABLE IF EXISTS silver.tb_forma_pagamento;
+CREATE TABLE silver.tb_forma_pagamento
 (
 CODIGO_FORMA_PAGAMENTO   INT COMMENT 'Código da Forma de Pagamento na Tabela TB_FORMA_PAGAMENTO.'
 ,DESCRICAO_FORMA_PAGAMENTO VARCHAR(100) COMMENT 'Descrição da Forma de Pagamento na Tabela TB_FORMA_PAGAMENTO.'
@@ -888,8 +991,8 @@ CODIGO_FORMA_PAGAMENTO   INT COMMENT 'Código da Forma de Pagamento na Tabela TB
 )
 COMMENT 'Armazena informações de forma de pagamento.';
 
-DROP  TABLE IF EXISTS silver.TB_CATEGORIA_PRODUTO;
-CREATE TABLE silver.TB_CATEGORIA_PRODUTO
+DROP  TABLE IF EXISTS silver.tb_categoria_produto;
+CREATE TABLE silver.tb_categoria_produto
 (
 CODIGO_CATEGORIA INT COMMENT 'Código da Categoria do Produto.'
 ,DECRICAO_CATEGORIA VARCHAR(100) COMMENT 'Descrição da Categoria do Produto.'
@@ -898,8 +1001,8 @@ CODIGO_CATEGORIA INT COMMENT 'Código da Categoria do Produto.'
 )
 COMMENT 'Armazena informações das categorias dos produtos';
 
-DROP  TABLE IF EXISTS silver.TB_PRODUTO;
-CREATE TABLE silver.TB_PRODUTO
+DROP  TABLE IF EXISTS silver.tb_produto;
+CREATE TABLE silver.tb_produto
 (
 CODIGO_PRODUTO   INT  COMMENT 'Código do Produto.'
 ,DESCRICAO_PRODUTO   VARCHAR(100) COMMENT 'Descrição do Produto.'
@@ -909,8 +1012,8 @@ CODIGO_PRODUTO   INT  COMMENT 'Código do Produto.'
 )
 COMMENT '   Armazena informações de produtos.';
 
-DROP  TABLE IF EXISTS silver.TB_CLIENTE;
-CREATE TABLE silver.TB_CLIENTE
+DROP  TABLE IF EXISTS silver.tb_cliente;
+CREATE TABLE silver.tb_cliente
 (
 CODIGO_CLIENTE INT COMMENT 'Código do Cliente.'
 ,NOME_CLIENTE VARCHAR(100) COMMENT 'Nome do Cliente.'
@@ -919,8 +1022,8 @@ CODIGO_CLIENTE INT COMMENT 'Código do Cliente.'
 )
 COMMENT 'Armazena informações de clientes.';
 
-DROP  TABLE IF EXISTS silver.TB_VENDEDOR;
-CREATE TABLE silver.TB_VENDEDOR
+DROP  TABLE IF EXISTS silver.tb_vendedor;
+CREATE TABLE silver.tb_vendedor
 (
 CODIGO_VENDEDOR INT COMMENT 'Código do Vendedor.'
 ,NOME_VENDEDOR VARCHAR(100) COMMENT 'Nome do Vendedor.'
@@ -929,8 +1032,8 @@ CODIGO_VENDEDOR INT COMMENT 'Código do Vendedor.'
 )
 COMMENT 'Armazena informações de vendedores.';
 
-DROP  TABLE IF EXISTS silver.TB_LOJA;
-CREATE TABLE silver.TB_LOJA
+DROP  TABLE IF EXISTS silver.tb_loja;
+CREATE TABLE silver.tb_loja
 (
 CODIGO_LOJA  INT COMMENT 'Código da Loja.'
 ,NOME_LOJA   VARCHAR(100) COMMENT 'Nome da Loja.'
@@ -941,8 +1044,8 @@ CODIGO_LOJA  INT COMMENT 'Código da Loja.'
 )
 COMMENT 'Armazena informações de lojas.';
 
-DROP  TABLE IF EXISTS silver.TB_VENDA;
-CREATE TABLE silver.TB_VENDA
+DROP  TABLE IF EXISTS silver.tb_venda;
+CREATE TABLE silver.tb_venda
 (
 CODIGO_VENDA INT COMMENT 'Código da Venda.'
 ,DATA_VENDA TIMESTAMP COMMENT 'Data da Venda'
@@ -957,8 +1060,8 @@ CODIGO_VENDA INT COMMENT 'Código da Venda.'
 )
 COMMENT 'Armazenada informações de vendas.';
 
-DROP  TABLE IF EXISTS silver.TB_ITEM_VENDA;
-CREATE TABLE silver.TB_ITEM_VENDA
+DROP  TABLE IF EXISTS silver.tb_item_venda;
+CREATE TABLE silver.tb_item_venda
 (
 CODIGO_VENDA INT COMMENT 'Código da Venda.'
 ,CODIGO_PRODUTO INT COMMENT 'Código do Produto.'
@@ -974,8 +1077,8 @@ COMMENT 'Armazena informações sobre os itens que foram vendidos.';
 <p>Criação das tabelas no Schema de Dados "gold".</p>
 <pre><code>%sql
 
-DROP  TABLE IF EXISTS gold.DIM_FORMA_PAGAMENTO;
-CREATE TABLE gold.DIM_FORMA_PAGAMENTO
+DROP  TABLE IF EXISTS gold.dim_forma_pagamento;
+CREATE TABLE gold.dim_forma_pagamento
 (
 ID_FORMA_PAGAMENTO VARCHAR(100) COMMENT 'Chave da Dimensão Forma de Pagamento.'
 ,CODIGO_FORMA_PAGAMENTO  INT COMMENT 'Código da Forma de Pagamento na Tabela TB_FORMA_PAGAMENTO.'
@@ -984,8 +1087,8 @@ ID_FORMA_PAGAMENTO VARCHAR(100) COMMENT 'Chave da Dimensão Forma de Pagamento.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_CATEGORIA_PRODUTO;
-CREATE TABLE gold.DIM_CATEGORIA_PRODUTO
+DROP  TABLE IF EXISTS gold.dim_categoria_produto;
+CREATE TABLE gold.dim_categoria_produto
 (
 ID_CATEGORIA_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Categoria do Produto.'
 ,CODIGO_CATEGORIA INT COMMENT 'Código da Categoria do Produto.'
@@ -994,8 +1097,8 @@ ID_CATEGORIA_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Categoria do Produ
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_PRODUTO;
-CREATE TABLE gold.DIM_PRODUTO
+DROP  TABLE IF EXISTS gold.dim_produto;
+CREATE TABLE gold.dim_produto
 (
 ID_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Produto.'
 ,CODIGO_PRODUTO  INT  COMMENT 'Código do Produto.'
@@ -1005,8 +1108,8 @@ ID_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Produto.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_CLIENTE;
-CREATE TABLE gold.DIM_CLIENTE
+DROP  TABLE IF EXISTS gold.dim_cliente;
+CREATE TABLE gold.dim_cliente
 (
 ID_CLIENTE VARCHAR(100) COMMENT 'Chave da Dimensão Cliente.'
 ,CODIGO_CLIENTE INT COMMENT 'Código do Cliente.'
@@ -1015,8 +1118,8 @@ ID_CLIENTE VARCHAR(100) COMMENT 'Chave da Dimensão Cliente.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_VENDEDOR;
-CREATE TABLE gold.DIM_VENDEDOR
+DROP  TABLE IF EXISTS gold.dim_vendedor;
+CREATE TABLE gold.dim_vendedor
 (
 ID_VENDEDOR VARCHAR(100) COMMENT 'Chave da Dimensão Vendedor.'
 ,CODIGO_VENDEDOR INT COMMENT 'Código do Vendedor.'
@@ -1025,8 +1128,8 @@ ID_VENDEDOR VARCHAR(100) COMMENT 'Chave da Dimensão Vendedor.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_LOJA;
-CREATE TABLE gold.DIM_LOJA
+DROP  TABLE IF EXISTS gold.dim_loja;
+CREATE TABLE gold.dim_loja
 (
 ID_LOJA VARCHAR(100) COMMENT 'Chave da Dimensão Loja.'
 ,CODIGO_LOJA     INT COMMENT 'Código da Loja.'
@@ -1037,8 +1140,8 @@ ID_LOJA VARCHAR(100) COMMENT 'Chave da Dimensão Loja.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.FATO_VENDA;
-CREATE TABLE gold.FATO_VENDA
+DROP  TABLE IF EXISTS gold.fato_venda;
+CREATE TABLE gold.fato_venda
 (
 ID_TEMPO VARCHAR(100)  COMMENT 'Chave da Dimensão Tempo.'
 ,ID_CLIENTE VARCHAR(100)  COMMENT 'Chave da Dimensão Cliente.'
@@ -1055,11 +1158,11 @@ ID_TEMPO VARCHAR(100)  COMMENT 'Chave da Dimensão Tempo.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_TEMPO;
-CREATE TABLE gold.DIM_TEMPO
+DROP  TABLE IF EXISTS gold.dim_tempo;
+CREATE TABLE gold.dim_tempo
 (
 ID_TEMPO VARCHAR(100) COMMENT 'Chave da Dimensão Tempo.'
-,DATA TIMESTAMP COMMENT 'Data.'
+,DATA VARCHAR(10) COMMENT 'Data.'
 ,ANO INT COMMENT 'Ano referente a coluna data.'
 ,MES    INT COMMENT 'Mês referente a coluna data.'
 ,DIA INT COMMENT 'Dia referente a coluna data.' 
@@ -1069,45 +1172,23 @@ ID_TEMPO VARCHAR(100) COMMENT 'Chave da Dimensão Tempo.'
 </code></pre>
 <h3 id="seq-48-insercao-dimensao-tempo">SEQ-4.8 - Inserção Dimensão Tempo</h3>
 <p>Script para inserção dos dados na Dimensão Tempo.</p>
-<pre><code>%sql
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230701','2023-07-01', 2023, 7, 1);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230702','2023-07-02', 2023, 7, 2);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230703','2023-07-03', 2023, 7, 3);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230704','2023-07-04', 2023, 7, 4);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230705','2023-07-05', 2023, 7, 5);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230706','2023-07-06', 2023, 7, 6);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230707','2023-07-07', 2023, 7, 7);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230708','2023-07-08', 2023, 7, 8);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230709','2023-07-09', 2023, 7, 9);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230710','2023-07-10', 2023, 7, 10);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230711','2023-07-11', 2023, 7, 11);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230712','2023-07-12', 2023, 7, 12);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230713','2023-07-13', 2023, 7, 13);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230714','2023-07-14', 2023, 7, 14);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230715','2023-07-15', 2023, 7, 15);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230716','2023-07-16', 2023, 7, 16);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230717','2023-07-17', 2023, 7, 17);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230718','2023-07-18', 2023, 7, 18);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230719','2023-07-19', 2023, 7, 19);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230720','2023-07-20', 2023, 7, 20);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230721','2023-07-21', 2023, 7, 21);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230722','2023-07-22', 2023, 7, 22);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230723','2023-07-23', 2023, 7, 23);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230724','2023-07-24', 2023, 7, 24);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230725','2023-07-25', 2023, 7, 25);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230726','2023-07-26', 2023, 7, 26);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230727','2023-07-27', 2023, 7, 27);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230728','2023-07-28', 2023, 7, 28);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230729','2023-07-29', 2023, 7, 29);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230730','2023-07-30', 2023, 7, 30);
-INSERT INTO gold.DIM_TEMPO (ID_TEMPO,DATA,ANO,MES,DIA) VALUES ('20230731','2023-07-31', 2023, 7, 31);
+<pre><code>data_inicial = date(2023, 6, 1)
+data_fim = date(2023, 8, 1)
+dias_acrescimo = timedelta(days=1)
+
+cria_dimensao_tempo(data_inicial, data_fim, dias_acrescimo)
 </code></pre>
-<h3 id="seq-49-visualizar-estrutura-de-tabela">SEQ-4.9 - Visualizar Estrutura de Tabela</h3>
+<h3 id="seq-49-listando-as-tabelas-do-schema">SEQ-4.9 - Listando as Tabelas do Schema</h3>
+<p>Script para visualizar todas as tabelas de um schema qualquer.</p>
+<pre><code>%sql
+SHOW TABLES FROM silver
+</code></pre>
+<h3 id="seq-410-visualizar-estrutura-de-tabela">SEQ-4.10 - Visualizar Estrutura de Tabela</h3>
 <p>Script para visualizar a estrutura de uma tabela qualquer.</p>
 <pre><code>%sql
 DESC gold.DIM_LOJA
 </code></pre>
-<h3 id="seq-410-visualizar-armazenamento-de-uma-tabela">SEQ-4.10 - Visualizar Armazenamento de uma Tabela</h3>
+<h3 id="seq-411-visualizar-armazenamento-de-uma-tabela">SEQ-4.11 - Visualizar Armazenamento de uma Tabela</h3>
 <p>Script para visualizar informações de armazenamento de uma tabela qualquer.</p>
 <pre><code>%sql
 DESC DETAIL gold.DIM_LOJA

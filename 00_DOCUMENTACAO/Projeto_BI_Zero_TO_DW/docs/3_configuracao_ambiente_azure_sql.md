@@ -31,7 +31,7 @@ Pré-Requisito para criação da estrutura do Azure SQL Database.
 
 Esse script pode ser encontrado em: [Script de Criação de Tabelas](https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/01_SCRIPT_SQL/00_CREATE_TABLE.sql)
 
-```
+``` {.sql title="Script Para Criar Tabelas no SQL" linenums=1}
 CREATE TABLE dbo.TB_FORMA_PAGAMENTO
 (
 CODIGO_FORMA_PAGAMENTO	 SMALLINT NOT NULL IDENTITY(1,1)

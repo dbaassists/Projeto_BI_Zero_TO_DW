@@ -15,7 +15,7 @@ O arquivo do Notebook é encontrado aqui. [Notebook Ingestão Dados Para Camada 
 
 Nessa etapa é realizada a importação de um notebook externo que contém a função que será usada para realizar o tratamento (remoção da acentuação) dos dados.
 
-```
+``` {.py3 title="Notebook Externo" linenums=1}
 %run /estudos/libs/bibliotecas
 ```
 
@@ -24,7 +24,7 @@ Nessa etapa é realizada a importação de um notebook externo que contém a fun
 
 ### SEQ-7.2 - Ingestão de Dados na camada "silver" de tb_categoria_produto<br>
 
-```
+``` {.sql title="Carga Silver tb_categoria_produto" linenums=1}
 %sql
 MERGE INTO silver.tb_categoria_produto a
 USING (
@@ -61,7 +61,7 @@ b.CODIGO_CATEGORIA
 
 ### SEQ-7.3 - Ingestão de Dados na camada "silver" de tb_cliente <br>
 
-```
+``` {.sql title="Carga Silver tb_cliente" linenums=1}
 %sql
 MERGE INTO silver.tb_cliente a
 USING (
@@ -97,7 +97,8 @@ b.CODIGO_CLIENTE
 ```
 
 ### SEQ-7.4 - Ingestão de Dados na camada "silver" de tb_forma_pagamento<br>
-```
+
+``` {.sql title="Carga Silver tb_forma_pagamento" linenums=1}
 %sql
 MERGE INTO silver.tb_forma_pagamento a
 USING (
@@ -130,7 +131,8 @@ VALUES
 ```
 
 ### SEQ-7.5 - Ingestão de Dados na camada "silver" de tb_item_venda<br>
-```
+
+``` {.sql title="Carga Silver tb_item_venda" linenums=1}
 %sql
 MERGE INTO silver.tb_item_venda a
 USING (
@@ -179,7 +181,8 @@ b.CODIGO_VENDA
 ```
 
 ### SEQ-7.6 - Ingestão de Dados na camada "silver" de tb_loja<br>
-```
+
+``` {.sql title="Carga Silver tb_loja" linenums=1}
 %sql
 MERGE INTO silver.tb_loja a
 USING (
@@ -221,7 +224,8 @@ VALUES
 ```
 
 ### SEQ-7.7 - Ingestão de Dados na camada "silver" de tb_produto<br>
-```
+
+``` {.sql title="Carga Silver tb_produto" linenums=1}
 %sql
 
 MERGE INTO silver.tb_produto a
@@ -261,7 +265,8 @@ b.CODIGO_PRODUTO
 ```
 
 ### SEQ-7.8 - Ingestão de Dados na camada "silver" de tb_venda<br>
-```
+
+``` {.sql title="Carga Silver tb_venda" linenums=1}
 %sql
 
 MERGE INTO silver.tb_venda a
@@ -321,7 +326,8 @@ b.CODIGO_VENDA
 ```
 
 ### SEQ-7.9 - Ingestão de Dados na camada "silver" de tb_vendedor<br>
-```
+
+``` {.sql title="Carga Silver tb_vendedor" linenums=1}
 %sql
 
 MERGE INTO silver.tb_vendedor a

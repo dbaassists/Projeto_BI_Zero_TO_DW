@@ -27,11 +27,11 @@ nav:
   - 10. Notebook - Notebook Externo: 10_notebook_externo.md  
   - 11. Onde encontro os arquivos?: 11_arquivos.md    
 
-markdown-extensions:
-  - pymdownx.tasklist
-  - pymdownx.mark
-  - pymdownx.tilde
-  - pymdownx.highlight
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
