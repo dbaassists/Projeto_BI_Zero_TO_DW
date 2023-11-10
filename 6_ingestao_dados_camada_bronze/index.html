@@ -623,64 +623,116 @@
 <p>O arquivo do Notebook é encontrado aqui. <a href="https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/02_NOTEBOOK/02_ingestao_camada_bronze.ipynb">Notebook Ingestão Dados Para Camada Bronze</a></p>
 <h3 id="seq-61-origem-dos-dados-no-databricks">SEQ-6.1 - Origem dos Dados no Databricks</h3>
 <p>Nessa etapa definimos onde os nossos dados foram armazenados na etapa de extração de dados do Azure SQL Database.</p>
-<pre><code>diretorio_landing_zone = &quot;dbfs:/FileStore/tables/landing_zone/&quot;
-arquivos_diretorio = dbutils.fs.ls(diretorio_landing_zone)
-</code></pre>
+<div class="language-py3 highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Carregando Variável</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-1">1</a></span>
+<span class="normal"><a href="#__codelineno-0-2">2</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><span class="n">diretorio_landing_zone</span> <span class="o">=</span> <span class="s2">&quot;dbfs:/FileStore/tables/landing_zone/&quot;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2"></a><span class="n">arquivos_diretorio</span> <span class="o">=</span> <span class="n">dbutils</span><span class="o">.</span><span class="n">fs</span><span class="o">.</span><span class="n">ls</span><span class="p">(</span><span class="n">diretorio_landing_zone</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
 <h3 id="seq-62-carga-dados-camada-bronze">SEQ-6.2 - Carga Dados Camada Bronze</h3>
 <p>Rotina de leitura dos arquivos e carga na camada bronze.</p>
-<pre><code>for arquivo in arquivos_diretorio:
-
-    diretorio = arquivo.path
-    tabela = arquivo.name.replace('/','').lower()
-
-    parDF1=spark.read.parquet(diretorio)
-
-    colunas = parDF1.columns
-    lista1 = ''
-    listaInsert = ''
-    listaCondicao = ''
-
-    for coluna in colunas:
-        if lista1 == '':
-            lista1 = coluna
-        else:
-            lista1 = lista1 + ',' + coluna
-
-    for coluna in colunas:
-        if listaInsert == '':
-            listaInsert = 'b.'+coluna
-        else:
-            listaInsert = listaInsert + ',' + 'b.'+ coluna
-
-    for coluna in colunas:
-        if listaCondicao == '':
-            listaCondicao =  'a.'+coluna + '= b.'+coluna
-
-    if tabela == 'tb_item_venda':
-        listaCondicao = listaCondicao + ' AND a.CODIGO_PRODUTO = b.CODIGO_PRODUTO'
-
-
-    tabela_dl = tabela.replace('dbo.','')
-
-    parDF1.createOrReplaceTempView(tabela)
-
-    comando_truncate = f&quot;&quot;&quot;TRUNCATE TABLE bronze.{tabela}&quot;&quot;&quot;
-
-    print(comando_truncate)
-
-    spark.sql(comando_truncate)
-
-    comando_insert = f&quot;&quot;&quot;MERGE INTO bronze.{tabela} a
-            USING {tabela} b
-            ON {listaCondicao}
-            WHEN NOT MATCHED
-            THEN INSERT ({lista1}) VALUES ({listaInsert})
-            &quot;&quot;&quot;
-
-    print(comando_insert)
-
-    spark.sql(comando_insert)
-</code></pre>
+<div class="language-py3 highlight"><table class="highlighttable"><tr><th colspan="2" class="filename"><span class="filename">Extração Dos Dados do Azure SQL Database</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-1-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-1-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-1-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-1-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-1-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-1-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-1-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-1-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-1-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-1-10">10</a></span>
+<span class="normal"><a href="#__codelineno-1-11">11</a></span>
+<span class="normal"><a href="#__codelineno-1-12">12</a></span>
+<span class="normal"><a href="#__codelineno-1-13">13</a></span>
+<span class="normal"><a href="#__codelineno-1-14">14</a></span>
+<span class="normal"><a href="#__codelineno-1-15">15</a></span>
+<span class="normal"><a href="#__codelineno-1-16">16</a></span>
+<span class="normal"><a href="#__codelineno-1-17">17</a></span>
+<span class="normal"><a href="#__codelineno-1-18">18</a></span>
+<span class="normal"><a href="#__codelineno-1-19">19</a></span>
+<span class="normal"><a href="#__codelineno-1-20">20</a></span>
+<span class="normal"><a href="#__codelineno-1-21">21</a></span>
+<span class="normal"><a href="#__codelineno-1-22">22</a></span>
+<span class="normal"><a href="#__codelineno-1-23">23</a></span>
+<span class="normal"><a href="#__codelineno-1-24">24</a></span>
+<span class="normal"><a href="#__codelineno-1-25">25</a></span>
+<span class="normal"><a href="#__codelineno-1-26">26</a></span>
+<span class="normal"><a href="#__codelineno-1-27">27</a></span>
+<span class="normal"><a href="#__codelineno-1-28">28</a></span>
+<span class="normal"><a href="#__codelineno-1-29">29</a></span>
+<span class="normal"><a href="#__codelineno-1-30">30</a></span>
+<span class="normal"><a href="#__codelineno-1-31">31</a></span>
+<span class="normal"><a href="#__codelineno-1-32">32</a></span>
+<span class="normal"><a href="#__codelineno-1-33">33</a></span>
+<span class="normal"><a href="#__codelineno-1-34">34</a></span>
+<span class="normal"><a href="#__codelineno-1-35">35</a></span>
+<span class="normal"><a href="#__codelineno-1-36">36</a></span>
+<span class="normal"><a href="#__codelineno-1-37">37</a></span>
+<span class="normal"><a href="#__codelineno-1-38">38</a></span>
+<span class="normal"><a href="#__codelineno-1-39">39</a></span>
+<span class="normal"><a href="#__codelineno-1-40">40</a></span>
+<span class="normal"><a href="#__codelineno-1-41">41</a></span>
+<span class="normal"><a href="#__codelineno-1-42">42</a></span>
+<span class="normal"><a href="#__codelineno-1-43">43</a></span>
+<span class="normal"><a href="#__codelineno-1-44">44</a></span>
+<span class="normal"><a href="#__codelineno-1-45">45</a></span>
+<span class="normal"><a href="#__codelineno-1-46">46</a></span>
+<span class="normal"><a href="#__codelineno-1-47">47</a></span>
+<span class="normal"><a href="#__codelineno-1-48">48</a></span>
+<span class="normal"><a href="#__codelineno-1-49">49</a></span>
+<span class="normal"><a href="#__codelineno-1-50">50</a></span>
+<span class="normal"><a href="#__codelineno-1-51">51</a></span>
+<span class="normal"><a href="#__codelineno-1-52">52</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><span class="k">for</span> <span class="n">arquivo</span> <span class="ow">in</span> <span class="n">arquivos_diretorio</span><span class="p">:</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a>    <span class="n">diretorio</span> <span class="o">=</span> <span class="n">arquivo</span><span class="o">.</span><span class="n">path</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a>    <span class="n">tabela</span> <span class="o">=</span> <span class="n">arquivo</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a>    <span class="n">parDF1</span><span class="o">=</span><span class="n">spark</span><span class="o">.</span><span class="n">read</span><span class="o">.</span><span class="n">parquet</span><span class="p">(</span><span class="n">diretorio</span><span class="p">)</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a>    <span class="n">colunas</span> <span class="o">=</span> <span class="n">parDF1</span><span class="o">.</span><span class="n">columns</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a>    <span class="n">lista1</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a>    <span class="n">listaInsert</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a>    <span class="n">listaCondicao</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a>    <span class="k">for</span> <span class="n">coluna</span> <span class="ow">in</span> <span class="n">colunas</span><span class="p">:</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a>        <span class="k">if</span> <span class="n">lista1</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a>            <span class="n">lista1</span> <span class="o">=</span> <span class="n">coluna</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a>            <span class="n">lista1</span> <span class="o">=</span> <span class="n">lista1</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="n">coluna</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a>    <span class="k">for</span> <span class="n">coluna</span> <span class="ow">in</span> <span class="n">colunas</span><span class="p">:</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a>        <span class="k">if</span> <span class="n">listaInsert</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a>            <span class="n">listaInsert</span> <span class="o">=</span> <span class="s1">&#39;b.&#39;</span><span class="o">+</span><span class="n">coluna</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a>            <span class="n">listaInsert</span> <span class="o">=</span> <span class="n">listaInsert</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span> <span class="o">+</span> <span class="s1">&#39;b.&#39;</span><span class="o">+</span> <span class="n">coluna</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a>    <span class="k">for</span> <span class="n">coluna</span> <span class="ow">in</span> <span class="n">colunas</span><span class="p">:</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a>        <span class="k">if</span> <span class="n">listaCondicao</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a>            <span class="n">listaCondicao</span> <span class="o">=</span>  <span class="s1">&#39;a.&#39;</span><span class="o">+</span><span class="n">coluna</span> <span class="o">+</span> <span class="s1">&#39;= b.&#39;</span><span class="o">+</span><span class="n">coluna</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a>    <span class="k">if</span> <span class="n">tabela</span> <span class="o">==</span> <span class="s1">&#39;tb_item_venda&#39;</span><span class="p">:</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a>        <span class="n">listaCondicao</span> <span class="o">=</span> <span class="n">listaCondicao</span> <span class="o">+</span> <span class="s1">&#39; AND a.CODIGO_PRODUTO = b.CODIGO_PRODUTO&#39;</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33"></a>    <span class="n">tabela_dl</span> <span class="o">=</span> <span class="n">tabela</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;dbo.&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34"></a>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35"></a>    <span class="n">parDF1</span><span class="o">.</span><span class="n">createOrReplaceTempView</span><span class="p">(</span><span class="n">tabela</span><span class="p">)</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36"></a>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37"></a>    <span class="n">comando_truncate</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;TRUNCATE TABLE bronze.</span><span class="si">{</span><span class="n">tabela</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38"></a>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">comando_truncate</span><span class="p">)</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40"></a>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41"></a>    <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="n">comando_truncate</span><span class="p">)</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42"></a>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43"></a>    <span class="n">comando_insert</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&quot;&quot;MERGE INTO bronze.</span><span class="si">{</span><span class="n">tabela</span><span class="si">}</span><span class="s2"> a</span>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44"></a><span class="s2">            USING </span><span class="si">{</span><span class="n">tabela</span><span class="si">}</span><span class="s2"> b</span>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45"></a><span class="s2">            ON </span><span class="si">{</span><span class="n">listaCondicao</span><span class="si">}</span>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46"></a><span class="s2">            WHEN NOT MATCHED</span>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47"></a><span class="s2">            THEN INSERT (</span><span class="si">{</span><span class="n">lista1</span><span class="si">}</span><span class="s2">) VALUES (</span><span class="si">{</span><span class="n">listaInsert</span><span class="si">}</span><span class="s2">)</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48"></a><span class="s2">            &quot;&quot;&quot;</span>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49"></a>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">comando_insert</span><span class="p">)</span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51"></a>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52"></a>    <span class="n">spark</span><span class="o">.</span><span class="n">sql</span><span class="p">(</span><span class="n">comando_insert</span><span class="p">)</span>
+</span></code></pre></div></td></tr></table></div>
 
 
 
