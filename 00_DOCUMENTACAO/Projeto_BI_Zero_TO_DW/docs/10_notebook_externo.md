@@ -30,7 +30,7 @@ def acentuacao(var):
 spark.udf.register("acentuacao", acentuacao)
 ```
 
-Para conhecer melhor seu funcionamento, segue o link de um vídeo do meu canal que explico com maiores detalhes [Vídeo Removendo Acentuação](https://www.youtube.com/watch?v=Vr3Hq0frAA8&t=68s).
+Para conhecer melhor seu funcionamento, deixo o link de um vídeo do meu canal que explico com maiores detalhes [Vídeo Removendo Acentuação](https://www.youtube.com/watch?v=Vr3Hq0frAA8&t=68s).
 
 ### SEQ-10.2 - Função Cria Dados Dimensão Tempo
 

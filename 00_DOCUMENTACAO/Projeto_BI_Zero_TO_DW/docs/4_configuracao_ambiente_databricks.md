@@ -135,24 +135,24 @@ A sintaxe do script é muito parecida com que possuímos em bancos de dados.
 ```
 %sql
 
-DROP  TABLE IF EXISTS bronze.TB_FORMA_PAGAMENTO;
-CREATE TABLE bronze.TB_FORMA_PAGAMENTO
+DROP  TABLE IF EXISTS bronze.tb_forma_pagamento;
+CREATE TABLE bronze.tb_forma_pagamento
 (
 CODIGO_FORMA_PAGAMENTO	 INT COMMENT 'Código da Forma de Pagamento na Tabela TB_FORMA_PAGAMENTO.'
 ,DESCRICAO_FORMA_PAGAMENTO VARCHAR(100) COMMENT 'Descrição da Forma de Pagamento na Tabela TB_FORMA_PAGAMENTO.'
 )
 COMMENT 'Armazena informações de forma de pagamento.';
 
-DROP  TABLE IF EXISTS bronze.TB_CATEGORIA_PRODUTO;
-CREATE TABLE bronze.TB_CATEGORIA_PRODUTO
+DROP  TABLE IF EXISTS bronze.tb_categoria_produto;
+CREATE TABLE bronze.tb_categoria_produto
 (
 CODIGO_CATEGORIA INT COMMENT 'Código da Categoria do Produto.'
 ,DECRICAO_CATEGORIA VARCHAR(100) COMMENT 'Descrição da Categoria do Produto.'
 )
 COMMENT 'Armazena informações das categorias dos produtos';
 
-DROP  TABLE IF EXISTS bronze.TB_PRODUTO;
-CREATE TABLE bronze.TB_PRODUTO
+DROP  TABLE IF EXISTS bronze.tb_produto;
+CREATE TABLE bronze.tb_produto
 (
 CODIGO_PRODUTO	 INT  COMMENT 'Código do Produto.'
 ,DESCRICAO_PRODUTO	 VARCHAR(100) COMMENT 'Descrição do Produto.'
@@ -160,24 +160,24 @@ CODIGO_PRODUTO	 INT  COMMENT 'Código do Produto.'
 )
 COMMENT '	Armazena informações de produtos.';
 
-DROP  TABLE IF EXISTS bronze.TB_CLIENTE;
-CREATE TABLE bronze.TB_CLIENTE
+DROP  TABLE IF EXISTS bronze.tb_cliente;
+CREATE TABLE bronze.tb_cliente
 (
 CODIGO_CLIENTE INT COMMENT 'Código do Cliente.'
 ,NOME_CLIENTE VARCHAR(100) COMMENT 'Nome do Cliente.'
 )
 COMMENT 'Armazena informações de clientes.';
 
-DROP  TABLE IF EXISTS bronze.TB_VENDEDOR;
-CREATE TABLE bronze.TB_VENDEDOR
+DROP  TABLE IF EXISTS bronze.tb_vendedor;
+CREATE TABLE bronze.tb_vendedor
 (
 CODIGO_VENDEDOR INT COMMENT 'Código do Vendedor.'
 ,NOME_VENDEDOR VARCHAR(100) COMMENT 'Nome do Vendedor.'
 )
 COMMENT 'Armazena informações de vendedores.';
 
-DROP  TABLE IF EXISTS bronze.TB_LOJA;
-CREATE TABLE bronze.TB_LOJA
+DROP  TABLE IF EXISTS bronze.tb_loja;
+CREATE TABLE bronze.tb_loja
 (
 CODIGO_LOJA	 INT COMMENT 'Código da Loja.'
 ,NOME_LOJA	 VARCHAR(100) COMMENT 'Nome da Loja.'
@@ -186,8 +186,8 @@ CODIGO_LOJA	 INT COMMENT 'Código da Loja.'
 )
 COMMENT 'Armazena informações de lojas.';
 
-DROP  TABLE IF EXISTS bronze.TB_VENDA;
-CREATE TABLE bronze.TB_VENDA
+DROP  TABLE IF EXISTS bronze.tb_venda;
+CREATE TABLE bronze.tb_venda
 (
 CODIGO_VENDA INT COMMENT 'Código da Venda.'
 ,DATA_VENDA	TIMESTAMP COMMENT 'Data da Venda'
@@ -200,8 +200,8 @@ CODIGO_VENDA INT COMMENT 'Código da Venda.'
 )
 COMMENT 'Armazenada informações de vendas.';
 
-DROP  TABLE IF EXISTS bronze.TB_ITEM_VENDA;
-CREATE TABLE bronze.TB_ITEM_VENDA
+DROP  TABLE IF EXISTS bronze.tb_item_venda;
+CREATE TABLE bronze.tb_item_venda
 (
 CODIGO_VENDA INT COMMENT 'Código da Venda.'
 ,CODIGO_PRODUTO	INT COMMENT 'Código do Produto.'
@@ -219,8 +219,8 @@ Criação das tabelas no Schema de Dados "silver".
 ```
 %sql
 
-DROP  TABLE IF EXISTS silver.TB_FORMA_PAGAMENTO;
-CREATE TABLE silver.TB_FORMA_PAGAMENTO
+DROP  TABLE IF EXISTS silver.tb_forma_pagamento;
+CREATE TABLE silver.tb_forma_pagamento
 (
 CODIGO_FORMA_PAGAMENTO	 INT COMMENT 'Código da Forma de Pagamento na Tabela TB_FORMA_PAGAMENTO.'
 ,DESCRICAO_FORMA_PAGAMENTO VARCHAR(100) COMMENT 'Descrição da Forma de Pagamento na Tabela TB_FORMA_PAGAMENTO.'
@@ -229,8 +229,8 @@ CODIGO_FORMA_PAGAMENTO	 INT COMMENT 'Código da Forma de Pagamento na Tabela TB_
 )
 COMMENT 'Armazena informações de forma de pagamento.';
 
-DROP  TABLE IF EXISTS silver.TB_CATEGORIA_PRODUTO;
-CREATE TABLE silver.TB_CATEGORIA_PRODUTO
+DROP  TABLE IF EXISTS silver.tb_categoria_produto;
+CREATE TABLE silver.tb_categoria_produto
 (
 CODIGO_CATEGORIA INT COMMENT 'Código da Categoria do Produto.'
 ,DECRICAO_CATEGORIA VARCHAR(100) COMMENT 'Descrição da Categoria do Produto.'
@@ -239,8 +239,8 @@ CODIGO_CATEGORIA INT COMMENT 'Código da Categoria do Produto.'
 )
 COMMENT 'Armazena informações das categorias dos produtos';
 
-DROP  TABLE IF EXISTS silver.TB_PRODUTO;
-CREATE TABLE silver.TB_PRODUTO
+DROP  TABLE IF EXISTS silver.tb_produto;
+CREATE TABLE silver.tb_produto
 (
 CODIGO_PRODUTO	 INT  COMMENT 'Código do Produto.'
 ,DESCRICAO_PRODUTO	 VARCHAR(100) COMMENT 'Descrição do Produto.'
@@ -250,8 +250,8 @@ CODIGO_PRODUTO	 INT  COMMENT 'Código do Produto.'
 )
 COMMENT '	Armazena informações de produtos.';
 
-DROP  TABLE IF EXISTS silver.TB_CLIENTE;
-CREATE TABLE silver.TB_CLIENTE
+DROP  TABLE IF EXISTS silver.tb_cliente;
+CREATE TABLE silver.tb_cliente
 (
 CODIGO_CLIENTE INT COMMENT 'Código do Cliente.'
 ,NOME_CLIENTE VARCHAR(100) COMMENT 'Nome do Cliente.'
@@ -260,8 +260,8 @@ CODIGO_CLIENTE INT COMMENT 'Código do Cliente.'
 )
 COMMENT 'Armazena informações de clientes.';
 
-DROP  TABLE IF EXISTS silver.TB_VENDEDOR;
-CREATE TABLE silver.TB_VENDEDOR
+DROP  TABLE IF EXISTS silver.tb_vendedor;
+CREATE TABLE silver.tb_vendedor
 (
 CODIGO_VENDEDOR INT COMMENT 'Código do Vendedor.'
 ,NOME_VENDEDOR VARCHAR(100) COMMENT 'Nome do Vendedor.'
@@ -270,8 +270,8 @@ CODIGO_VENDEDOR INT COMMENT 'Código do Vendedor.'
 )
 COMMENT 'Armazena informações de vendedores.';
 
-DROP  TABLE IF EXISTS silver.TB_LOJA;
-CREATE TABLE silver.TB_LOJA
+DROP  TABLE IF EXISTS silver.tb_loja;
+CREATE TABLE silver.tb_loja
 (
 CODIGO_LOJA	 INT COMMENT 'Código da Loja.'
 ,NOME_LOJA	 VARCHAR(100) COMMENT 'Nome da Loja.'
@@ -282,8 +282,8 @@ CODIGO_LOJA	 INT COMMENT 'Código da Loja.'
 )
 COMMENT 'Armazena informações de lojas.';
 
-DROP  TABLE IF EXISTS silver.TB_VENDA;
-CREATE TABLE silver.TB_VENDA
+DROP  TABLE IF EXISTS silver.tb_venda;
+CREATE TABLE silver.tb_venda
 (
 CODIGO_VENDA INT COMMENT 'Código da Venda.'
 ,DATA_VENDA	TIMESTAMP COMMENT 'Data da Venda'
@@ -298,8 +298,8 @@ CODIGO_VENDA INT COMMENT 'Código da Venda.'
 )
 COMMENT 'Armazenada informações de vendas.';
 
-DROP  TABLE IF EXISTS silver.TB_ITEM_VENDA;
-CREATE TABLE silver.TB_ITEM_VENDA
+DROP  TABLE IF EXISTS silver.tb_item_venda;
+CREATE TABLE silver.tb_item_venda
 (
 CODIGO_VENDA INT COMMENT 'Código da Venda.'
 ,CODIGO_PRODUTO	INT COMMENT 'Código do Produto.'
@@ -319,8 +319,8 @@ Criação das tabelas no Schema de Dados "gold".
 ```
 %sql
 
-DROP  TABLE IF EXISTS gold.DIM_FORMA_PAGAMENTO;
-CREATE TABLE gold.DIM_FORMA_PAGAMENTO
+DROP  TABLE IF EXISTS gold.dim_forma_pagamento;
+CREATE TABLE gold.dim_forma_pagamento
 (
 ID_FORMA_PAGAMENTO VARCHAR(100) COMMENT 'Chave da Dimensão Forma de Pagamento.'
 ,CODIGO_FORMA_PAGAMENTO	 INT COMMENT 'Código da Forma de Pagamento na Tabela TB_FORMA_PAGAMENTO.'
@@ -329,8 +329,8 @@ ID_FORMA_PAGAMENTO VARCHAR(100) COMMENT 'Chave da Dimensão Forma de Pagamento.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_CATEGORIA_PRODUTO;
-CREATE TABLE gold.DIM_CATEGORIA_PRODUTO
+DROP  TABLE IF EXISTS gold.dim_categoria_produto;
+CREATE TABLE gold.dim_categoria_produto
 (
 ID_CATEGORIA_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Categoria do Produto.'
 ,CODIGO_CATEGORIA INT COMMENT 'Código da Categoria do Produto.'
@@ -339,8 +339,8 @@ ID_CATEGORIA_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Categoria do Produ
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_PRODUTO;
-CREATE TABLE gold.DIM_PRODUTO
+DROP  TABLE IF EXISTS gold.dim_produto;
+CREATE TABLE gold.dim_produto
 (
 ID_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Produto.'
 ,CODIGO_PRODUTO	 INT  COMMENT 'Código do Produto.'
@@ -350,8 +350,8 @@ ID_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Produto.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_CLIENTE;
-CREATE TABLE gold.DIM_CLIENTE
+DROP  TABLE IF EXISTS gold.dim_cliente;
+CREATE TABLE gold.dim_cliente
 (
 ID_CLIENTE VARCHAR(100) COMMENT 'Chave da Dimensão Cliente.'
 ,CODIGO_CLIENTE INT COMMENT 'Código do Cliente.'
@@ -360,8 +360,8 @@ ID_CLIENTE VARCHAR(100) COMMENT 'Chave da Dimensão Cliente.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_VENDEDOR;
-CREATE TABLE gold.DIM_VENDEDOR
+DROP  TABLE IF EXISTS gold.dim_vendedor;
+CREATE TABLE gold.dim_vendedor
 (
 ID_VENDEDOR VARCHAR(100) COMMENT 'Chave da Dimensão Vendedor.'
 ,CODIGO_VENDEDOR INT COMMENT 'Código do Vendedor.'
@@ -370,8 +370,8 @@ ID_VENDEDOR VARCHAR(100) COMMENT 'Chave da Dimensão Vendedor.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_LOJA;
-CREATE TABLE gold.DIM_LOJA
+DROP  TABLE IF EXISTS gold.dim_loja;
+CREATE TABLE gold.dim_loja
 (
 ID_LOJA VARCHAR(100) COMMENT 'Chave da Dimensão Loja.'
 ,CODIGO_LOJA	 INT COMMENT 'Código da Loja.'
@@ -382,8 +382,8 @@ ID_LOJA VARCHAR(100) COMMENT 'Chave da Dimensão Loja.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.FATO_VENDA;
-CREATE TABLE gold.FATO_VENDA
+DROP  TABLE IF EXISTS gold.fato_venda;
+CREATE TABLE gold.fato_venda
 (
 ID_TEMPO VARCHAR(100)  COMMENT 'Chave da Dimensão Tempo.'
 ,ID_CLIENTE	VARCHAR(100)  COMMENT 'Chave da Dimensão Cliente.'
@@ -400,11 +400,11 @@ ID_TEMPO VARCHAR(100)  COMMENT 'Chave da Dimensão Tempo.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.DIM_TEMPO;
-CREATE TABLE gold.DIM_TEMPO
+DROP  TABLE IF EXISTS gold.dim_tempo;
+CREATE TABLE gold.dim_tempo
 (
 ID_TEMPO VARCHAR(100) COMMENT 'Chave da Dimensão Tempo.'
-,DATA TIMESTAMP COMMENT 'Data.'
+,DATA VARCHAR(10) COMMENT 'Data.'
 ,ANO INT COMMENT 'Ano referente a coluna data.'
 ,MES	INT COMMENT 'Mês referente a coluna data.'
 ,DIA INT COMMENT 'Dia referente a coluna data.' 
@@ -425,7 +425,16 @@ dias_acrescimo = timedelta(days=1)
 cria_dimensao_tempo(data_inicial, data_fim, dias_acrescimo)
 ```
 
-### SEQ-4.9 - Visualizar Estrutura de Tabela
+### SEQ-4.9 - Listando as Tabelas do Schema
+
+Script para visualizar todas as tabelas de um schema qualquer.
+
+```
+%sql
+SHOW TABLES FROM silver
+```
+
+### SEQ-4.10 - Visualizar Estrutura de Tabela
 
 Script para visualizar a estrutura de uma tabela qualquer.
 
@@ -434,7 +443,7 @@ Script para visualizar a estrutura de uma tabela qualquer.
 DESC gold.DIM_LOJA
 ```
 
-### SEQ-4.10 - Visualizar Armazenamento de uma Tabela
+### SEQ-4.11 - Visualizar Armazenamento de uma Tabela
 
 Script para visualizar informações de armazenamento de uma tabela qualquer.
 
