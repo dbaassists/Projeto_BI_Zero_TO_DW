@@ -1,6 +1,8 @@
 site_name: Projeto BI Zero TO DW
 theme:
   name: material
+  features:
+    - content.code.copy
   palette:
     - scheme: default
       primary: black
@@ -32,6 +34,9 @@ markdown_extensions:
       anchor_linenums: true
       line_spans: __span
       pygments_lang_class: true
+      linenums_style: pymdownx-inline
   - pymdownx.inlinehilite
   - pymdownx.snippets
   - pymdownx.superfences
+  - pymdownx.arithmatex:
+      generic: true
