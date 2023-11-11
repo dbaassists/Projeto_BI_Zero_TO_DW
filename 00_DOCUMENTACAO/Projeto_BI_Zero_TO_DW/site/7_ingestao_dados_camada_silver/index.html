@@ -750,326 +750,325 @@
 <p>O arquivo do Notebook é encontrado aqui. <a href="https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/02_NOTEBOOK/03_ingestao_camada_silver.ipynb">Notebook Ingestão Dados Para Camada Silver</a></p>
 <h3 id="seq-71-notebook-externo">SEQ-7.1 - Notebook Externo<br></h3>
 <p>Nessa etapa é realizada a importação de um notebook externo que contém a função que será usada para realizar o tratamento (remoção da acentuação) dos dados.</p>
-<pre><code>%run /estudos/libs/bibliotecas
-</code></pre>
+<div class="language-py3 highlight"><span class="filename">Notebook Externo</span><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1"></a><a href="#__codelineno-0-1"><span class="linenos" data-linenos="1 "></span></a><span class="o">%</span><span class="n">run</span> <span class="o">/</span><span class="n">estudos</span><span class="o">/</span><span class="n">libs</span><span class="o">/</span><span class="n">bibliotecas</span>
+</span></code></pre></div>
 <h3 id="atividades-de-ingestao">Atividades de Ingestão</h3>
 <h3 id="seq-72-ingestao-de-dados-na-camada-silver-de-tb_categoria_produto">SEQ-7.2 - Ingestão de Dados na camada "silver" de tb_categoria_produto<br></h3>
-<pre><code>%sql
-MERGE INTO silver.tb_categoria_produto a
-USING (
-SELECT 
-CODIGO_CATEGORIA
-,IFNULL(TRIM(acentuacao(DECRICAO_CATEGORIA)),'N/A') DECRICAO_CATEGORIA
-FROM bronze.tb_categoria_produto
-) b
-
-ON a.CODIGO_CATEGORIA= b.CODIGO_CATEGORIA
-
-WHEN MATCHED THEN
-UPDATE SET 
-a.DECRICAO_CATEGORIA = b.DECRICAO_CATEGORIA
-,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
-
-WHEN NOT MATCHED
-THEN 
-INSERT 
-(
-CODIGO_CATEGORIA
-,DECRICAO_CATEGORIA
-,DATA_CADASTRO
-,DATA_ALTERACAO
-) 
-VALUES 
-(
-b.CODIGO_CATEGORIA
-,b.DECRICAO_CATEGORIA
-,from_utc_timestamp(now(),'GMT-3')
-,from_utc_timestamp(now(),'GMT-3')
-)
-</code></pre>
+<div class="language-sql highlight"><span class="filename">Carga Silver tb_categoria_produto</span><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1"></a><a href="#__codelineno-1-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="o">%</span><span class="k">sql</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2"></a><a href="#__codelineno-1-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="n">MERGE</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">silver</span><span class="p">.</span><span class="n">tb_categoria_produto</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3"></a><a href="#__codelineno-1-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="k">USING</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4"></a><a href="#__codelineno-1-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="k">SELECT</span><span class="w"> </span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5"></a><a href="#__codelineno-1-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">CODIGO_CATEGORIA</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6"></a><a href="#__codelineno-1-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">acentuacao</span><span class="p">(</span><span class="n">DECRICAO_CATEGORIA</span><span class="p">)),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">DECRICAO_CATEGORIA</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7"></a><a href="#__codelineno-1-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="k">FROM</span><span class="w"> </span><span class="n">bronze</span><span class="p">.</span><span class="n">tb_categoria_produto</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8"></a><a href="#__codelineno-1-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="p">)</span><span class="w"> </span><span class="n">b</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9"></a><a href="#__codelineno-1-9"><span class="linenos" data-linenos=" 9 "></span></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10"></a><a href="#__codelineno-1-10"><span class="linenos" data-linenos="10 "></span></a><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_CATEGORIA</span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_CATEGORIA</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11"></a><a href="#__codelineno-1-11"><span class="linenos" data-linenos="11 "></span></a>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12"></a><a href="#__codelineno-1-12"><span class="linenos" data-linenos="12 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="n">MATCHED</span><span class="w"> </span><span class="k">THEN</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13"></a><a href="#__codelineno-1-13"><span class="linenos" data-linenos="13 "></span></a><span class="k">UPDATE</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14"></a><a href="#__codelineno-1-14"><span class="linenos" data-linenos="14 "></span></a><span class="n">a</span><span class="p">.</span><span class="n">DECRICAO_CATEGORIA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">DECRICAO_CATEGORIA</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15"></a><a href="#__codelineno-1-15"><span class="linenos" data-linenos="15 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">DATA_ALTERACAO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16"></a><a href="#__codelineno-1-16"><span class="linenos" data-linenos="16 "></span></a>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17"></a><a href="#__codelineno-1-17"><span class="linenos" data-linenos="17 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">MATCHED</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18"></a><a href="#__codelineno-1-18"><span class="linenos" data-linenos="18 "></span></a><span class="k">THEN</span><span class="w"> </span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19"></a><a href="#__codelineno-1-19"><span class="linenos" data-linenos="19 "></span></a><span class="k">INSERT</span><span class="w"> </span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20"></a><a href="#__codelineno-1-20"><span class="linenos" data-linenos="20 "></span></a><span class="p">(</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21"></a><a href="#__codelineno-1-21"><span class="linenos" data-linenos="21 "></span></a><span class="n">CODIGO_CATEGORIA</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22"></a><a href="#__codelineno-1-22"><span class="linenos" data-linenos="22 "></span></a><span class="p">,</span><span class="n">DECRICAO_CATEGORIA</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23"></a><a href="#__codelineno-1-23"><span class="linenos" data-linenos="23 "></span></a><span class="p">,</span><span class="n">DATA_CADASTRO</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24"></a><a href="#__codelineno-1-24"><span class="linenos" data-linenos="24 "></span></a><span class="p">,</span><span class="n">DATA_ALTERACAO</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25"></a><a href="#__codelineno-1-25"><span class="linenos" data-linenos="25 "></span></a><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26"></a><a href="#__codelineno-1-26"><span class="linenos" data-linenos="26 "></span></a><span class="k">VALUES</span><span class="w"> </span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27"></a><a href="#__codelineno-1-27"><span class="linenos" data-linenos="27 "></span></a><span class="p">(</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28"></a><a href="#__codelineno-1-28"><span class="linenos" data-linenos="28 "></span></a><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_CATEGORIA</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29"></a><a href="#__codelineno-1-29"><span class="linenos" data-linenos="29 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">DECRICAO_CATEGORIA</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30"></a><a href="#__codelineno-1-30"><span class="linenos" data-linenos="30 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31"></a><a href="#__codelineno-1-31"><span class="linenos" data-linenos="31 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32"></a><a href="#__codelineno-1-32"><span class="linenos" data-linenos="32 "></span></a><span class="p">)</span>
+</span></code></pre></div>
 <h3 id="seq-73-ingestao-de-dados-na-camada-silver-de-tb_cliente">SEQ-7.3 - Ingestão de Dados na camada "silver" de tb_cliente <br></h3>
-<pre><code>%sql
-MERGE INTO silver.tb_cliente a
-USING (
-SELECT 
-CODIGO_CLIENTE
-,IFNULL(TRIM(acentuacao(NOME_CLIENTE)),'N/A') NOME_CLIENTE
-FROM bronze.tb_cliente
-) b
-
-ON a.CODIGO_CLIENTE= b.CODIGO_CLIENTE
-
-WHEN MATCHED THEN
-UPDATE SET 
-a.NOME_CLIENTE = b.NOME_CLIENTE
-,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
-
-WHEN NOT MATCHED
-THEN 
-INSERT 
-(
-CODIGO_CLIENTE
-,NOME_CLIENTE
-,DATA_CADASTRO
-,DATA_ALTERACAO
-)
-VALUES 
-(
-b.CODIGO_CLIENTE
-,b.NOME_CLIENTE
-,from_utc_timestamp(now(),'GMT-3')
-,from_utc_timestamp(now(),'GMT-3')
-)
-</code></pre>
+<div class="language-sql highlight"><span class="filename">Carga Silver tb_cliente</span><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><a href="#__codelineno-2-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="o">%</span><span class="k">sql</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><a href="#__codelineno-2-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="n">MERGE</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">silver</span><span class="p">.</span><span class="n">tb_cliente</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><a href="#__codelineno-2-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="k">USING</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><a href="#__codelineno-2-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="k">SELECT</span><span class="w"> </span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><a href="#__codelineno-2-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">CODIGO_CLIENTE</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><a href="#__codelineno-2-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">acentuacao</span><span class="p">(</span><span class="n">NOME_CLIENTE</span><span class="p">)),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">NOME_CLIENTE</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><a href="#__codelineno-2-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="k">FROM</span><span class="w"> </span><span class="n">bronze</span><span class="p">.</span><span class="n">tb_cliente</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><a href="#__codelineno-2-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="p">)</span><span class="w"> </span><span class="n">b</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><a href="#__codelineno-2-9"><span class="linenos" data-linenos=" 9 "></span></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><a href="#__codelineno-2-10"><span class="linenos" data-linenos="10 "></span></a><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_CLIENTE</span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_CLIENTE</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><a href="#__codelineno-2-11"><span class="linenos" data-linenos="11 "></span></a>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><a href="#__codelineno-2-12"><span class="linenos" data-linenos="12 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="n">MATCHED</span><span class="w"> </span><span class="k">THEN</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13"></a><a href="#__codelineno-2-13"><span class="linenos" data-linenos="13 "></span></a><span class="k">UPDATE</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14"></a><a href="#__codelineno-2-14"><span class="linenos" data-linenos="14 "></span></a><span class="n">a</span><span class="p">.</span><span class="n">NOME_CLIENTE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">NOME_CLIENTE</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15"></a><a href="#__codelineno-2-15"><span class="linenos" data-linenos="15 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">DATA_ALTERACAO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16"></a><a href="#__codelineno-2-16"><span class="linenos" data-linenos="16 "></span></a>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17"></a><a href="#__codelineno-2-17"><span class="linenos" data-linenos="17 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">MATCHED</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18"></a><a href="#__codelineno-2-18"><span class="linenos" data-linenos="18 "></span></a><span class="k">THEN</span><span class="w"> </span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19"></a><a href="#__codelineno-2-19"><span class="linenos" data-linenos="19 "></span></a><span class="k">INSERT</span><span class="w"> </span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20"></a><a href="#__codelineno-2-20"><span class="linenos" data-linenos="20 "></span></a><span class="p">(</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21"></a><a href="#__codelineno-2-21"><span class="linenos" data-linenos="21 "></span></a><span class="n">CODIGO_CLIENTE</span>
+</span><span id="__span-2-22"><a id="__codelineno-2-22" name="__codelineno-2-22"></a><a href="#__codelineno-2-22"><span class="linenos" data-linenos="22 "></span></a><span class="p">,</span><span class="n">NOME_CLIENTE</span>
+</span><span id="__span-2-23"><a id="__codelineno-2-23" name="__codelineno-2-23"></a><a href="#__codelineno-2-23"><span class="linenos" data-linenos="23 "></span></a><span class="p">,</span><span class="n">DATA_CADASTRO</span>
+</span><span id="__span-2-24"><a id="__codelineno-2-24" name="__codelineno-2-24"></a><a href="#__codelineno-2-24"><span class="linenos" data-linenos="24 "></span></a><span class="p">,</span><span class="n">DATA_ALTERACAO</span>
+</span><span id="__span-2-25"><a id="__codelineno-2-25" name="__codelineno-2-25"></a><a href="#__codelineno-2-25"><span class="linenos" data-linenos="25 "></span></a><span class="p">)</span>
+</span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26"></a><a href="#__codelineno-2-26"><span class="linenos" data-linenos="26 "></span></a><span class="k">VALUES</span><span class="w"> </span>
+</span><span id="__span-2-27"><a id="__codelineno-2-27" name="__codelineno-2-27"></a><a href="#__codelineno-2-27"><span class="linenos" data-linenos="27 "></span></a><span class="p">(</span>
+</span><span id="__span-2-28"><a id="__codelineno-2-28" name="__codelineno-2-28"></a><a href="#__codelineno-2-28"><span class="linenos" data-linenos="28 "></span></a><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_CLIENTE</span>
+</span><span id="__span-2-29"><a id="__codelineno-2-29" name="__codelineno-2-29"></a><a href="#__codelineno-2-29"><span class="linenos" data-linenos="29 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">NOME_CLIENTE</span>
+</span><span id="__span-2-30"><a id="__codelineno-2-30" name="__codelineno-2-30"></a><a href="#__codelineno-2-30"><span class="linenos" data-linenos="30 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-2-31"><a id="__codelineno-2-31" name="__codelineno-2-31"></a><a href="#__codelineno-2-31"><span class="linenos" data-linenos="31 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-2-32"><a id="__codelineno-2-32" name="__codelineno-2-32"></a><a href="#__codelineno-2-32"><span class="linenos" data-linenos="32 "></span></a><span class="p">)</span>
+</span></code></pre></div>
 <h3 id="seq-74-ingestao-de-dados-na-camada-silver-de-tb_forma_pagamento">SEQ-7.4 - Ingestão de Dados na camada "silver" de tb_forma_pagamento<br></h3>
-<pre><code>%sql
-MERGE INTO silver.tb_forma_pagamento a
-USING (
-SELECT 
-CODIGO_FORMA_PAGAMENTO
-,IFNULL(TRIM(acentuacao(DESCRICAO_FORMA_PAGAMENTO)),'N/A') DESCRICAO_FORMA_PAGAMENTO
-FROM bronze.tb_forma_pagamento
-) b
-
-ON a.CODIGO_FORMA_PAGAMENTO= b.CODIGO_FORMA_PAGAMENTO
-
-WHEN MATCHED THEN
-UPDATE SET 
-a.DESCRICAO_FORMA_PAGAMENTO = b.DESCRICAO_FORMA_PAGAMENTO
-,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
-
-WHEN NOT MATCHED
-THEN 
-INSERT 
-(CODIGO_FORMA_PAGAMENTO
-,DESCRICAO_FORMA_PAGAMENTO
-,DATA_CADASTRO
-,DATA_ALTERACAO) 
-VALUES 
-(b.CODIGO_FORMA_PAGAMENTO
-,b.DESCRICAO_FORMA_PAGAMENTO
-,from_utc_timestamp(now(),'GMT-3')
-,from_utc_timestamp(now(),'GMT-3')
-)
-</code></pre>
+<div class="language-sql highlight"><span class="filename">Carga Silver tb_forma_pagamento</span><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1"></a><a href="#__codelineno-3-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="o">%</span><span class="k">sql</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2"></a><a href="#__codelineno-3-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="n">MERGE</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">silver</span><span class="p">.</span><span class="n">tb_forma_pagamento</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3"></a><a href="#__codelineno-3-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="k">USING</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4"></a><a href="#__codelineno-3-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="k">SELECT</span><span class="w"> </span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5"></a><a href="#__codelineno-3-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">CODIGO_FORMA_PAGAMENTO</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6"></a><a href="#__codelineno-3-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">acentuacao</span><span class="p">(</span><span class="n">DESCRICAO_FORMA_PAGAMENTO</span><span class="p">)),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">DESCRICAO_FORMA_PAGAMENTO</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7"></a><a href="#__codelineno-3-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="k">FROM</span><span class="w"> </span><span class="n">bronze</span><span class="p">.</span><span class="n">tb_forma_pagamento</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8"></a><a href="#__codelineno-3-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="p">)</span><span class="w"> </span><span class="n">b</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9"></a><a href="#__codelineno-3-9"><span class="linenos" data-linenos=" 9 "></span></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10"></a><a href="#__codelineno-3-10"><span class="linenos" data-linenos="10 "></span></a><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_FORMA_PAGAMENTO</span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_FORMA_PAGAMENTO</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11"></a><a href="#__codelineno-3-11"><span class="linenos" data-linenos="11 "></span></a>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12"></a><a href="#__codelineno-3-12"><span class="linenos" data-linenos="12 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="n">MATCHED</span><span class="w"> </span><span class="k">THEN</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13"></a><a href="#__codelineno-3-13"><span class="linenos" data-linenos="13 "></span></a><span class="k">UPDATE</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14"></a><a href="#__codelineno-3-14"><span class="linenos" data-linenos="14 "></span></a><span class="n">a</span><span class="p">.</span><span class="n">DESCRICAO_FORMA_PAGAMENTO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">DESCRICAO_FORMA_PAGAMENTO</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15"></a><a href="#__codelineno-3-15"><span class="linenos" data-linenos="15 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">DATA_ALTERACAO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16"></a><a href="#__codelineno-3-16"><span class="linenos" data-linenos="16 "></span></a>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17"></a><a href="#__codelineno-3-17"><span class="linenos" data-linenos="17 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">MATCHED</span>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18"></a><a href="#__codelineno-3-18"><span class="linenos" data-linenos="18 "></span></a><span class="k">THEN</span><span class="w"> </span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19"></a><a href="#__codelineno-3-19"><span class="linenos" data-linenos="19 "></span></a><span class="k">INSERT</span><span class="w"> </span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20"></a><a href="#__codelineno-3-20"><span class="linenos" data-linenos="20 "></span></a><span class="p">(</span><span class="n">CODIGO_FORMA_PAGAMENTO</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21"></a><a href="#__codelineno-3-21"><span class="linenos" data-linenos="21 "></span></a><span class="p">,</span><span class="n">DESCRICAO_FORMA_PAGAMENTO</span>
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22"></a><a href="#__codelineno-3-22"><span class="linenos" data-linenos="22 "></span></a><span class="p">,</span><span class="n">DATA_CADASTRO</span>
+</span><span id="__span-3-23"><a id="__codelineno-3-23" name="__codelineno-3-23"></a><a href="#__codelineno-3-23"><span class="linenos" data-linenos="23 "></span></a><span class="p">,</span><span class="n">DATA_ALTERACAO</span><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-3-24"><a id="__codelineno-3-24" name="__codelineno-3-24"></a><a href="#__codelineno-3-24"><span class="linenos" data-linenos="24 "></span></a><span class="k">VALUES</span><span class="w"> </span>
+</span><span id="__span-3-25"><a id="__codelineno-3-25" name="__codelineno-3-25"></a><a href="#__codelineno-3-25"><span class="linenos" data-linenos="25 "></span></a><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_FORMA_PAGAMENTO</span>
+</span><span id="__span-3-26"><a id="__codelineno-3-26" name="__codelineno-3-26"></a><a href="#__codelineno-3-26"><span class="linenos" data-linenos="26 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">DESCRICAO_FORMA_PAGAMENTO</span>
+</span><span id="__span-3-27"><a id="__codelineno-3-27" name="__codelineno-3-27"></a><a href="#__codelineno-3-27"><span class="linenos" data-linenos="27 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-3-28"><a id="__codelineno-3-28" name="__codelineno-3-28"></a><a href="#__codelineno-3-28"><span class="linenos" data-linenos="28 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-3-29"><a id="__codelineno-3-29" name="__codelineno-3-29"></a><a href="#__codelineno-3-29"><span class="linenos" data-linenos="29 "></span></a><span class="p">)</span>
+</span></code></pre></div>
 <h3 id="seq-75-ingestao-de-dados-na-camada-silver-de-tb_item_venda">SEQ-7.5 - Ingestão de Dados na camada "silver" de tb_item_venda<br></h3>
-<pre><code>%sql
-MERGE INTO silver.tb_item_venda a
-USING (
-SELECT 
-CODIGO_VENDA
-,CODIGO_PRODUTO
-,VALOR_UNITARIO
-,QUANTIDADE
-,VALOR_FINAL
-FROM bronze.tb_item_venda
-) b
-
-ON a.CODIGO_VENDA= b.CODIGO_VENDA
-AND a.CODIGO_PRODUTO= b.CODIGO_PRODUTO
-
-WHEN MATCHED THEN
-UPDATE SET 
-a.VALOR_UNITARIO = b.VALOR_UNITARIO
-,a.QUANTIDADE = b.QUANTIDADE
-,a.VALOR_FINAL = b.VALOR_FINAL
-,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
-
-WHEN NOT MATCHED
-THEN 
-INSERT 
-(
-CODIGO_VENDA
-,CODIGO_PRODUTO
-,VALOR_UNITARIO
-,QUANTIDADE
-,VALOR_FINAL
-,DATA_CADASTRO
-,DATA_ALTERACAO
-)
-VALUES 
-(
-b.CODIGO_VENDA
-,b.CODIGO_PRODUTO
-,b.VALOR_UNITARIO
-,b.QUANTIDADE
-,b.VALOR_FINAL
-,from_utc_timestamp(now(),'GMT-3')
-,from_utc_timestamp(now(),'GMT-3')
-)
-
-</code></pre>
+<div class="language-sql highlight"><span class="filename">Carga Silver tb_item_venda</span><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1"></a><a href="#__codelineno-4-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="o">%</span><span class="k">sql</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2"></a><a href="#__codelineno-4-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="n">MERGE</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">silver</span><span class="p">.</span><span class="n">tb_item_venda</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3"></a><a href="#__codelineno-4-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="k">USING</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4"></a><a href="#__codelineno-4-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="k">SELECT</span><span class="w"> </span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5"></a><a href="#__codelineno-4-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">CODIGO_VENDA</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6"></a><a href="#__codelineno-4-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="p">,</span><span class="n">CODIGO_PRODUTO</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7"></a><a href="#__codelineno-4-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="p">,</span><span class="n">VALOR_UNITARIO</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8"></a><a href="#__codelineno-4-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="p">,</span><span class="n">QUANTIDADE</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9"></a><a href="#__codelineno-4-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="p">,</span><span class="n">VALOR_FINAL</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10"></a><a href="#__codelineno-4-10"><span class="linenos" data-linenos="10 "></span></a><span class="k">FROM</span><span class="w"> </span><span class="n">bronze</span><span class="p">.</span><span class="n">tb_item_venda</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11"></a><a href="#__codelineno-4-11"><span class="linenos" data-linenos="11 "></span></a><span class="p">)</span><span class="w"> </span><span class="n">b</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12"></a><a href="#__codelineno-4-12"><span class="linenos" data-linenos="12 "></span></a>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13"></a><a href="#__codelineno-4-13"><span class="linenos" data-linenos="13 "></span></a><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_VENDA</span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_VENDA</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14"></a><a href="#__codelineno-4-14"><span class="linenos" data-linenos="14 "></span></a><span class="k">AND</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_PRODUTO</span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_PRODUTO</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15"></a><a href="#__codelineno-4-15"><span class="linenos" data-linenos="15 "></span></a>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16"></a><a href="#__codelineno-4-16"><span class="linenos" data-linenos="16 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="n">MATCHED</span><span class="w"> </span><span class="k">THEN</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17"></a><a href="#__codelineno-4-17"><span class="linenos" data-linenos="17 "></span></a><span class="k">UPDATE</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18"></a><a href="#__codelineno-4-18"><span class="linenos" data-linenos="18 "></span></a><span class="n">a</span><span class="p">.</span><span class="n">VALOR_UNITARIO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">VALOR_UNITARIO</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19"></a><a href="#__codelineno-4-19"><span class="linenos" data-linenos="19 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">QUANTIDADE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">QUANTIDADE</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20"></a><a href="#__codelineno-4-20"><span class="linenos" data-linenos="20 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">VALOR_FINAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">VALOR_FINAL</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21"></a><a href="#__codelineno-4-21"><span class="linenos" data-linenos="21 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">DATA_ALTERACAO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22"></a><a href="#__codelineno-4-22"><span class="linenos" data-linenos="22 "></span></a>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23"></a><a href="#__codelineno-4-23"><span class="linenos" data-linenos="23 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">MATCHED</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24"></a><a href="#__codelineno-4-24"><span class="linenos" data-linenos="24 "></span></a><span class="k">THEN</span><span class="w"> </span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25"></a><a href="#__codelineno-4-25"><span class="linenos" data-linenos="25 "></span></a><span class="k">INSERT</span><span class="w"> </span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26"></a><a href="#__codelineno-4-26"><span class="linenos" data-linenos="26 "></span></a><span class="p">(</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27"></a><a href="#__codelineno-4-27"><span class="linenos" data-linenos="27 "></span></a><span class="n">CODIGO_VENDA</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28"></a><a href="#__codelineno-4-28"><span class="linenos" data-linenos="28 "></span></a><span class="p">,</span><span class="n">CODIGO_PRODUTO</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29"></a><a href="#__codelineno-4-29"><span class="linenos" data-linenos="29 "></span></a><span class="p">,</span><span class="n">VALOR_UNITARIO</span>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30"></a><a href="#__codelineno-4-30"><span class="linenos" data-linenos="30 "></span></a><span class="p">,</span><span class="n">QUANTIDADE</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31"></a><a href="#__codelineno-4-31"><span class="linenos" data-linenos="31 "></span></a><span class="p">,</span><span class="n">VALOR_FINAL</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32"></a><a href="#__codelineno-4-32"><span class="linenos" data-linenos="32 "></span></a><span class="p">,</span><span class="n">DATA_CADASTRO</span>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33"></a><a href="#__codelineno-4-33"><span class="linenos" data-linenos="33 "></span></a><span class="p">,</span><span class="n">DATA_ALTERACAO</span>
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34"></a><a href="#__codelineno-4-34"><span class="linenos" data-linenos="34 "></span></a><span class="p">)</span>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35"></a><a href="#__codelineno-4-35"><span class="linenos" data-linenos="35 "></span></a><span class="k">VALUES</span><span class="w"> </span>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36"></a><a href="#__codelineno-4-36"><span class="linenos" data-linenos="36 "></span></a><span class="p">(</span>
+</span><span id="__span-4-37"><a id="__codelineno-4-37" name="__codelineno-4-37"></a><a href="#__codelineno-4-37"><span class="linenos" data-linenos="37 "></span></a><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_VENDA</span>
+</span><span id="__span-4-38"><a id="__codelineno-4-38" name="__codelineno-4-38"></a><a href="#__codelineno-4-38"><span class="linenos" data-linenos="38 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_PRODUTO</span>
+</span><span id="__span-4-39"><a id="__codelineno-4-39" name="__codelineno-4-39"></a><a href="#__codelineno-4-39"><span class="linenos" data-linenos="39 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">VALOR_UNITARIO</span>
+</span><span id="__span-4-40"><a id="__codelineno-4-40" name="__codelineno-4-40"></a><a href="#__codelineno-4-40"><span class="linenos" data-linenos="40 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">QUANTIDADE</span>
+</span><span id="__span-4-41"><a id="__codelineno-4-41" name="__codelineno-4-41"></a><a href="#__codelineno-4-41"><span class="linenos" data-linenos="41 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">VALOR_FINAL</span>
+</span><span id="__span-4-42"><a id="__codelineno-4-42" name="__codelineno-4-42"></a><a href="#__codelineno-4-42"><span class="linenos" data-linenos="42 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-4-43"><a id="__codelineno-4-43" name="__codelineno-4-43"></a><a href="#__codelineno-4-43"><span class="linenos" data-linenos="43 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-4-44"><a id="__codelineno-4-44" name="__codelineno-4-44"></a><a href="#__codelineno-4-44"><span class="linenos" data-linenos="44 "></span></a><span class="p">)</span>
+</span></code></pre></div>
 <h3 id="seq-76-ingestao-de-dados-na-camada-silver-de-tb_loja">SEQ-7.6 - Ingestão de Dados na camada "silver" de tb_loja<br></h3>
-<pre><code>%sql
-MERGE INTO silver.tb_loja a
-USING (
-SELECT 
-CODIGO_LOJA
-,IFNULL(TRIM(acentuacao(NOME_LOJA)),'N/A') NOME_LOJA
-,IFNULL(TRIM(acentuacao(LOCALIDADE_LOJA)),'N/A') LOCALIDADE_LOJA
-,IFNULL(TRIM(TIPO_LOJA),'N/A') TIPO_LOJA
-FROM bronze.tb_loja
-) b
-
-ON a.CODIGO_LOJA= b.CODIGO_LOJA
-
-WHEN MATCHED THEN
-UPDATE SET 
-a.NOME_LOJA = b.NOME_LOJA
-,a.LOCALIDADE_LOJA = b.LOCALIDADE_LOJA
-,a.TIPO_LOJA = b.TIPO_LOJA
-,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
-
-WHEN NOT MATCHED
-THEN 
-INSERT (
-CODIGO_LOJA
-,NOME_LOJA
-,LOCALIDADE_LOJA
-,TIPO_LOJA
-,DATA_CADASTRO
-,DATA_ALTERACAO
-) 
-VALUES 
-(b.CODIGO_LOJA
-,b.NOME_LOJA
-,b.LOCALIDADE_LOJA
-,b.TIPO_LOJA
-,from_utc_timestamp(now(),'GMT-3')
-,from_utc_timestamp(now(),'GMT-3')
-)
-</code></pre>
+<div class="language-sql highlight"><span class="filename">Carga Silver tb_loja</span><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1"></a><a href="#__codelineno-5-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="o">%</span><span class="k">sql</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2"></a><a href="#__codelineno-5-2"><span class="linenos" data-linenos=" 2 "></span></a><span class="n">MERGE</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">silver</span><span class="p">.</span><span class="n">tb_loja</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3"></a><a href="#__codelineno-5-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="k">USING</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4"></a><a href="#__codelineno-5-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="k">SELECT</span><span class="w"> </span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5"></a><a href="#__codelineno-5-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">CODIGO_LOJA</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6"></a><a href="#__codelineno-5-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">acentuacao</span><span class="p">(</span><span class="n">NOME_LOJA</span><span class="p">)),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">NOME_LOJA</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7"></a><a href="#__codelineno-5-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">acentuacao</span><span class="p">(</span><span class="n">LOCALIDADE_LOJA</span><span class="p">)),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">LOCALIDADE_LOJA</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8"></a><a href="#__codelineno-5-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">TIPO_LOJA</span><span class="p">),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">TIPO_LOJA</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9"></a><a href="#__codelineno-5-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="k">FROM</span><span class="w"> </span><span class="n">bronze</span><span class="p">.</span><span class="n">tb_loja</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10"></a><a href="#__codelineno-5-10"><span class="linenos" data-linenos="10 "></span></a><span class="p">)</span><span class="w"> </span><span class="n">b</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11"></a><a href="#__codelineno-5-11"><span class="linenos" data-linenos="11 "></span></a>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12"></a><a href="#__codelineno-5-12"><span class="linenos" data-linenos="12 "></span></a><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_LOJA</span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_LOJA</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13"></a><a href="#__codelineno-5-13"><span class="linenos" data-linenos="13 "></span></a>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14"></a><a href="#__codelineno-5-14"><span class="linenos" data-linenos="14 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="n">MATCHED</span><span class="w"> </span><span class="k">THEN</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15"></a><a href="#__codelineno-5-15"><span class="linenos" data-linenos="15 "></span></a><span class="k">UPDATE</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16"></a><a href="#__codelineno-5-16"><span class="linenos" data-linenos="16 "></span></a><span class="n">a</span><span class="p">.</span><span class="n">NOME_LOJA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">NOME_LOJA</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17"></a><a href="#__codelineno-5-17"><span class="linenos" data-linenos="17 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">LOCALIDADE_LOJA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">LOCALIDADE_LOJA</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18"></a><a href="#__codelineno-5-18"><span class="linenos" data-linenos="18 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">TIPO_LOJA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">TIPO_LOJA</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19"></a><a href="#__codelineno-5-19"><span class="linenos" data-linenos="19 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">DATA_ALTERACAO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20"></a><a href="#__codelineno-5-20"><span class="linenos" data-linenos="20 "></span></a>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21"></a><a href="#__codelineno-5-21"><span class="linenos" data-linenos="21 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">MATCHED</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22"></a><a href="#__codelineno-5-22"><span class="linenos" data-linenos="22 "></span></a><span class="k">THEN</span><span class="w"> </span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23"></a><a href="#__codelineno-5-23"><span class="linenos" data-linenos="23 "></span></a><span class="k">INSERT</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24"></a><a href="#__codelineno-5-24"><span class="linenos" data-linenos="24 "></span></a><span class="n">CODIGO_LOJA</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25"></a><a href="#__codelineno-5-25"><span class="linenos" data-linenos="25 "></span></a><span class="p">,</span><span class="n">NOME_LOJA</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26"></a><a href="#__codelineno-5-26"><span class="linenos" data-linenos="26 "></span></a><span class="p">,</span><span class="n">LOCALIDADE_LOJA</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27"></a><a href="#__codelineno-5-27"><span class="linenos" data-linenos="27 "></span></a><span class="p">,</span><span class="n">TIPO_LOJA</span>
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28"></a><a href="#__codelineno-5-28"><span class="linenos" data-linenos="28 "></span></a><span class="p">,</span><span class="n">DATA_CADASTRO</span>
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29"></a><a href="#__codelineno-5-29"><span class="linenos" data-linenos="29 "></span></a><span class="p">,</span><span class="n">DATA_ALTERACAO</span>
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30"></a><a href="#__codelineno-5-30"><span class="linenos" data-linenos="30 "></span></a><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31"></a><a href="#__codelineno-5-31"><span class="linenos" data-linenos="31 "></span></a><span class="k">VALUES</span><span class="w"> </span>
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32"></a><a href="#__codelineno-5-32"><span class="linenos" data-linenos="32 "></span></a><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_LOJA</span>
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33"></a><a href="#__codelineno-5-33"><span class="linenos" data-linenos="33 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">NOME_LOJA</span>
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34"></a><a href="#__codelineno-5-34"><span class="linenos" data-linenos="34 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">LOCALIDADE_LOJA</span>
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35"></a><a href="#__codelineno-5-35"><span class="linenos" data-linenos="35 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">TIPO_LOJA</span>
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36"></a><a href="#__codelineno-5-36"><span class="linenos" data-linenos="36 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37"></a><a href="#__codelineno-5-37"><span class="linenos" data-linenos="37 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38"></a><a href="#__codelineno-5-38"><span class="linenos" data-linenos="38 "></span></a><span class="p">)</span>
+</span></code></pre></div>
 <h3 id="seq-77-ingestao-de-dados-na-camada-silver-de-tb_produto">SEQ-7.7 - Ingestão de Dados na camada "silver" de tb_produto<br></h3>
-<pre><code>%sql
-
-MERGE INTO silver.tb_produto a
-USING (SELECT 
-PROD.CODIGO_PRODUTO
-,IFNULL(TRIM(acentuacao(PROD.DESCRICAO_PRODUTO)),'N/A') DESCRICAO_PRODUTO
-,IFNULL(TRIM(PROD.CODIGO_CATEGORIA),'N/A') CODIGO_CATEGORIA
-FROM bronze.tb_produto PROD) b
-
-ON a.CODIGO_PRODUTO= b.CODIGO_PRODUTO
-
-WHEN MATCHED 
-THEN
-UPDATE SET 
-a.DESCRICAO_PRODUTO = b.DESCRICAO_PRODUTO
-,a.CODIGO_CATEGORIA = b.CODIGO_CATEGORIA
-,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
-
-WHEN NOT MATCHED
-THEN 
-INSERT 
-(
-CODIGO_PRODUTO
-,DESCRICAO_PRODUTO
-,CODIGO_CATEGORIA
-,DATA_CADASTRO
-,DATA_ALTERACAO
-) 
-VALUES 
-(
-b.CODIGO_PRODUTO
-,b.DESCRICAO_PRODUTO
-,b.CODIGO_CATEGORIA
-,from_utc_timestamp(now(),'GMT-3')
-,from_utc_timestamp(now(),'GMT-3')
-)
-</code></pre>
+<div class="language-sql highlight"><span class="filename">Carga Silver tb_produto</span><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1"></a><a href="#__codelineno-6-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="o">%</span><span class="k">sql</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2"></a><a href="#__codelineno-6-2"><span class="linenos" data-linenos=" 2 "></span></a>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3"></a><a href="#__codelineno-6-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="n">MERGE</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">silver</span><span class="p">.</span><span class="n">tb_produto</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4"></a><a href="#__codelineno-6-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="k">USING</span><span class="w"> </span><span class="p">(</span><span class="k">SELECT</span><span class="w"> </span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5"></a><a href="#__codelineno-6-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="n">PROD</span><span class="p">.</span><span class="n">CODIGO_PRODUTO</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6"></a><a href="#__codelineno-6-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">acentuacao</span><span class="p">(</span><span class="n">PROD</span><span class="p">.</span><span class="n">DESCRICAO_PRODUTO</span><span class="p">)),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">DESCRICAO_PRODUTO</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7"></a><a href="#__codelineno-6-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">PROD</span><span class="p">.</span><span class="n">CODIGO_CATEGORIA</span><span class="p">),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">CODIGO_CATEGORIA</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8"></a><a href="#__codelineno-6-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="k">FROM</span><span class="w"> </span><span class="n">bronze</span><span class="p">.</span><span class="n">tb_produto</span><span class="w"> </span><span class="n">PROD</span><span class="p">)</span><span class="w"> </span><span class="n">b</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9"></a><a href="#__codelineno-6-9"><span class="linenos" data-linenos=" 9 "></span></a>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10"></a><a href="#__codelineno-6-10"><span class="linenos" data-linenos="10 "></span></a><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_PRODUTO</span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_PRODUTO</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11"></a><a href="#__codelineno-6-11"><span class="linenos" data-linenos="11 "></span></a>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12"></a><a href="#__codelineno-6-12"><span class="linenos" data-linenos="12 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="n">MATCHED</span><span class="w"> </span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13"></a><a href="#__codelineno-6-13"><span class="linenos" data-linenos="13 "></span></a><span class="k">THEN</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14"></a><a href="#__codelineno-6-14"><span class="linenos" data-linenos="14 "></span></a><span class="k">UPDATE</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15"></a><a href="#__codelineno-6-15"><span class="linenos" data-linenos="15 "></span></a><span class="n">a</span><span class="p">.</span><span class="n">DESCRICAO_PRODUTO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">DESCRICAO_PRODUTO</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16"></a><a href="#__codelineno-6-16"><span class="linenos" data-linenos="16 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_CATEGORIA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_CATEGORIA</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17"></a><a href="#__codelineno-6-17"><span class="linenos" data-linenos="17 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">DATA_ALTERACAO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18"></a><a href="#__codelineno-6-18"><span class="linenos" data-linenos="18 "></span></a>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19"></a><a href="#__codelineno-6-19"><span class="linenos" data-linenos="19 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">MATCHED</span>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20"></a><a href="#__codelineno-6-20"><span class="linenos" data-linenos="20 "></span></a><span class="k">THEN</span><span class="w"> </span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21"></a><a href="#__codelineno-6-21"><span class="linenos" data-linenos="21 "></span></a><span class="k">INSERT</span><span class="w"> </span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22"></a><a href="#__codelineno-6-22"><span class="linenos" data-linenos="22 "></span></a><span class="p">(</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23"></a><a href="#__codelineno-6-23"><span class="linenos" data-linenos="23 "></span></a><span class="n">CODIGO_PRODUTO</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24"></a><a href="#__codelineno-6-24"><span class="linenos" data-linenos="24 "></span></a><span class="p">,</span><span class="n">DESCRICAO_PRODUTO</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25"></a><a href="#__codelineno-6-25"><span class="linenos" data-linenos="25 "></span></a><span class="p">,</span><span class="n">CODIGO_CATEGORIA</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26"></a><a href="#__codelineno-6-26"><span class="linenos" data-linenos="26 "></span></a><span class="p">,</span><span class="n">DATA_CADASTRO</span>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27"></a><a href="#__codelineno-6-27"><span class="linenos" data-linenos="27 "></span></a><span class="p">,</span><span class="n">DATA_ALTERACAO</span>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28"></a><a href="#__codelineno-6-28"><span class="linenos" data-linenos="28 "></span></a><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29"></a><a href="#__codelineno-6-29"><span class="linenos" data-linenos="29 "></span></a><span class="k">VALUES</span><span class="w"> </span>
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30"></a><a href="#__codelineno-6-30"><span class="linenos" data-linenos="30 "></span></a><span class="p">(</span>
+</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31"></a><a href="#__codelineno-6-31"><span class="linenos" data-linenos="31 "></span></a><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_PRODUTO</span>
+</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32"></a><a href="#__codelineno-6-32"><span class="linenos" data-linenos="32 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">DESCRICAO_PRODUTO</span>
+</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33"></a><a href="#__codelineno-6-33"><span class="linenos" data-linenos="33 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_CATEGORIA</span>
+</span><span id="__span-6-34"><a id="__codelineno-6-34" name="__codelineno-6-34"></a><a href="#__codelineno-6-34"><span class="linenos" data-linenos="34 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-6-35"><a id="__codelineno-6-35" name="__codelineno-6-35"></a><a href="#__codelineno-6-35"><span class="linenos" data-linenos="35 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-6-36"><a id="__codelineno-6-36" name="__codelineno-6-36"></a><a href="#__codelineno-6-36"><span class="linenos" data-linenos="36 "></span></a><span class="p">)</span>
+</span></code></pre></div>
 <h3 id="seq-78-ingestao-de-dados-na-camada-silver-de-tb_venda">SEQ-7.8 - Ingestão de Dados na camada "silver" de tb_venda<br></h3>
-<pre><code>%sql
-
-MERGE INTO silver.tb_venda a
-USING (
-SELECT 
-CODIGO_VENDA
-,DATA_VENDA
-,CODIGO_CLIENTE
-,CODIGO_VENDEDOR
-,CODIGO_LOJA
-,VALOR_FINAL
-,IFNULL(TRIM(FORMA_PAGAMENTO),'N/A') FORMA_PAGAMENTO
-,IFNULL(TRIM(TIPO_PAGAMENTO),'N/A') TIPO_PAGAMENTO
-FROM bronze.tb_venda
-) b
-
-ON a.CODIGO_VENDA= b.CODIGO_VENDA
-
-WHEN MATCHED THEN
-UPDATE SET 
-a.DATA_VENDA = b.DATA_VENDA
-,a.CODIGO_CLIENTE = b.CODIGO_CLIENTE
-,a.CODIGO_VENDEDOR = b.CODIGO_VENDEDOR
-,a.CODIGO_LOJA = b.CODIGO_LOJA
-,a.VALOR_FINAL = b.VALOR_FINAL
-,a.FORMA_PAGAMENTO = b.FORMA_PAGAMENTO
-,a.TIPO_PAGAMENTO = b.TIPO_PAGAMENTO
-,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
-
-WHEN NOT MATCHED
-THEN 
-INSERT 
-(
-CODIGO_VENDA
-,DATA_VENDA
-,CODIGO_CLIENTE
-,CODIGO_VENDEDOR
-,CODIGO_LOJA
-,VALOR_FINAL
-,FORMA_PAGAMENTO
-,TIPO_PAGAMENTO
-,DATA_CADASTRO
-,DATA_ALTERACAO
-)
-VALUES (
-b.CODIGO_VENDA
-,b.DATA_VENDA
-,b.CODIGO_CLIENTE
-,b.CODIGO_VENDEDOR
-,b.CODIGO_LOJA
-,b.VALOR_FINAL
-,b.FORMA_PAGAMENTO
-,b.TIPO_PAGAMENTO
-,from_utc_timestamp(now(),'GMT-3')
-,from_utc_timestamp(now(),'GMT-3')
-)
-</code></pre>
+<div class="language-sql highlight"><span class="filename">Carga Silver tb_venda</span><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1"></a><a href="#__codelineno-7-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="o">%</span><span class="k">sql</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2"></a><a href="#__codelineno-7-2"><span class="linenos" data-linenos=" 2 "></span></a>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3"></a><a href="#__codelineno-7-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="n">MERGE</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">silver</span><span class="p">.</span><span class="n">tb_venda</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4"></a><a href="#__codelineno-7-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="k">USING</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5"></a><a href="#__codelineno-7-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="k">SELECT</span><span class="w"> </span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6"></a><a href="#__codelineno-7-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="n">CODIGO_VENDA</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7"></a><a href="#__codelineno-7-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="p">,</span><span class="n">DATA_VENDA</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8"></a><a href="#__codelineno-7-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="p">,</span><span class="n">CODIGO_CLIENTE</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9"></a><a href="#__codelineno-7-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="p">,</span><span class="n">CODIGO_VENDEDOR</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10"></a><a href="#__codelineno-7-10"><span class="linenos" data-linenos="10 "></span></a><span class="p">,</span><span class="n">CODIGO_LOJA</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11"></a><a href="#__codelineno-7-11"><span class="linenos" data-linenos="11 "></span></a><span class="p">,</span><span class="n">VALOR_FINAL</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12"></a><a href="#__codelineno-7-12"><span class="linenos" data-linenos="12 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">FORMA_PAGAMENTO</span><span class="p">),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">FORMA_PAGAMENTO</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13"></a><a href="#__codelineno-7-13"><span class="linenos" data-linenos="13 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">TIPO_PAGAMENTO</span><span class="p">),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">TIPO_PAGAMENTO</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14"></a><a href="#__codelineno-7-14"><span class="linenos" data-linenos="14 "></span></a><span class="k">FROM</span><span class="w"> </span><span class="n">bronze</span><span class="p">.</span><span class="n">tb_venda</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15"></a><a href="#__codelineno-7-15"><span class="linenos" data-linenos="15 "></span></a><span class="p">)</span><span class="w"> </span><span class="n">b</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16"></a><a href="#__codelineno-7-16"><span class="linenos" data-linenos="16 "></span></a>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17"></a><a href="#__codelineno-7-17"><span class="linenos" data-linenos="17 "></span></a><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_VENDA</span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_VENDA</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18"></a><a href="#__codelineno-7-18"><span class="linenos" data-linenos="18 "></span></a>
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19"></a><a href="#__codelineno-7-19"><span class="linenos" data-linenos="19 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="n">MATCHED</span><span class="w"> </span><span class="k">THEN</span>
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20"></a><a href="#__codelineno-7-20"><span class="linenos" data-linenos="20 "></span></a><span class="k">UPDATE</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span>
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21"></a><a href="#__codelineno-7-21"><span class="linenos" data-linenos="21 "></span></a><span class="n">a</span><span class="p">.</span><span class="n">DATA_VENDA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">DATA_VENDA</span>
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22"></a><a href="#__codelineno-7-22"><span class="linenos" data-linenos="22 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_CLIENTE</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_CLIENTE</span>
+</span><span id="__span-7-23"><a id="__codelineno-7-23" name="__codelineno-7-23"></a><a href="#__codelineno-7-23"><span class="linenos" data-linenos="23 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_VENDEDOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_VENDEDOR</span>
+</span><span id="__span-7-24"><a id="__codelineno-7-24" name="__codelineno-7-24"></a><a href="#__codelineno-7-24"><span class="linenos" data-linenos="24 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_LOJA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_LOJA</span>
+</span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25"></a><a href="#__codelineno-7-25"><span class="linenos" data-linenos="25 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">VALOR_FINAL</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">VALOR_FINAL</span>
+</span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26"></a><a href="#__codelineno-7-26"><span class="linenos" data-linenos="26 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">FORMA_PAGAMENTO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">FORMA_PAGAMENTO</span>
+</span><span id="__span-7-27"><a id="__codelineno-7-27" name="__codelineno-7-27"></a><a href="#__codelineno-7-27"><span class="linenos" data-linenos="27 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">TIPO_PAGAMENTO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">TIPO_PAGAMENTO</span>
+</span><span id="__span-7-28"><a id="__codelineno-7-28" name="__codelineno-7-28"></a><a href="#__codelineno-7-28"><span class="linenos" data-linenos="28 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">DATA_ALTERACAO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-7-29"><a id="__codelineno-7-29" name="__codelineno-7-29"></a><a href="#__codelineno-7-29"><span class="linenos" data-linenos="29 "></span></a>
+</span><span id="__span-7-30"><a id="__codelineno-7-30" name="__codelineno-7-30"></a><a href="#__codelineno-7-30"><span class="linenos" data-linenos="30 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">MATCHED</span>
+</span><span id="__span-7-31"><a id="__codelineno-7-31" name="__codelineno-7-31"></a><a href="#__codelineno-7-31"><span class="linenos" data-linenos="31 "></span></a><span class="k">THEN</span><span class="w"> </span>
+</span><span id="__span-7-32"><a id="__codelineno-7-32" name="__codelineno-7-32"></a><a href="#__codelineno-7-32"><span class="linenos" data-linenos="32 "></span></a><span class="k">INSERT</span><span class="w"> </span>
+</span><span id="__span-7-33"><a id="__codelineno-7-33" name="__codelineno-7-33"></a><a href="#__codelineno-7-33"><span class="linenos" data-linenos="33 "></span></a><span class="p">(</span>
+</span><span id="__span-7-34"><a id="__codelineno-7-34" name="__codelineno-7-34"></a><a href="#__codelineno-7-34"><span class="linenos" data-linenos="34 "></span></a><span class="n">CODIGO_VENDA</span>
+</span><span id="__span-7-35"><a id="__codelineno-7-35" name="__codelineno-7-35"></a><a href="#__codelineno-7-35"><span class="linenos" data-linenos="35 "></span></a><span class="p">,</span><span class="n">DATA_VENDA</span>
+</span><span id="__span-7-36"><a id="__codelineno-7-36" name="__codelineno-7-36"></a><a href="#__codelineno-7-36"><span class="linenos" data-linenos="36 "></span></a><span class="p">,</span><span class="n">CODIGO_CLIENTE</span>
+</span><span id="__span-7-37"><a id="__codelineno-7-37" name="__codelineno-7-37"></a><a href="#__codelineno-7-37"><span class="linenos" data-linenos="37 "></span></a><span class="p">,</span><span class="n">CODIGO_VENDEDOR</span>
+</span><span id="__span-7-38"><a id="__codelineno-7-38" name="__codelineno-7-38"></a><a href="#__codelineno-7-38"><span class="linenos" data-linenos="38 "></span></a><span class="p">,</span><span class="n">CODIGO_LOJA</span>
+</span><span id="__span-7-39"><a id="__codelineno-7-39" name="__codelineno-7-39"></a><a href="#__codelineno-7-39"><span class="linenos" data-linenos="39 "></span></a><span class="p">,</span><span class="n">VALOR_FINAL</span>
+</span><span id="__span-7-40"><a id="__codelineno-7-40" name="__codelineno-7-40"></a><a href="#__codelineno-7-40"><span class="linenos" data-linenos="40 "></span></a><span class="p">,</span><span class="n">FORMA_PAGAMENTO</span>
+</span><span id="__span-7-41"><a id="__codelineno-7-41" name="__codelineno-7-41"></a><a href="#__codelineno-7-41"><span class="linenos" data-linenos="41 "></span></a><span class="p">,</span><span class="n">TIPO_PAGAMENTO</span>
+</span><span id="__span-7-42"><a id="__codelineno-7-42" name="__codelineno-7-42"></a><a href="#__codelineno-7-42"><span class="linenos" data-linenos="42 "></span></a><span class="p">,</span><span class="n">DATA_CADASTRO</span>
+</span><span id="__span-7-43"><a id="__codelineno-7-43" name="__codelineno-7-43"></a><a href="#__codelineno-7-43"><span class="linenos" data-linenos="43 "></span></a><span class="p">,</span><span class="n">DATA_ALTERACAO</span>
+</span><span id="__span-7-44"><a id="__codelineno-7-44" name="__codelineno-7-44"></a><a href="#__codelineno-7-44"><span class="linenos" data-linenos="44 "></span></a><span class="p">)</span>
+</span><span id="__span-7-45"><a id="__codelineno-7-45" name="__codelineno-7-45"></a><a href="#__codelineno-7-45"><span class="linenos" data-linenos="45 "></span></a><span class="k">VALUES</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-7-46"><a id="__codelineno-7-46" name="__codelineno-7-46"></a><a href="#__codelineno-7-46"><span class="linenos" data-linenos="46 "></span></a><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_VENDA</span>
+</span><span id="__span-7-47"><a id="__codelineno-7-47" name="__codelineno-7-47"></a><a href="#__codelineno-7-47"><span class="linenos" data-linenos="47 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">DATA_VENDA</span>
+</span><span id="__span-7-48"><a id="__codelineno-7-48" name="__codelineno-7-48"></a><a href="#__codelineno-7-48"><span class="linenos" data-linenos="48 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_CLIENTE</span>
+</span><span id="__span-7-49"><a id="__codelineno-7-49" name="__codelineno-7-49"></a><a href="#__codelineno-7-49"><span class="linenos" data-linenos="49 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_VENDEDOR</span>
+</span><span id="__span-7-50"><a id="__codelineno-7-50" name="__codelineno-7-50"></a><a href="#__codelineno-7-50"><span class="linenos" data-linenos="50 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_LOJA</span>
+</span><span id="__span-7-51"><a id="__codelineno-7-51" name="__codelineno-7-51"></a><a href="#__codelineno-7-51"><span class="linenos" data-linenos="51 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">VALOR_FINAL</span>
+</span><span id="__span-7-52"><a id="__codelineno-7-52" name="__codelineno-7-52"></a><a href="#__codelineno-7-52"><span class="linenos" data-linenos="52 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">FORMA_PAGAMENTO</span>
+</span><span id="__span-7-53"><a id="__codelineno-7-53" name="__codelineno-7-53"></a><a href="#__codelineno-7-53"><span class="linenos" data-linenos="53 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">TIPO_PAGAMENTO</span>
+</span><span id="__span-7-54"><a id="__codelineno-7-54" name="__codelineno-7-54"></a><a href="#__codelineno-7-54"><span class="linenos" data-linenos="54 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-7-55"><a id="__codelineno-7-55" name="__codelineno-7-55"></a><a href="#__codelineno-7-55"><span class="linenos" data-linenos="55 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-7-56"><a id="__codelineno-7-56" name="__codelineno-7-56"></a><a href="#__codelineno-7-56"><span class="linenos" data-linenos="56 "></span></a><span class="p">)</span>
+</span></code></pre></div>
 <h3 id="seq-79-ingestao-de-dados-na-camada-silver-de-tb_vendedor">SEQ-7.9 - Ingestão de Dados na camada "silver" de tb_vendedor<br></h3>
-<pre><code>%sql
-
-MERGE INTO silver.tb_vendedor a
-USING (
-SELECT 
-CODIGO_VENDEDOR
-,IFNULL(TRIM(acentuacao(NOME_VENDEDOR)),'N/A') NOME_VENDEDOR
-FROM bronze.tb_vendedor
-) b
-
-ON a.CODIGO_VENDEDOR= b.CODIGO_VENDEDOR
-
-WHEN MATCHED THEN
-UPDATE SET 
-a.NOME_VENDEDOR = b.NOME_VENDEDOR
-,a.DATA_ALTERACAO = from_utc_timestamp(now(),'GMT-3')
-
-WHEN NOT MATCHED
-THEN 
-INSERT 
-(
-CODIGO_VENDEDOR
-,NOME_VENDEDOR
-,DATA_CADASTRO
-,DATA_ALTERACAO
-) 
-VALUES 
-(
-b.CODIGO_VENDEDOR
-,b.NOME_VENDEDOR
-,from_utc_timestamp(now(),'GMT-3')
-,from_utc_timestamp(now(),'GMT-3')
-)
-</code></pre>
+<div class="language-sql highlight"><span class="filename">Carga Silver tb_vendedor</span><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1"></a><a href="#__codelineno-8-1"><span class="linenos" data-linenos=" 1 "></span></a><span class="o">%</span><span class="k">sql</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2"></a><a href="#__codelineno-8-2"><span class="linenos" data-linenos=" 2 "></span></a>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3"></a><a href="#__codelineno-8-3"><span class="linenos" data-linenos=" 3 "></span></a><span class="n">MERGE</span><span class="w"> </span><span class="k">INTO</span><span class="w"> </span><span class="n">silver</span><span class="p">.</span><span class="n">tb_vendedor</span><span class="w"> </span><span class="n">a</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4"></a><a href="#__codelineno-8-4"><span class="linenos" data-linenos=" 4 "></span></a><span class="k">USING</span><span class="w"> </span><span class="p">(</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5"></a><a href="#__codelineno-8-5"><span class="linenos" data-linenos=" 5 "></span></a><span class="k">SELECT</span><span class="w"> </span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6"></a><a href="#__codelineno-8-6"><span class="linenos" data-linenos=" 6 "></span></a><span class="n">CODIGO_VENDEDOR</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7"></a><a href="#__codelineno-8-7"><span class="linenos" data-linenos=" 7 "></span></a><span class="p">,</span><span class="n">IFNULL</span><span class="p">(</span><span class="k">TRIM</span><span class="p">(</span><span class="n">acentuacao</span><span class="p">(</span><span class="n">NOME_VENDEDOR</span><span class="p">)),</span><span class="s1">&#39;N/A&#39;</span><span class="p">)</span><span class="w"> </span><span class="n">NOME_VENDEDOR</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8"></a><a href="#__codelineno-8-8"><span class="linenos" data-linenos=" 8 "></span></a><span class="k">FROM</span><span class="w"> </span><span class="n">bronze</span><span class="p">.</span><span class="n">tb_vendedor</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9"></a><a href="#__codelineno-8-9"><span class="linenos" data-linenos=" 9 "></span></a><span class="p">)</span><span class="w"> </span><span class="n">b</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10"></a><a href="#__codelineno-8-10"><span class="linenos" data-linenos="10 "></span></a>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11"></a><a href="#__codelineno-8-11"><span class="linenos" data-linenos="11 "></span></a><span class="k">ON</span><span class="w"> </span><span class="n">a</span><span class="p">.</span><span class="n">CODIGO_VENDEDOR</span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_VENDEDOR</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12"></a><a href="#__codelineno-8-12"><span class="linenos" data-linenos="12 "></span></a>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13"></a><a href="#__codelineno-8-13"><span class="linenos" data-linenos="13 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="n">MATCHED</span><span class="w"> </span><span class="k">THEN</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14"></a><a href="#__codelineno-8-14"><span class="linenos" data-linenos="14 "></span></a><span class="k">UPDATE</span><span class="w"> </span><span class="k">SET</span><span class="w"> </span>
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15"></a><a href="#__codelineno-8-15"><span class="linenos" data-linenos="15 "></span></a><span class="n">a</span><span class="p">.</span><span class="n">NOME_VENDEDOR</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">b</span><span class="p">.</span><span class="n">NOME_VENDEDOR</span>
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16"></a><a href="#__codelineno-8-16"><span class="linenos" data-linenos="16 "></span></a><span class="p">,</span><span class="n">a</span><span class="p">.</span><span class="n">DATA_ALTERACAO</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17"></a><a href="#__codelineno-8-17"><span class="linenos" data-linenos="17 "></span></a>
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18"></a><a href="#__codelineno-8-18"><span class="linenos" data-linenos="18 "></span></a><span class="k">WHEN</span><span class="w"> </span><span class="k">NOT</span><span class="w"> </span><span class="n">MATCHED</span>
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19"></a><a href="#__codelineno-8-19"><span class="linenos" data-linenos="19 "></span></a><span class="k">THEN</span><span class="w"> </span>
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20"></a><a href="#__codelineno-8-20"><span class="linenos" data-linenos="20 "></span></a><span class="k">INSERT</span><span class="w"> </span>
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21"></a><a href="#__codelineno-8-21"><span class="linenos" data-linenos="21 "></span></a><span class="p">(</span>
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22"></a><a href="#__codelineno-8-22"><span class="linenos" data-linenos="22 "></span></a><span class="n">CODIGO_VENDEDOR</span>
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23"></a><a href="#__codelineno-8-23"><span class="linenos" data-linenos="23 "></span></a><span class="p">,</span><span class="n">NOME_VENDEDOR</span>
+</span><span id="__span-8-24"><a id="__codelineno-8-24" name="__codelineno-8-24"></a><a href="#__codelineno-8-24"><span class="linenos" data-linenos="24 "></span></a><span class="p">,</span><span class="n">DATA_CADASTRO</span>
+</span><span id="__span-8-25"><a id="__codelineno-8-25" name="__codelineno-8-25"></a><a href="#__codelineno-8-25"><span class="linenos" data-linenos="25 "></span></a><span class="p">,</span><span class="n">DATA_ALTERACAO</span>
+</span><span id="__span-8-26"><a id="__codelineno-8-26" name="__codelineno-8-26"></a><a href="#__codelineno-8-26"><span class="linenos" data-linenos="26 "></span></a><span class="p">)</span><span class="w"> </span>
+</span><span id="__span-8-27"><a id="__codelineno-8-27" name="__codelineno-8-27"></a><a href="#__codelineno-8-27"><span class="linenos" data-linenos="27 "></span></a><span class="k">VALUES</span><span class="w"> </span>
+</span><span id="__span-8-28"><a id="__codelineno-8-28" name="__codelineno-8-28"></a><a href="#__codelineno-8-28"><span class="linenos" data-linenos="28 "></span></a><span class="p">(</span>
+</span><span id="__span-8-29"><a id="__codelineno-8-29" name="__codelineno-8-29"></a><a href="#__codelineno-8-29"><span class="linenos" data-linenos="29 "></span></a><span class="n">b</span><span class="p">.</span><span class="n">CODIGO_VENDEDOR</span>
+</span><span id="__span-8-30"><a id="__codelineno-8-30" name="__codelineno-8-30"></a><a href="#__codelineno-8-30"><span class="linenos" data-linenos="30 "></span></a><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">NOME_VENDEDOR</span>
+</span><span id="__span-8-31"><a id="__codelineno-8-31" name="__codelineno-8-31"></a><a href="#__codelineno-8-31"><span class="linenos" data-linenos="31 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-8-32"><a id="__codelineno-8-32" name="__codelineno-8-32"></a><a href="#__codelineno-8-32"><span class="linenos" data-linenos="32 "></span></a><span class="p">,</span><span class="n">from_utc_timestamp</span><span class="p">(</span><span class="n">now</span><span class="p">(),</span><span class="s1">&#39;GMT-3&#39;</span><span class="p">)</span>
+</span><span id="__span-8-33"><a id="__codelineno-8-33" name="__codelineno-8-33"></a><a href="#__codelineno-8-33"><span class="linenos" data-linenos="33 "></span></a><span class="p">)</span>
+</span></code></pre></div>
 
 
 
@@ -1108,7 +1107,7 @@ b.CODIGO_VENDEDOR
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
       <script src="../assets/javascripts/bundle.aecac24b.min.js"></script>
