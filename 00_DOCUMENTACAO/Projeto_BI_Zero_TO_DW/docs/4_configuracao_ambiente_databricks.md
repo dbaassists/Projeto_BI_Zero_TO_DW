@@ -90,6 +90,17 @@ DROP SCHEMA IF EXISTS bronze CASCADE;
 CREATE SCHEMA IF NOT EXISTS bronze COMMENT 'SCHEMA (Banco de Dados) referente a Camada BRONZE.';
 ```
 
+``` {.py3 title="Removendo o location das tabelas no HDFS" linenums=1}
+dbutils.fs.rm('dbfs:/user/hive/warehouse/bronze.db/tb_forma_pagamento', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/bronze.db/tb_categoria_produto', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/bronze.db/tb_produto', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/bronze.db/tb_cliente', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/bronze.db/tb_vendedor', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/bronze.db/tb_loja', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/bronze.db/tb_venda', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/bronze.db/tb_item_venda', True);
+```
+
 ### SEQ-4.3 - Criação Schema de Dados "silver"
 
 Criação do Schema de Dados "silver" para armazenamento dos dados ingeridos da camada bronze.
@@ -105,6 +116,17 @@ DROP SCHEMA IF EXISTS silver CASCADE;
 CREATE SCHEMA IF NOT EXISTS silver COMMENT 'SCHEMA (Banco de Dados) referente a Camada SILVER.';
 ```
 
+``` {.py3 title="Removendo o location das tabelas no HDFS" linenums=1}
+dbutils.fs.rm('dbfs:/user/hive/warehouse/silver.db/tb_forma_pagamento', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/silver.db/tb_categoria_produto', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/silver.db/tb_produto', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/silver.db/tb_cliente', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/silver.db/tb_vendedor', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/silver.db/tb_loja', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/silver.db/tb_venda', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/silver.db/tb_item_venda', True);
+```
+
 ### SEQ-4.4 - Criação Schema de Dados "gold"
 
 Criação do Schema de Dados "gold" para armazenamento dos dados após a ingestão dos dados na camada silver.
@@ -118,6 +140,17 @@ DROP SCHEMA IF EXISTS gold CASCADE;
 ``` {.sql title="Criação do Schema" linenums=1}
 %sql
 CREATE SCHEMA IF NOT EXISTS gold COMMENT 'SCHEMA (Banco de Dados) referente a Camada GOLD.';
+```
+
+``` {.py3 title="Removendo o location das tabelas no HDFS" linenums=1}
+dbutils.fs.rm('dbfs:/user/hive/warehouse/gold.db/dim_forma_pagamento', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/gold.db/dim_categoria_produto', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/gold.db/dim_produto', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/gold.db/dim_cliente', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/gold.db/dim_vendedor', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/gold.db/dim_loja', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/gold.db/fato_venda', True);
+dbutils.fs.rm('dbfs:/user/hive/warehouse/gold.db/dim_tempo', True);
 ```
 
 [Documentação Create Schema Databricks](https://learn.microsoft.com/en-us/azure/databricks/sql/language-manual/sql-ref-syntax-ddl-create-schema)

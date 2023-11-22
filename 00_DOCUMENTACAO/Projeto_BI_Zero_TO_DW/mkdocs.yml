@@ -27,7 +27,8 @@ nav:
   - 8. Notebook - Ingestão de Dados na Camada Gold: 8_ingestao_dados_camada_gold.md  
   - 9. Notebook - Análise dos Dados: 9_analise_dados.md  
   - 10. Notebook - Notebook Externo: 10_notebook_externo.md  
-  - 11. Onde encontro os arquivos?: 11_arquivos.md    
+  - 11. Gerando a Massa de Dados: 11_gerar_massa_dados.md      
+  - 12. Onde encontro os arquivos?: 12_arquivos.md    
 
 markdown_extensions:
   - pymdownx.highlight:
