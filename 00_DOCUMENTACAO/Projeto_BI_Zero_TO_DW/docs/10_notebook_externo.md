@@ -6,7 +6,7 @@
 
 Essa função ela varre a coluna posição a posição em busca de caracter com acentos para poder substituir.
 
-```
+``` {.py3 title="Função Remove Acentuação" linenums=1}
 def acentuacao(var):
   De   = "áéíóúàèìòùâêîôûãõäëïöüçñÿýÁÉÍÓÚÀÈÌÒÙÂÊÎÔÛÃÕÄËÏÖÜÇÑŸÝ"
   Para = "aeiouaeiouaeiouaoaeioucnyyAEIOUAEIOUAEIOUAOAEIOUCNYY"
@@ -34,7 +34,7 @@ Para conhecer melhor seu funcionamento, deixo o link de um vídeo do meu canal q
 
 ### SEQ-10.2 - Função Cria Dados Dimensão Tempo
 
-```
+``` {.py3 title="Função Criação Dados Dimensão Tempo" linenums=1}
 def cria_dimensao_tempo(data_inicial, data_fim, dias_acrescimo):
 
         inicio = data_inicial
