@@ -1,0 +1,92 @@
+CODIGO_PRODUTO;DESCRICAO_PRODUTO;CODIGO_CATEGORIA
+1;Absolut;1
+7;Cîroc;1
+23;Skyy;1
+24;Smirnoff;1
+2;Bacardi;2
+16;Malibu;2
+17;Martini;2
+3;Ballantines;3
+4;Chivas Regal;3
+11;Grants;3
+13;Jack Daniels;3
+14;Johnnie Walker;3
+5;Coca-Cola;4
+6;Coca-Cola Zero;4
+8;Fanta Laranja;4
+9;Fanta Uva;4
+12;Guaraná Antarctica;4
+15;Kuat;4
+18;Mineirinho;4
+20;Pepsi;4
+21;Pepsi Twister;4
+22;Pepsi Zero;4
+25;Sprite;4
+26;Sprite Zero;4
+10;Gordons;5
+27;Tanqueray;5
+19;Moët & Chandon;6
+28;Acém;7
+29;Alcatra;7
+33;Chuleta;7
+34;Contrafilé;7
+37;Costela;7
+41;Coxão Duro;7
+42;Coxão mole;7
+43;Filé Mignon;7
+46;Fraldinha;7
+47;Lagarto;7
+48;Maminha;7
+50;Músculo dianteiro;7
+51;Paleta;7
+52;Patinho;7
+54;Picanha;7
+30;Atum;8
+31;Bacalhau;8
+32;Camarão;8
+36;Corvina;8
+49;Merluza;8
+53;Pescadinha;8
+55;Salmão;8
+56;Sardinha;8
+35;Coração;9
+38;Coxa;9
+39;Coxa com sobrecoxa;9
+40;Coxinha da asa;9
+44;Filé de peito;9
+45;Filé de sobrecoxa;9
+57;Sassami;9
+58;Sobrecoxa;9
+59;ABÓBORA;10
+60;ACELGA;10
+61;AGRIÃO;10
+62;ALCACHOFRA;10
+63;ALFACE;10
+64;ALHO-PORÓ;10
+65;ALMEIRÃO;10
+66;ASPARGO;10
+67;BATATA;10
+68;BERINJELA;10
+69;BERTALHA;10
+70;BETERRABA;10
+71;BRÓCOLIS;10
+72;CEBOLA;10
+73;CENOURA;10
+74;CHICÓRIA;10
+75;CHUCHU;10
+76;COUVE;10
+77;COUVE–FLOR;10
+78;JILÓ;10
+79;LENTILHA;10
+80;MANDIOCA;10
+81;MAXIXE;10
+82;MILHO VERDE;10
+83;MOSTARDA;10
+84;NABO;10
+85;PALMITO;10
+86;PEPINO;10
+87;PIMENTÃO;10
+88;QUIABO;10
+89;RABANETE;10
+90;TOMATE;10
+91;VAGEM;10

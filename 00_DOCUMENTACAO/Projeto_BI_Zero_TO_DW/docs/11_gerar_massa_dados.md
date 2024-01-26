@@ -1,17 +1,55 @@
 # Projeto BI Zero TO DW
 
-### 10 - Notebook Externo
+### 11 - Notebook Externo
 
 ### SEQ-11.1 - Definindo as Bibliotecas
 
 Selecionado quais bibliotecas serão usadas.
 
 ``` {.py3 title="Bibliotecas Usadas" linenums=1}
-import pandas as pd
 import numpy as np
+from faker import Faker
+import pandas as pd
+from pandas import DataFrame
+from datetime import datetime
 ```
 
-### SEQ-11.2 - Massa de Dados de Produtos
+### SEQ-11.2 - Massa de Dados Fakes de Pessoas
+
+```{.py3 title="Criação Massa de Dados Fakes de Pessoas" linenums=1}
+
+def geracao_dados_fake(qtd_rows: int = 100, locale: str = "pt_BR") -> DataFrame:
+
+    data_atual = datetime.now()
+    local_faker = Faker(locale)
+    list_result = []
+    for _ in range(qtd_rows):
+        data_nascimento = local_faker.date()
+        dict_result = {
+            "Nome": local_faker.name(),
+            "NomOcupacao": local_faker.job(),
+            "NomCidade": local_faker.country(),
+            "NumTelefone": local_faker.phone_number(),
+            "NomEmail": local_faker.ascii_email(),
+            "DataNascimento": str(data_nascimento),
+            'NumIdade': (data_atual.date() - datetime.strptime(data_nascimento, "%Y-%m-%d").date()).days //365
+        }
+        list_result.append(dict_result)
+
+    return pd.DataFrame(list_result)
+
+dfDadosFake = geracao_dados_fake(500000)
+
+arquivo = fr'C:\Temp\Python_YT\Arquivo_Exemplo\exemplo_pessoas.csv'
+
+dfDadosFake.to_csv(arquivo
+                 , sep=';'
+                 , header=True
+                 , index=False)    
+
+```
+
+### SEQ-11.3 - Massa de Dados de Produtos
 
 ```{.py3 title="Criação Dataframe de Produtos" linenums=1}
 dadosProdutos = [('ABÓBORA', 'Verduras e Legumes', 'Verduras e Legumes')
@@ -122,7 +160,7 @@ dfProdutos.to_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\D
                   ,index=False)
 ```
 
-### SEQ-11.3 - Massa de Dados de Cliente
+### SEQ-11.4 - Massa de Dados de Cliente
 
 ```{.py3 title="Criação Dataframe de Clientes" linenums=1}
 df = pd.read_csv(f'C:\Temp\Python_YT\Arquivo_Exemplo\exemplo_pessoas.csv' , sep='|')
@@ -143,7 +181,7 @@ dfPessoas.to_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DA
                   ,index=False)
 ```
 
-### SEQ-11.4 - Massa de Dados de Vendedor
+### SEQ-11.5 - Massa de Dados de Vendedor
 
 ```{.py3 title="Criação Dataframe de Vendedores" linenums=1}
 dfPessoasVendedor = df.loc[3333:3383,['Nome']] #.sort_values(by=['Nome'])
@@ -173,7 +211,7 @@ dfVendedor.to_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\D
 ```
 
 
-### SEQ-11.5 - Massa de Dados de Forma de Pagamento
+### SEQ-11.6 - Massa de Dados de Forma de Pagamento
 
 ```{.py3 title="Criação Dataframe de Forma de Pagamento" linenums=1}
 dadosFormaPagamento = ['CARTÃO DÉBITO'
@@ -192,7 +230,7 @@ dfFormaPagamento.to_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT
 ```
 
 
-### SEQ-11.6 - Massa de Dados de Loja
+### SEQ-11.7 - Massa de Dados de Loja
 
 ```{.py3 title="Criação Dataframe de Loja" linenums=1}
 dadosloja = [
@@ -212,7 +250,7 @@ dfLoja.to_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS
                   ,index=False)
 ```
 
-### SEQ-11.7 - Massa de Dados de Venda
+### SEQ-11.8 - Massa de Dados de Venda
 
 ```{.py3 title="Criação Dataframe de Venda" linenums=1}
 dfFinal = pd.DataFrame(columns=['CODIGO_VENDA'
