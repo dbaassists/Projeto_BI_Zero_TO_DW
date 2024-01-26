@@ -1,92 +1,92 @@
-CODIGO_PRODUTO;DESCRICAO_PRODUTO;TIPO_PRODUTO;CODIGO_CATEGORIA
-1;Moët & Chandon;Champagne;Bebidas
-2;Gordons;Gin;Bebidas
-3;Tanqueray;Gin;Bebidas
-4;Coca-Cola;Refrigerante;Bebidas
-5;Coca-Cola Zero;Refrigerante;Bebidas
-6;Fanta Laranja;Refrigerante;Bebidas
-7;Fanta Uva;Refrigerante;Bebidas
-8;Guaraná Antarctica;Refrigerante;Bebidas
-9;Kuat;Refrigerante;Bebidas
-10;Mineirinho;Refrigerante;Bebidas
-11;Pepsi;Refrigerante;Bebidas
-12;Pepsi Twister;Refrigerante;Bebidas
-13;Pepsi Zero;Refrigerante;Bebidas
-14;Sprite;Refrigerante;Bebidas
-15;Sprite Zero;Refrigerante;Bebidas
-16;Bacardi;Rum;Bebidas
-17;Malibu;Rum;Bebidas
-18;Martini;Rum;Bebidas
-19;Absolut;Vodka;Bebidas
-20;Cîroc;Vodka;Bebidas
-21;Skyy;Vodka;Bebidas
-22;Smirnoff;Vodka;Bebidas
-23;Ballantines;Whisky;Bebidas
-24;Chivas Regal;Whisky;Bebidas
-25;Grants;Whisky;Bebidas
-26;Jack Daniels;Whisky;Bebidas
-27;Johnnie Walker;Whisky;Bebidas
-28;Acém;Carne Boi;Carnes
-29;Alcatra;Carne Boi;Carnes
-30;Chuleta;Carne Boi;Carnes
-31;Contrafilé;Carne Boi;Carnes
-32;Costela;Carne Boi;Carnes
-33;Coxão Duro;Carne Boi;Carnes
-34;Coxão mole;Carne Boi;Carnes
-35;Filé Mignon;Carne Boi;Carnes
-36;Fraldinha;Carne Boi;Carnes
-37;Lagarto;Carne Boi;Carnes
-38;Maminha;Carne Boi;Carnes
-39;Músculo dianteiro;Carne Boi;Carnes
-40;Paleta;Carne Boi;Carnes
-41;Patinho;Carne Boi;Carnes
-42;Picanha;Carne Boi;Carnes
-43;Coração;Carne Frango;Carnes
-44;Coxa;Carne Frango;Carnes
-45;Coxa com sobrecoxa;Carne Frango;Carnes
-46;Coxinha da asa;Carne Frango;Carnes
-47;Filé de peito;Carne Frango;Carnes
-48;Filé de sobrecoxa;Carne Frango;Carnes
-49;Sassami;Carne Frango;Carnes
-50;Sobrecoxa;Carne Frango;Carnes
-51;Atum;Carne Peixe;Carnes
-52;Bacalhau;Carne Peixe;Carnes
-53;Camarão;Carne Peixe;Carnes
-54;Corvina;Carne Peixe;Carnes
-55;Merluza;Carne Peixe;Carnes
-56;Pescadinha;Carne Peixe;Carnes
-57;Salmão;Carne Peixe;Carnes
-58;Sardinha;Carne Peixe;Carnes
-59;ABÓBORA;Verduras e Legumes;Verduras e Legumes
-60;ACELGA;Verduras e Legumes;Verduras e Legumes
-61;AGRIÃO;Verduras e Legumes;Verduras e Legumes
-62;ALCACHOFRA;Verduras e Legumes;Verduras e Legumes
-63;ALFACE;Verduras e Legumes;Verduras e Legumes
-64;ALHO-PORÓ;Verduras e Legumes;Verduras e Legumes
-65;ALMEIRÃO;Verduras e Legumes;Verduras e Legumes
-66;ASPARGO;Verduras e Legumes;Verduras e Legumes
-67;BATATA;Verduras e Legumes;Verduras e Legumes
-68;BERINJELA;Verduras e Legumes;Verduras e Legumes
-69;BERTALHA;Verduras e Legumes;Verduras e Legumes
-70;BETERRABA;Verduras e Legumes;Verduras e Legumes
-71;BRÓCOLIS;Verduras e Legumes;Verduras e Legumes
-72;CEBOLA;Verduras e Legumes;Verduras e Legumes
-73;CENOURA;Verduras e Legumes;Verduras e Legumes
-74;CHICÓRIA;Verduras e Legumes;Verduras e Legumes
-75;CHUCHU;Verduras e Legumes;Verduras e Legumes
-76;COUVE;Verduras e Legumes;Verduras e Legumes
-77;COUVE–FLOR;Verduras e Legumes;Verduras e Legumes
-78;JILÓ;Verduras e Legumes;Verduras e Legumes
-79;LENTILHA;Verduras e Legumes;Verduras e Legumes
-80;MANDIOCA;Verduras e Legumes;Verduras e Legumes
-81;MAXIXE;Verduras e Legumes;Verduras e Legumes
-82;MILHO VERDE;Verduras e Legumes;Verduras e Legumes
-83;MOSTARDA;Verduras e Legumes;Verduras e Legumes
-84;NABO;Verduras e Legumes;Verduras e Legumes
-85;PALMITO;Verduras e Legumes;Verduras e Legumes
-86;PEPINO;Verduras e Legumes;Verduras e Legumes
-87;PIMENTÃO;Verduras e Legumes;Verduras e Legumes
-88;QUIABO;Verduras e Legumes;Verduras e Legumes
-89;RABANETE;Verduras e Legumes;Verduras e Legumes
-90;TOMATE;Verduras e Legumes;Verduras e Legumes
-91;VAGEM;Verduras e Legumes;Verduras e Legumes
+CODIGO_PRODUTO;DESCRICAO_PRODUTO;CODIGO_CATEGORIA
+1;Absolut;1
+7;Cîroc;1
+23;Skyy;1
+24;Smirnoff;1
+2;Bacardi;2
+16;Malibu;2
+17;Martini;2
+3;Ballantines;3
+4;Chivas Regal;3
+11;Grants;3
+13;Jack Daniels;3
+14;Johnnie Walker;3
+5;Coca-Cola;4
+6;Coca-Cola Zero;4
+8;Fanta Laranja;4
+9;Fanta Uva;4
+12;Guaraná Antarctica;4
+15;Kuat;4
+18;Mineirinho;4
+20;Pepsi;4
+21;Pepsi Twister;4
+22;Pepsi Zero;4
+25;Sprite;4
+26;Sprite Zero;4
+10;Gordons;5
+27;Tanqueray;5
+19;Moët & Chandon;6
+28;Acém;7
+29;Alcatra;7
+33;Chuleta;7
+34;Contrafilé;7
+37;Costela;7
+41;Coxão Duro;7
+42;Coxão mole;7
+43;Filé Mignon;7
+46;Fraldinha;7
+47;Lagarto;7
+48;Maminha;7
+50;Músculo dianteiro;7
+51;Paleta;7
+52;Patinho;7
+54;Picanha;7
+30;Atum;8
+31;Bacalhau;8
+32;Camarão;8
+36;Corvina;8
+49;Merluza;8
+53;Pescadinha;8
+55;Salmão;8
+56;Sardinha;8
+35;Coração;9
+38;Coxa;9
+39;Coxa com sobrecoxa;9
+40;Coxinha da asa;9
+44;Filé de peito;9
+45;Filé de sobrecoxa;9
+57;Sassami;9
+58;Sobrecoxa;9
+59;ABÓBORA;10
+60;ACELGA;10
+61;AGRIÃO;10
+62;ALCACHOFRA;10
+63;ALFACE;10
+64;ALHO-PORÓ;10
+65;ALMEIRÃO;10
+66;ASPARGO;10
+67;BATATA;10
+68;BERINJELA;10
+69;BERTALHA;10
+70;BETERRABA;10
+71;BRÓCOLIS;10
+72;CEBOLA;10
+73;CENOURA;10
+74;CHICÓRIA;10
+75;CHUCHU;10
+76;COUVE;10
+77;COUVE–FLOR;10
+78;JILÓ;10
+79;LENTILHA;10
+80;MANDIOCA;10
+81;MAXIXE;10
+82;MILHO VERDE;10
+83;MOSTARDA;10
+84;NABO;10
+85;PALMITO;10
+86;PEPINO;10
+87;PIMENTÃO;10
+88;QUIABO;10
+89;RABANETE;10
+90;TOMATE;10
+91;VAGEM;10

@@ -1,0 +1,9 @@
+{
+	"Config":
+	{
+	"server": "localhost\\DBAASSISTS:1433",
+	"database": "TREINAMENTO",
+	"username": "usr_treinamento",
+	"password": "Tr&in@M&nT0SQL2024!"
+	}
+}
