@@ -14,8 +14,6 @@ driver = 'SQL Server'
 # %% 
 
 print('00 (INICIO) - TERMINO PROCESSO DE CARGA DADOS')
-
-
 # %% 
 
 print('01 (INICIO) - CARGA DE DADOS DE CLIENTES')
@@ -69,10 +67,46 @@ with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+'
                         """)
             
 print('01 (FIM) - CARGA DE DADOS DE CLIENTES')
-        
+
+
+                       
 # %%
 
-print('02 (INICIO) - CARGA DE DADOS DE LOJAS')
+print('02 (INICIO) - CARGA DE DADOS DE VENDEDORES')
+
+dfvendedor = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\03_vendedores.csv'
+                        ,sep=';')
+
+#with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
+
+with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
+
+    with conn.cursor() as cursor:
+
+        cursor.execute(fr"""DELETE FROM dbo.TB_LOJA;
+                       DELETE FROM dbo.TB_VENDEDOR;
+                       """)
+
+        for i, coluna in dfvendedor.iterrows():
+
+            cursor.execute(fr"""
+                        SET IDENTITY_INSERT dbo.TB_VENDEDOR ON;  
+                        INSERT INTO dbo.TB_VENDEDOR 
+                        (CODIGO_VENDEDOR
+                        ,NOME_VENDEDOR) 
+                        VALUES (
+                           {coluna['CODIGO_VENDEDOR']} 
+                        , '{coluna['NOME_VENDEDOR']}'
+                        )
+                        SET IDENTITY_INSERT dbo.TB_VENDEDOR OFF;  
+                        """)
+            
+print('02 (FIM) - CARGA DE DADOS DE VENDEDORES')            
+
+       
+# %%
+
+print('03 (INICIO) - CARGA DE DADOS DE LOJAS')
 
 dfloja = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\04_lojas.csv'
                         ,sep=';')
@@ -91,24 +125,27 @@ with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+'
             cursor.execute(fr"""
                         SET IDENTITY_INSERT dbo.TB_LOJA ON;
                         INSERT INTO dbo.TB_LOJA 
-                        (
-                        CODIGO_LOJA
+                        (CODIGO_LOJA_VENDEDOR
+                        ,CODIGO_LOJA
+                        ,CODIGO_VENDEDOR
                         ,NOME_LOJA
                         ,LOCALIDADE_LOJA
                         ,TIPO_LOJA) 
                         VALUES (
-                        {coluna['CODIGO_LOJA']}
+                        {coluna['CODIGO_LOJA_VENDEDOR']}
+                        , {coluna['CODIGO_LOJA']}
+                        , {coluna['CODIGO_VENDEDOR']}
                         , '{coluna['NOME_LOJA']}' 
                         , '{coluna['LOCALIDADE_LOJA']}'
                         , '{coluna['TIPO_LOJA']}')
                         SET IDENTITY_INSERT dbo.TB_LOJA OFF;
                         """)
             
-print('02 (FIM) - CARGA DE DADOS DE LOJAS')            
+print('04 (FIM) - CARGA DE DADOS DE LOJAS')            
 
 # %%
 
-print('03 (INICIO) - CARGA DE DADOS DE CATEGORIA PRODUTOS')
+print('04 (INICIO) - CARGA DE DADOS DE CATEGORIA PRODUTOS')
 
 dfCategoriaProduto = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\08_categoria_produtos.csv'
                         ,sep=';')
@@ -140,11 +177,11 @@ with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+'
                         SET IDENTITY_INSERT dbo.TB_CATEGORIA_PRODUTO OFF;  
                         """)
 
-print('03 (FIM) - CARGA DE DADOS DE CATEGORIA PRODUTOS')
+print('04 (FIM) - CARGA DE DADOS DE CATEGORIA PRODUTOS')
 
 # %%
 
-print('04 (INICIO) - CARGA DE DADOS DE PRODUTOS')
+print('05 (INICIO) - CARGA DE DADOS DE PRODUTOS')
 
 dfproduto = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\02_produtos.csv'
                         ,sep=';')
@@ -173,38 +210,7 @@ with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+'
                         SET IDENTITY_INSERT dbo.TB_PRODUTO OFF;  
                         """)
             
-print('04 (FIM) - CARGA DE DADOS DE PRODUTOS')            
-                        
-# %%
-
-print('05 (INICIO) - CARGA DE DADOS DE VENDEDORES')
-
-dfvendedor = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\03_vendedores.csv'
-                        ,sep=';')
-
-#with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
-
-with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
-
-    with conn.cursor() as cursor:
-
-        cursor.execute(fr"""DELETE FROM dbo.TB_VENDEDOR;""")
-
-        for i, coluna in dfvendedor.iterrows():
-
-            cursor.execute(fr"""
-                        SET IDENTITY_INSERT dbo.TB_VENDEDOR ON;  
-                        INSERT INTO dbo.TB_VENDEDOR 
-                        (CODIGO_VENDEDOR
-                        ,NOME_VENDEDOR) 
-                        VALUES (
-                           {coluna['CODIGO_VENDEDOR']} 
-                        , '{coluna['NOME_VENDEDOR']}'
-                        )
-                        SET IDENTITY_INSERT dbo.TB_VENDEDOR OFF;  
-                        """)
-            
-print('05 (FIM) - CARGA DE DADOS DE VENDEDORES')            
+print('05 (FIM) - CARGA DE DADOS DE PRODUTOS')            
 
 # %%
 
@@ -245,8 +251,7 @@ dfVenda = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_S
                       ,dtype={'CODIGO_VENDA': int
                             ,'DATA_VENDA': str
                             ,'CODIGO_CLIENTE': int
-                            ,'CODIGO_VENDEDOR': int
-                            ,'CODIGO_LOJA': int
+                            ,'CODIGO_LOJA_VENDEDOR': int
                             ,'VALOR_FINAL': float
                             ,'FORMA_PAGAMENTO': int
                             ,'TIPO_PAGAMENTO': str}
@@ -255,9 +260,6 @@ dfVenda = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_S
 
 
 dfVenda.sort_values(by='FORMA_PAGAMENTO')
-
-
-# %% 
 
 #with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
 
@@ -277,8 +279,7 @@ with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+'
                         (CODIGO_VENDA
                         ,DATA_VENDA
                         ,CODIGO_CLIENTE
-                        ,CODIGO_VENDEDOR
-                        ,CODIGO_LOJA
+                        ,CODIGO_LOJA_VENDEDOR
                         ,VALOR_FINAL
                         ,CODIGO_FORMA_PAGAMENTO
                         ,TIPO_PAGAMENTO) 
@@ -286,8 +287,7 @@ with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+'
                         {coluna['CODIGO_VENDA']}
                         ,'{coluna['DATA_VENDA']}'
                         ,{coluna['CODIGO_CLIENTE']}
-                        ,{coluna['CODIGO_VENDEDOR']}
-                        ,{coluna['CODIGO_LOJA']}
+                        ,{coluna['CODIGO_LOJA_VENDEDOR']}
                         ,'{coluna['VALOR_FINAL']}'
                         ,{coluna['FORMA_PAGAMENTO']}
                         ,'{coluna['TIPO_PAGAMENTO']}'

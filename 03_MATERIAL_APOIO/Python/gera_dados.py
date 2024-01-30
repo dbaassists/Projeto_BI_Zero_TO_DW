@@ -260,8 +260,13 @@ print('05 (INICIO) - PROCESSO GERAÇÃO DE DADOS DE VENDEDORES')
 dfPessoasVendedor = df.loc[1400:1438,['Nome']] #.sort_values(by=['Nome'])
 dfVendedor = pd.DataFrame(columns=['CODIGO_VENDEDOR','NOME_VENDEDOR'])
 
+dfVendedor_ecommerce = pd.DataFrame({'CODIGO_VENDEDOR': [0]
+                                            ,'NOME_VENDEDOR':['E-Commerce']})
+
+dfVendedor = dfVendedor.append(dfVendedor_ecommerce, ignore_index=True)
+
 codigo_vendedor_inicial = 1
-codigo_vendedor_final = len(dfVendedor)
+codigo_vendedor_final = len(dfVendedor)-1
 
 for vendedor in dfPessoasVendedor['Nome']:
 
@@ -315,14 +320,67 @@ dadosloja = [
 ('LOJA C','CE','FÍSICA')
 ]
 
+lista_vendedores = []
+
 dfLoja = pd.DataFrame(dadosloja, columns=['NOME_LOJA', 'LOCALIDADE_LOJA', 'TIPO_LOJA'])
 
 dfLoja['CODIGO_LOJA'] = np.arange(1, len(dfLoja) + 1)
 
-dfLoja.to_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\04_lojas.csv'
+dfLojaFinal = pd.DataFrame(columns=['CODIGO_LOJA','NOME_LOJA', 'LOCALIDADE_LOJA', 'TIPO_LOJA', 'CODIGO_VENDEDOR'])
+
+for index in dfLoja.index:
+
+    print(index)
+
+    if dfLoja['NOME_LOJA'][index] == 'E-COMMERCE':
+
+        dfLojaFinal_vendedor = pd.DataFrame({'CODIGO_LOJA': [dfLoja['CODIGO_LOJA'][index]]
+                                            ,'NOME_LOJA': [dfLoja['NOME_LOJA'][index]]
+                                            ,'LOCALIDADE_LOJA':[dfLoja['LOCALIDADE_LOJA'][index]]
+                                            ,'TIPO_LOJA':[dfLoja['TIPO_LOJA'][index]]
+                                            ,'CODIGO_VENDEDOR':[0]}
+                                            )
+
+        dfLojaFinal =  pd.concat([dfLojaFinal, dfLojaFinal_vendedor])
+
+    else:
+
+        indice_vendedor_randomico = np.random.choice(dfVendedor[dfVendedor['CODIGO_VENDEDOR'] != 0].index, size = random.randint(5, 9) , replace=False)
+
+        for ivr in indice_vendedor_randomico:
+
+            if ivr not in lista_vendedores:
+
+                dfLojaFinal_vendedor = pd.DataFrame({'CODIGO_LOJA': [dfLoja['CODIGO_LOJA'][index]]
+                                                    ,'NOME_LOJA': [dfLoja['NOME_LOJA'][index]]
+                                                    ,'LOCALIDADE_LOJA':[dfLoja['LOCALIDADE_LOJA'][index]]
+                                                    ,'TIPO_LOJA':[dfLoja['TIPO_LOJA'][index]]
+                                                    ,'CODIGO_VENDEDOR':[ivr]}
+                                                    )
+
+                dfLojaFinal =  pd.concat([dfLojaFinal, dfLojaFinal_vendedor])                   
+
+                lista_vendedores.append(ivr)    
+
+dfLojaFinal = dfLojaFinal[['CODIGO_LOJA'
+                          , 'CODIGO_VENDEDOR'
+                          , 'NOME_LOJA'
+                          , 'LOCALIDADE_LOJA'
+                          , 'TIPO_LOJA']].sort_values(by=['CODIGO_LOJA','CODIGO_VENDEDOR'], ascending=[True, True])
+
+dfLojaFinal['CODIGO_LOJA_VENDEDOR'] = np.arange(0, len(dfLojaFinal))
+
+dfLojaFinal[['CODIGO_LOJA_VENDEDOR'
+            , 'CODIGO_LOJA'
+            , 'CODIGO_VENDEDOR'
+            , 'NOME_LOJA'
+            , 'LOCALIDADE_LOJA'
+            , 'TIPO_LOJA']].to_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\04_lojas.csv'
                   ,sep=';'
                   ,header=True
                   ,index=False)
+
+dfLojaFinal = dfLojaFinal.reset_index()
 
 print('07 (FIM) - PROCESSO GERAÇÃO DE DADOS DE LOJAS')
 
@@ -338,7 +396,7 @@ dfFinal = pd.DataFrame(columns=['CODIGO_VENDA'
                     ,'DESCRICAO_PRODUTO'
                     ,'CODIGO_CATEGORIA'
                     ,'TIPO_PRODUTO'
-                    ,'CODIGO_VENDEDOR'
+                    ,'CODIGO_LOJA_VENDEDOR'
                     ,'NOME_VENDEDOR'
                     ,'CODIGO_LOJA'
                     ,'NOME_LOJA'
@@ -350,9 +408,7 @@ dfFinal = pd.DataFrame(columns=['CODIGO_VENDA'
                     ,'TIPO_PAGAMENTO'])
 
 codigo_venda_inicial = 1
-codigo_venda_final = 100 #43209
-
-#for pessoa in dfPessoas.index:
+codigo_venda_final = 2542 #43209
 
 while codigo_venda_final > 0:
 
@@ -364,15 +420,17 @@ while codigo_venda_final > 0:
     pessoa = int(np.random.choice(dfPessoas.index, size = 1 , replace=False))
     indice_randomico_vendedor = int(np.random.choice(dfVendedor.index, size = 1 , replace=False))
     indice_randomico_forma_pagamento = int(np.random.choice(dfFormaPagamento.index, size = 1 , replace=False))    
-    indice_randomico_loja = int(np.random.choice(dfLoja.index, size = 1 , replace=False))    
 
+    indice_randomico_loja = int(np.random.choice(dfLojaFinal.index, size = 1 , replace=False))    
+    
     v_vendedor = dfVendedor['NOME_VENDEDOR'][indice_randomico_vendedor]
     v_codigo_vendedor = dfVendedor['CODIGO_VENDEDOR'][indice_randomico_vendedor]
 
-    v_codigo_loja = dfLoja['CODIGO_LOJA'][indice_randomico_loja]
-    v_loja = dfLoja['NOME_LOJA'][indice_randomico_loja]
-    v_lojalocalidade = dfLoja['LOCALIDADE_LOJA'][indice_randomico_loja]   
-    v_lojatipo = dfLoja['TIPO_LOJA'][indice_randomico_loja]       
+    v_codigo_loja = dfLojaFinal['CODIGO_LOJA_VENDEDOR'][indice_randomico_loja]
+
+    v_loja = dfLojaFinal['NOME_LOJA'][indice_randomico_loja]
+    v_lojalocalidade = dfLojaFinal['LOCALIDADE_LOJA'][indice_randomico_loja]   
+    v_lojatipo = dfLojaFinal['TIPO_LOJA'][indice_randomico_loja]       
     v_formaPagamento = dfFormaPagamento['DESCRICAO_FORMA_PAGAMENTO'][indice_randomico_forma_pagamento]
     v_codigo_formaPagamento = dfFormaPagamento['CODIGO_FORMA_PAGAMENTO'][indice_randomico_forma_pagamento]
 
@@ -383,8 +441,7 @@ while codigo_venda_final > 0:
     
     p_data_venda = pd.to_datetime(np.random.uniform(data_inicio.value, data_fim.value, size=365))
 
-
-    if v_codigo_loja == 1:
+    if v_codigo_loja == 0:
 
         v_data_venda = p_data_venda[0].strftime("%Y-%m-%d %H:%M:%S")
     
@@ -397,6 +454,16 @@ while codigo_venda_final > 0:
         data = str(p_data_venda[0].year) + '-' + str(p_data_venda[0].month).zfill(2) + '-' + str(p_data_venda[0].day).zfill(2) + ' ' + str(hora).zfill(2) + ':' + str(minuto).zfill(2) + ':' + str(segundo).zfill(2)
 
         v_data_venda = datetime.strptime(data, "%Y-%m-%d %H:%M:%S")
+
+    tipo_pagamento = random.randint(1, 4)
+
+    if tipo_pagamento == 3:
+
+        v_tipo_pagamento = 'PARCELADO'
+
+    else:
+
+        v_tipo_pagamento = 'A VISTA'        
 
     for i in indice_randomico:
 
@@ -482,16 +549,6 @@ while codigo_venda_final > 0:
         v_produto = dfProdutos['DESCRICAO_PRODUTO'][i]
         v_codigo_produto = dfProdutos['CODIGO_PRODUTO'][i]
         v_tipo_produto = dfProdutos['CODIGO_CATEGORIA'][i]
-
-        tipo_pagamento = int(np.random.randint(1, 4, size=1))
-
-        if tipo_pagamento == 3:
-
-            v_tipo_pagamento = 'PARCELADO'
-
-        else:
-
-            v_tipo_pagamento = 'A VISTA'
         
         dados = [{ 'CODIGO_VENDA' : codigo_venda_inicial
                     ,'DATA_VENDA': str(v_data_venda)
@@ -501,14 +558,14 @@ while codigo_venda_final > 0:
                     ,'DESCRICAO_PRODUTO' : v_produto
                     ,'CODIGO_VENDEDOR': v_codigo_vendedor
                     ,'NOME_VENDEDOR' : v_vendedor
-                    ,'CODIGO_LOJA': v_codigo_loja
+                    ,'CODIGO_LOJA_VENDEDOR': v_codigo_loja
                     ,'NOME_LOJA': v_loja
                     ,'LOCALIDADE_LOJA': v_lojalocalidade
                     ,'TIPO_LOJA': v_lojatipo
                     ,'VALOR_UNITARIO': round(float(valor),2)
                     ,'QUANTIDADE': v_quantidade
                     ,'VALOR_FINAL': round((round(float(valor),2) * v_quantidade),2)
-                    ,'FORMA_PAGAMENTO' : v_codigo_formaPagamento
+                    ,'FORMA_PAGAMENTO' : int(v_codigo_formaPagamento)
                     ,'TIPO_PAGAMENTO' : v_tipo_pagamento}]       
 
         df = pd.DataFrame(dados)
@@ -528,8 +585,7 @@ print('09 (INICIO) - PROCESSO GERAÇÃO DE DADOS DE VENDAS')
 dfVenda = (dfFinal.groupby(['CODIGO_VENDA'
                             ,'DATA_VENDA'
                             ,'CODIGO_CLIENTE'
-                            ,'CODIGO_VENDEDOR'
-                            ,'CODIGO_LOJA'
+                            ,'CODIGO_LOJA_VENDEDOR'
                             ,'FORMA_PAGAMENTO'
                             ,'TIPO_PAGAMENTO'], as_index=False)
                 .agg(VALOR_FINAL=('VALOR_FINAL','sum'))
@@ -564,6 +620,5 @@ print('10 (FIM) - PROCESSO GERAÇÃO DE DADOS DE ITENS DE VENDAS')
 # %%
 
 print('00 (FIM) - TERMINO PROCESSO DE CARGA DADOS')
-
 
 # %%
