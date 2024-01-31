@@ -22,3 +22,6 @@ Para visualizar o arquivo da arquitetura do projeto (SEQ-03), é ncessário aces
 | SEQ-10 | Arquivo Ingestão Dados Camada Gold | [Notebook Carga Camada Gold](https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/02_NOTEBOOK/04_ingestao_camada_gold.ipynb) |
 | SEQ-11 | Arquivo Carga Dados Azure SQL Database Schema DW | [Notebook Carga DW Azure SQL Database](https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/02_NOTEBOOK/05_carga_dados_sql_dw.ipynb) |
 | SEQ-12 | Arquivo Análise de Dados Databricks | [Notebook Análise dos Dados](https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/02_NOTEBOOK/06_analise_dados.ipynb) |
+| SEQ-13 | Arquivo Python Geração Massa Dados  | [Geração Massa Dados](https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/03_MATERIAL_APOIO/Python/gera_dados.py) |
+| SEQ-14 | Arquivo Carga de Dados no SQL Server | [Carga de Dados no SQL Server](https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/03_MATERIAL_APOIO/Python/carga_dados.py) |
+| SEQ-15 | Arquivo Modelo Dados Toad Data Modeler | [Modelo Dados Toad Data Modeler](https://github.com/dbaassists/Projeto_BI_Zero_TO_DW/blob/main/03_MATERIAL_APOIO/MODELO_DADOS.png) |

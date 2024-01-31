@@ -23,8 +23,6 @@ diretorio = fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_B
 dfcliente = pd.read_csv(diretorio
                     ,sep=';')
 
-#with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
-
 with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
 
     with conn.cursor() as cursor:
@@ -36,8 +34,6 @@ with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+'
                         """)
 
         for i, coluna in dfcliente.iterrows():
-
-            #print(coluna['Nome'])
 
             cursor.execute(fr"""
                         SET IDENTITY_INSERT dbo.TB_CLIENTE ON;  
@@ -77,8 +73,6 @@ print('02 (INICIO) - CARGA DE DADOS DE VENDEDORES')
 dfvendedor = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\03_vendedores.csv'
                         ,sep=';')
 
-#with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
-
 with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
 
     with conn.cursor() as cursor:
@@ -111,8 +105,6 @@ print('03 (INICIO) - CARGA DE DADOS DE LOJAS')
 dfloja = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\04_lojas.csv'
                         ,sep=';')
 
-#with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
-
 with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
     with conn.cursor() as cursor:
 
@@ -141,7 +133,7 @@ with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+'
                         SET IDENTITY_INSERT dbo.TB_LOJA OFF;
                         """)
             
-print('04 (FIM) - CARGA DE DADOS DE LOJAS')            
+print('03 (FIM) - CARGA DE DADOS DE LOJAS')            
 
 # %%
 
@@ -149,8 +141,6 @@ print('04 (INICIO) - CARGA DE DADOS DE CATEGORIA PRODUTOS')
 
 dfCategoriaProduto = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\08_categoria_produtos.csv'
                         ,sep=';')
-
-#with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
 
 with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
 
@@ -185,8 +175,6 @@ print('05 (INICIO) - CARGA DE DADOS DE PRODUTOS')
 
 dfproduto = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\02_produtos.csv'
                         ,sep=';')
-
-#with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
 
 with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
 
@@ -261,8 +249,6 @@ dfVenda = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_S
 
 dfVenda.sort_values(by='FORMA_PAGAMENTO')
 
-#with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
-
 with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
 
     with conn.cursor() as cursor:
@@ -308,8 +294,6 @@ dfItemVenda = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRI
                             ,'QUANTIDADE': int
                             ,'VALOR_FINAL': float}
                         ,sep=';')
-
-#with pyodbc.connect('DRIVER='+driver+';SERVER=tcp:'+server+';PORT=1433;DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
 
 with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
 
