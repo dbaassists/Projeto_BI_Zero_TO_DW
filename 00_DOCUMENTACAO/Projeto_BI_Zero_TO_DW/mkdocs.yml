@@ -28,8 +28,9 @@ nav:
   - 9. Notebook - Análise dos Dados: 9_analise_dados.md  
   - 10. Notebook - Notebook Externo: 10_notebook_externo.md  
   - 11. Gerando a Massa de Dados: 11_gerar_massa_dados.md      
-  - 12. Carga de Dados no SQL Server: 12_carga_sql_server.md    
-  - 13. Onde encontro os arquivos?: 13_arquivos.md      
+  - 12. Carga de Dados no SQL Server Camada Relacional: 12_carga_sql_server_relacional.md    
+  - 13. Carga de Dados no SQL Server Camada Multidimensional: 13_carga_sql_server_multidimensional.md    
+  - 14. Onde encontro os arquivos?: 14_arquivos.md      
 
 markdown_extensions:
   - pymdownx.highlight:

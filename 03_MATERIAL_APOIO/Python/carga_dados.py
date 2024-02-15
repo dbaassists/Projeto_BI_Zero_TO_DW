@@ -323,4 +323,44 @@ print('08 (FIM) - CARGA DE DADOS DE ITEM VENDA')
 
 # %%
 
+print('09 (INICIO) - CARGA DE DADOS DE TEMPO')
+
+dfTempo = pd.read_csv(fr'C:\Temp\Python_YT\Git\Projeto_BI_Zero_TO_DW\01_SCRIPT_SQL\DADOS_BASE\09_tempo.csv'
+                      ,dtype={'ID_TEMPO': str
+                            ,'DATA': str
+                            ,'ANO': int
+                            ,'MES': int
+                            ,'DIA': int}
+                      ,date_parser=['DATA']
+                        ,sep=';')
+
+with pyodbc.connect('DRIVER={'+driver+'};SERVER='+server+';DATABASE='+database+';UID='+username+';PWD='+ password) as conn:
+
+    with conn.cursor() as cursor:
+
+        cursor.execute(fr"""TRUNCATE TABLE dbo.Tempo;""")        
+
+        for i, coluna in dfTempo.iterrows():
+
+            cursor.execute(fr"""
+                        INSERT INTO dbo.Tempo 
+                        (ID_TEMPO
+                        ,DATA
+                        ,ANO
+                        ,MES
+                        ,DIA) 
+                        VALUES (
+                        '{coluna['ID_TEMPO']}'
+                        ,{coluna['DATA']}
+                        ,{coluna['ANO']}
+                        ,{coluna['MES']}
+                        ,{coluna['DIA']}
+                        )
+                        """)
+
+print('09 (FIM) - CARGA DE DADOS DE TEMPO')
+
+
+# %%
+
 print('00 (FIM) - TERMINO PROCESSO DE CARGA DADOS')

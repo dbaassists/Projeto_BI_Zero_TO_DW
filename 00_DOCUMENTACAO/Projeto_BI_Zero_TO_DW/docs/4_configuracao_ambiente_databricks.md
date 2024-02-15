@@ -362,23 +362,14 @@ ID_FORMA_PAGAMENTO VARCHAR(100) COMMENT 'Chave da Dimensão Forma de Pagamento.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
 
-DROP  TABLE IF EXISTS gold.dim_categoria_produto;
-CREATE TABLE gold.dim_categoria_produto
-(
-ID_CATEGORIA_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Categoria do Produto.'
-,CODIGO_CATEGORIA INT COMMENT 'Código da Categoria do Produto.'
-,DECRICAO_CATEGORIA VARCHAR(100) COMMENT 'Descrição da Categoria do Produto.'
-,DATA_CADASTRO TIMESTAMP COMMENT 'Data de Cadastro do Registro.'
-,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
-);
-
 DROP  TABLE IF EXISTS gold.dim_produto;
 CREATE TABLE gold.dim_produto
 (
 ID_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Produto.'
 ,CODIGO_PRODUTO	 INT  COMMENT 'Código do Produto.'
-,DESCRICAO_PRODUTO	 VARCHAR(100) COMMENT 'Descrição do Produto.'
-,CODIGO_CATEGORIA INT COMMENT 'Categoria do Produto.'
+,DESCRICAO_PRODUTO VARCHAR(100) COMMENT 'Descrição do Produto.'
+,CATEGORIA_PRODUTO VARCHAR(100) COMMENT 'Categoria do Produto.'
+,SUB_CATEGORIA_PRODUTO VARCHAR(100) COMMENT 'Categoria do Produto.'
 ,DATA_CADASTRO TIMESTAMP COMMENT 'Data de Cadastro do Registro.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
@@ -389,16 +380,14 @@ CREATE TABLE gold.dim_cliente
 ID_CLIENTE VARCHAR(100) COMMENT 'Chave da Dimensão Cliente.'
 ,CODIGO_CLIENTE INT COMMENT 'Código do Cliente.'
 ,NOME_CLIENTE VARCHAR(100) COMMENT 'Nome do Cliente.'
-,DATA_CADASTRO TIMESTAMP COMMENT 'Data de Cadastro do Registro.'
-,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
-);
-
-DROP  TABLE IF EXISTS gold.dim_vendedor;
-CREATE TABLE gold.dim_vendedor
-(
-ID_VENDEDOR VARCHAR(100) COMMENT 'Chave da Dimensão Vendedor.'
-,CODIGO_VENDEDOR INT COMMENT 'Código do Vendedor.'
-,NOME_VENDEDOR VARCHAR(100) COMMENT 'Nome do Vendedor.'
+,DATA_NASCIMENTO DATE COMMENT 'Data de Nascimento do Cliente'
+,IDADE_CLIENTE INT COMMENT 'Idade do Cliente'
+,DESCRICAO_ENDERECO VARCHAR(200) COMMENT 'Endereço do Cliente'
+,NUMERO_ENDERECO INT COMMENT 'Numero da Residencia do Cliente'
+,NOME_CIDADE VARCHAR(100) COMMENT 'Cidade de Residência do Cliente'
+,NUMERO_TELEFONE VARCHAR(30) COMMENT 'Telefone do Cliente'
+,EMAIL_CLIENTE VARCHAR(100) COMMENT 'E-mail do Cliente'
+,OCUPACAO_CLIENTE VARCHAR(100) COMMENT 'Ocupação do cliente'
 ,DATA_CADASTRO TIMESTAMP COMMENT 'Data de Cadastro do Registro.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
@@ -409,26 +398,9 @@ CREATE TABLE gold.dim_loja
 ID_LOJA VARCHAR(100) COMMENT 'Chave da Dimensão Loja.'
 ,CODIGO_LOJA	 INT COMMENT 'Código da Loja.'
 ,NOME_LOJA	 VARCHAR(100) COMMENT 'Nome da Loja.'
+,NOME_VENDEDOR VARCHAR(100)  COMMENT 'Nome do Vendedor.'
 ,LOCALIDADE_LOJA	 VARCHAR(100) COMMENT 'Localidade da Loja.'
 ,TIPO_LOJA VARCHAR(100) COMMENT 'Tipo da Loja.'
-,DATA_CADASTRO TIMESTAMP COMMENT 'Data de Cadastro do Registro.'
-,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
-);
-
-DROP  TABLE IF EXISTS gold.fato_venda;
-CREATE TABLE gold.fato_venda
-(
-ID_TEMPO VARCHAR(100)  COMMENT 'Chave da Dimensão Tempo.'
-,ID_CLIENTE	VARCHAR(100)  COMMENT 'Chave da Dimensão Cliente.'
-,ID_VENDEDOR VARCHAR(100) COMMENT 'Chave da Dimensão Vendedor.'
-,ID_LOJA VARCHAR(100) COMMENT 'Chave da Dimensão Loja.'
-,ID_FORMA_PAGAMENTO	 VARCHAR(100) COMMENT 'Chave da Dimensão Forma de Pagamento.'
-,ID_PRODUTO	VARCHAR(100)  COMMENT 'Chave da Dimensão Produto.'
-,ID_CATEGORIA_PRODUTO VARCHAR(100) COMMENT 'Chave da Dimensão Categoria do Produto.'
-,CODIGO_VENDA INT COMMENT 'Código da Venda.'
-,QUANTIDADE	INT COMMENT 'Quantidade vendida do produto.'
-,VALOR_UNITARIO DECIMAL(18,2)	 COMMENT 'Valor unitário do produto.'
-,TIPO_PAGAMENTO VARCHAR(100) COMMENT 'Tipo de Pagamentto da Venda.'
 ,DATA_CADASTRO TIMESTAMP COMMENT 'Data de Cadastro do Registro.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
@@ -441,6 +413,24 @@ ID_TEMPO VARCHAR(100) COMMENT 'Chave da Dimensão Tempo.'
 ,ANO INT COMMENT 'Ano referente a coluna data.'
 ,MES	INT COMMENT 'Mês referente a coluna data.'
 ,DIA INT COMMENT 'Dia referente a coluna data.' 
+,DATA_CADASTRO TIMESTAMP COMMENT 'Data de Cadastro do Registro.'
+,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
+);
+
+DROP  TABLE IF EXISTS gold.fato_venda;
+CREATE TABLE gold.fato_venda
+(
+CODIGO_VENDA INT COMMENT 'Código da Venda.'
+,ID_CLIENTE	VARCHAR(100)  COMMENT 'Chave da Dimensão Cliente.'
+,ID_LOJA VARCHAR(100) COMMENT 'Chave da Dimensão Loja.'
+,ID_PRODUTO	VARCHAR(100)  COMMENT 'Chave da Dimensão Produto.'
+,ID_FORMA_PAGAMENTO	 VARCHAR(100) COMMENT 'Chave da Dimensão Forma de Pagamento.'
+,ID_TEMPO VARCHAR(100)  COMMENT 'Chave da Dimensão Tempo.'
+,HORA_VENDA	INT COMMENT 'Hora em que ocorreu a venda.'
+,QUANTIDADE	INT COMMENT 'Quantidade vendida do produto.'
+,VALOR_UNITARIO DECIMAL(18,2)	 COMMENT 'Valor unitário do produto.'
+,VALOR_FINAL DECIMAL(18,2)	 COMMENT 'Valor vendido de um produto.'
+,TIPO_PAGAMENTO VARCHAR(100) COMMENT 'Tipo de Pagamentto da Venda.'
 ,DATA_CADASTRO TIMESTAMP COMMENT 'Data de Cadastro do Registro.'
 ,DATA_ALTERACAO TIMESTAMP COMMENT 'Data de Atualização do Registro.'
 );
