@@ -1,5 +1,26 @@
 USE [TREINAMENTO]
 GO
+IF  EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Tempo', N'COLUMN',N'DATA_ALTERACAO'))
+EXEC sys.sp_dropextendedproperty @name=N'MS_Description' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'DATA_ALTERACAO'
+GO
+IF  EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Tempo', N'COLUMN',N'DATA_CADASTRO'))
+EXEC sys.sp_dropextendedproperty @name=N'MS_Description' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'DATA_CADASTRO'
+GO
+IF  EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Tempo', N'COLUMN',N'DIA'))
+EXEC sys.sp_dropextendedproperty @name=N'MS_Description' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'DIA'
+GO
+IF  EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Tempo', N'COLUMN',N'MES'))
+EXEC sys.sp_dropextendedproperty @name=N'MS_Description' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'MES'
+GO
+IF  EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Tempo', N'COLUMN',N'ANO'))
+EXEC sys.sp_dropextendedproperty @name=N'MS_Description' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'ANO'
+GO
+IF  EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Tempo', N'COLUMN',N'DATA'))
+EXEC sys.sp_dropextendedproperty @name=N'MS_Description' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'DATA'
+GO
+IF  EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'Tempo', N'COLUMN',N'ID_TEMPO'))
+EXEC sys.sp_dropextendedproperty @name=N'MS_Description' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'ID_TEMPO'
+GO
 IF  EXISTS (SELECT * FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'dbo', N'TABLE',N'TB_VENDEDOR', NULL,NULL))
 EXEC sys.sp_dropextendedproperty @name=N'MS_Description' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TB_VENDEDOR'
 GO
@@ -150,46 +171,55 @@ GO
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[TB_ITEM_VENDA]') AND type in (N'U'))
 ALTER TABLE [dbo].[TB_ITEM_VENDA] DROP CONSTRAINT IF EXISTS [FK_TB_ITEM_VENDA_PRODUTO]
 GO
-/****** Object:  Index [IX_02]    Script Date: 30/01/2024 16:00:29 ******/
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Tempo]') AND type in (N'U'))
+ALTER TABLE [dbo].[Tempo] DROP CONSTRAINT IF EXISTS [DF__Tempo__DATA_ALTE__3CFEF876]
+GO
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Tempo]') AND type in (N'U'))
+ALTER TABLE [dbo].[Tempo] DROP CONSTRAINT IF EXISTS [DF__Tempo__DATA_CADA__3C0AD43D]
+GO
+/****** Object:  Index [IX_02]    Script Date: 15/02/2024 08:28:02 ******/
 DROP INDEX IF EXISTS [IX_02] ON [dbo].[TB_VENDA]
 GO
-/****** Object:  Index [IX_01]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Index [IX_01]    Script Date: 15/02/2024 08:28:02 ******/
 DROP INDEX IF EXISTS [IX_01] ON [dbo].[TB_VENDA]
 GO
-/****** Object:  Index [IX_01]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Index [IX_01]    Script Date: 15/02/2024 08:28:02 ******/
 DROP INDEX IF EXISTS [IX_01] ON [dbo].[TB_PRODUTO]
 GO
-/****** Object:  Index [IX_02]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Index [IX_02]    Script Date: 15/02/2024 08:28:02 ******/
 DROP INDEX IF EXISTS [IX_02] ON [dbo].[TB_ITEM_VENDA]
 GO
-/****** Object:  Index [IX_01]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Index [IX_01]    Script Date: 15/02/2024 08:28:02 ******/
 DROP INDEX IF EXISTS [IX_01] ON [dbo].[TB_ITEM_VENDA]
 GO
-/****** Object:  Table [dbo].[TB_VENDEDOR]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[Tempo]    Script Date: 15/02/2024 08:28:02 ******/
+DROP TABLE IF EXISTS [dbo].[Tempo]
+GO
+/****** Object:  Table [dbo].[TB_VENDEDOR]    Script Date: 15/02/2024 08:28:02 ******/
 DROP TABLE IF EXISTS [dbo].[TB_VENDEDOR]
 GO
-/****** Object:  Table [dbo].[TB_VENDA]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_VENDA]    Script Date: 15/02/2024 08:28:02 ******/
 DROP TABLE IF EXISTS [dbo].[TB_VENDA]
 GO
-/****** Object:  Table [dbo].[TB_PRODUTO]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_PRODUTO]    Script Date: 15/02/2024 08:28:02 ******/
 DROP TABLE IF EXISTS [dbo].[TB_PRODUTO]
 GO
-/****** Object:  Table [dbo].[TB_LOJA]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_LOJA]    Script Date: 15/02/2024 08:28:02 ******/
 DROP TABLE IF EXISTS [dbo].[TB_LOJA]
 GO
-/****** Object:  Table [dbo].[TB_ITEM_VENDA]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_ITEM_VENDA]    Script Date: 15/02/2024 08:28:02 ******/
 DROP TABLE IF EXISTS [dbo].[TB_ITEM_VENDA]
 GO
-/****** Object:  Table [dbo].[TB_FORMA_PAGAMENTO]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_FORMA_PAGAMENTO]    Script Date: 15/02/2024 08:28:02 ******/
 DROP TABLE IF EXISTS [dbo].[TB_FORMA_PAGAMENTO]
 GO
-/****** Object:  Table [dbo].[TB_CLIENTE]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_CLIENTE]    Script Date: 15/02/2024 08:28:02 ******/
 DROP TABLE IF EXISTS [dbo].[TB_CLIENTE]
 GO
-/****** Object:  Table [dbo].[TB_CATEGORIA_PRODUTO]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_CATEGORIA_PRODUTO]    Script Date: 15/02/2024 08:28:02 ******/
 DROP TABLE IF EXISTS [dbo].[TB_CATEGORIA_PRODUTO]
 GO
-/****** Object:  Table [dbo].[TB_CATEGORIA_PRODUTO]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_CATEGORIA_PRODUTO]    Script Date: 15/02/2024 08:28:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -204,7 +234,7 @@ CREATE TABLE [dbo].[TB_CATEGORIA_PRODUTO](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_CLIENTE]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_CLIENTE]    Script Date: 15/02/2024 08:28:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -226,7 +256,7 @@ CREATE TABLE [dbo].[TB_CLIENTE](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_FORMA_PAGAMENTO]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_FORMA_PAGAMENTO]    Script Date: 15/02/2024 08:28:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -240,7 +270,7 @@ CREATE TABLE [dbo].[TB_FORMA_PAGAMENTO](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_ITEM_VENDA]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_ITEM_VENDA]    Script Date: 15/02/2024 08:28:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -258,7 +288,7 @@ CREATE TABLE [dbo].[TB_ITEM_VENDA](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_LOJA]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_LOJA]    Script Date: 15/02/2024 08:28:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -276,7 +306,7 @@ CREATE TABLE [dbo].[TB_LOJA](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_PRODUTO]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_PRODUTO]    Script Date: 15/02/2024 08:28:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -291,7 +321,7 @@ CREATE TABLE [dbo].[TB_PRODUTO](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_VENDA]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_VENDA]    Script Date: 15/02/2024 08:28:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -310,7 +340,7 @@ CREATE TABLE [dbo].[TB_VENDA](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[TB_VENDEDOR]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[TB_VENDEDOR]    Script Date: 15/02/2024 08:28:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -324,35 +354,58 @@ CREATE TABLE [dbo].[TB_VENDEDOR](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_01]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Table [dbo].[Tempo]    Script Date: 15/02/2024 08:28:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Tempo](
+	[ID_TEMPO] [varchar](100) NOT NULL,
+	[DATA] [varchar](10) NOT NULL,
+	[ANO] [int] NOT NULL,
+	[MES] [int] NOT NULL,
+	[DIA] [int] NOT NULL,
+	[DATA_CADASTRO] [datetime] NOT NULL,
+	[DATA_ALTERACAO] [datetime] NOT NULL,
+ CONSTRAINT [PK_Tempo] PRIMARY KEY CLUSTERED 
+(
+	[ID_TEMPO] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Index [IX_01]    Script Date: 15/02/2024 08:28:02 ******/
 CREATE NONCLUSTERED INDEX [IX_01] ON [dbo].[TB_ITEM_VENDA]
 (
 	[CODIGO_VENDA] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_02]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Index [IX_02]    Script Date: 15/02/2024 08:28:02 ******/
 CREATE NONCLUSTERED INDEX [IX_02] ON [dbo].[TB_ITEM_VENDA]
 (
 	[CODIGO_PRODUTO] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_01]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Index [IX_01]    Script Date: 15/02/2024 08:28:02 ******/
 CREATE NONCLUSTERED INDEX [IX_01] ON [dbo].[TB_PRODUTO]
 (
 	[CODIGO_CATEGORIA] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_01]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Index [IX_01]    Script Date: 15/02/2024 08:28:02 ******/
 CREATE NONCLUSTERED INDEX [IX_01] ON [dbo].[TB_VENDA]
 (
 	[CODIGO_CLIENTE] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
-/****** Object:  Index [IX_02]    Script Date: 30/01/2024 16:00:29 ******/
+/****** Object:  Index [IX_02]    Script Date: 15/02/2024 08:28:02 ******/
 CREATE NONCLUSTERED INDEX [IX_02] ON [dbo].[TB_VENDA]
 (
 	[CODIGO_FORMA_PAGAMENTO] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Tempo] ADD  DEFAULT (getdate()) FOR [DATA_CADASTRO]
+GO
+ALTER TABLE [dbo].[Tempo] ADD  DEFAULT (getdate()) FOR [DATA_ALTERACAO]
 GO
 ALTER TABLE [dbo].[TB_ITEM_VENDA]  WITH CHECK ADD  CONSTRAINT [FK_TB_ITEM_VENDA_PRODUTO] FOREIGN KEY([CODIGO_PRODUTO])
 REFERENCES [dbo].[TB_PRODUTO] ([CODIGO_PRODUTO])
@@ -474,4 +527,18 @@ GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Nome do Vendedor.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TB_VENDEDOR', @level2type=N'COLUMN',@level2name=N'NOME_VENDEDOR'
 GO
 EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Armazena informações de vendedores' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'TB_VENDEDOR'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Chave da Dimensão Tempo' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'ID_TEMPO'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Identifica a Data' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'DATA'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Ano referente a coluna data.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'ANO'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Mês referente a coluna data.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'MES'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Dia referente a coluna data.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'DIA'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Data de Cadastro do Registro.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'DATA_CADASTRO'
+GO
+EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'Data de Atualização do Registro.' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'Tempo', @level2type=N'COLUMN',@level2name=N'DATA_ALTERACAO'
 GO
